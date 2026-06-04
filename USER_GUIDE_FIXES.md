@@ -1,4 +1,4 @@
-# 🎓 EduPeak Quiz Fixes - Complete Summary for User
+# 🎓  Quiz Fixes - Complete Summary for User
 
 ## What Was Wrong?
 
