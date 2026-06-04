@@ -1,0 +1,959 @@
+/* ==========================================================================
+   EduPeak CEE/NEET Platform - Custom Visual Enhancement Styles
+   Complements TailwindCSS with advanced transitions, scroll snaps, & 3D flips
+   ========================================================================== */
+
+/* 1. Global Custom Theme Settings */
+:root {
+  --glass-bg: rgba(17, 24, 39, 0.45);
+  --glass-border: rgba(255, 255, 255, 0.05);
+  --glass-border-hover: rgba(255, 255, 255, 0.12);
+  --glass-shadow: rgba(0, 0, 0, 0.45);
+
+  --color-physics: #06b6d4;      /* Tailwind Cyan-500 */
+  --color-chemistry: #ec4899;    /* Tailwind Pink-500 */
+  --color-biology: #10b981;      /* Tailwind Emerald-500 */
+  --color-math: #f59e0b;         /* Tailwind Amber-500 */
+  --color-mat: #eab308;          /* Tailwind Yellow-500 */
+}
+
+/* Custom Webkit scrollbars */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 9999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+/* 2. Glassmorphic Translucent Card Components */
+.glass-card {
+  background: var(--glass-bg);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--glass-border);
+  box-shadow: 0 10px 30px var(--glass-shadow);
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  border-radius: 1.5rem;
+}
+
+.glass-card:hover {
+  border-color: var(--glass-border-hover);
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.6);
+}
+
+.glass-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* 3. Responsive Navigation Items */
+.nav-item {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border-radius: 0.75rem;
+  border: 1px solid transparent;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  color: #9ca3af; /* gray-400 */
+  font-size: 0.92rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  outline: none;
+}
+
+.nav-item i {
+  font-size: 1.05rem;
+  transition: all 0.2s ease;
+  width: 18px;
+  text-align: center;
+}
+
+.nav-item:hover {
+  background: rgba(255, 255, 255, 0.04);
+  color: #f3f4f6; /* gray-100 */
+}
+
+.nav-item.active {
+  background: rgba(135, 77, 255, 0.08);
+  border-color: rgba(135, 77, 255, 0.15);
+  color: #ffffff;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.25);
+}
+
+.nav-item.active i {
+  color: #874dff;
+  text-shadow: 0 0 8px rgba(135, 77, 255, 0.4);
+}
+
+/* Subject Nav Accents */
+.nav-item[data-route="physics"].active i { color: var(--color-physics); text-shadow: 0 0 8px rgba(6, 182, 212, 0.4); }
+.nav-item[data-route="chemistry"].active i { color: var(--color-chemistry); text-shadow: 0 0 8px rgba(236, 72, 153, 0.4); }
+.nav-item[data-route="biology"].active i { color: var(--color-biology); text-shadow: 0 0 8px rgba(16, 185, 129, 0.4); }
+.nav-item[data-route="mathematics"].active i { color: var(--color-math); text-shadow: 0 0 8px rgba(245, 158, 11, 0.4); }
+.nav-item[data-route="mock-exam"].active i { color: #ef4444; text-shadow: 0 0 8px rgba(239, 68, 68, 0.4); }
+.nav-item[data-route="contact"].active i { color: #06b6d4; text-shadow: 0 0 8px rgba(6, 182, 212, 0.4); }
+
+/* 4. Semantic Badges & Action Buttons */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.3rem 0.85rem;
+  border-radius: 9999px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border: 1px solid transparent;
+}
+
+.badge-primary { background: rgba(135, 77, 255, 0.12); color: #c084fc; border-color: rgba(135, 77, 255, 0.25); }
+.badge-success { background: rgba(16, 185, 129, 0.12); color: #34d399; border-color: rgba(16, 185, 129, 0.25); }
+.badge-info { background: rgba(6, 182, 212, 0.12); color: #22d3ee; border-color: rgba(6, 182, 212, 0.25); }
+.badge-warning { background: rgba(245, 158, 11, 0.12); color: #fbbf24; border-color: rgba(245, 158, 11, 0.25); }
+.badge-danger { background: rgba(239, 68, 68, 0.12); color: #f87171; border-color: rgba(239, 68, 68, 0.25); }
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.75rem;
+  font-size: 0.92rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  border: 1px solid transparent;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, #874dff, #6366f1);
+  color: #ffffff;
+  box-shadow: 0 4px 15px rgba(135, 77, 255, 0.2);
+}
+.btn-primary:hover {
+  transform: translateY(-1.5px);
+  box-shadow: 0 6px 20px rgba(135, 77, 255, 0.35);
+}
+.btn-primary:active { transform: translateY(0); }
+
+.btn-secondary {
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  color: #f3f4f6;
+}
+.btn-secondary:hover {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: var(--glass-border-hover);
+}
+
+.btn-icon {
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border-radius: 0.75rem;
+  border: 1px solid var(--glass-border);
+  background: var(--glass-bg);
+  color: #ffffff;
+}
+.btn-icon:hover {
+  border-color: var(--glass-border-hover);
+  background: rgba(255, 255, 255, 0.04);
+}
+
+/* 5. Dynamic SPA View Elements */
+.view-section {
+  width: 100%;
+  height: 100%;
+  overflow-y: auto;
+  display: none;
+}
+
+.view-section.active {
+  display: block;
+  animation: fadeIn 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Circular SVGs Progress Dashboard */
+.progress-circle-wrapper {
+  position: relative;
+  width: 60px;
+  height: 60px;
+}
+
+.progress-circle-svg {
+  transform: rotate(-90deg);
+  width: 100%;
+  height: 100%;
+}
+
+.progress-circle-bg {
+  fill: none;
+  stroke: rgba(255, 255, 255, 0.03);
+  stroke-width: 5;
+}
+
+.progress-circle-bar {
+  fill: none;
+  stroke-width: 5;
+  stroke-linecap: round;
+  stroke-dasharray: 157; /* 2 * pi * r (r=25) */
+  stroke-dashoffset: 157;
+  transition: stroke-dashoffset 1s ease-out;
+}
+
+.progress-circle-text {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 0.8rem;
+  font-weight: 800;
+}
+
+/* Subject completion trackers */
+.sub-progress-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.25rem;
+  border-radius: 0.75rem;
+  background: rgba(255, 255, 255, 0.01);
+  border: 1px solid var(--glass-border);
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+.sub-progress-card:hover {
+  background: rgba(255, 255, 255, 0.03);
+  border-color: var(--glass-border-hover);
+  transform: translateY(-2px);
+}
+
+/* Scheduler checkboxes & rows */
+.schedule-row {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem 1rem;
+  background: rgba(255, 255, 255, 0.01);
+  border-radius: 0.75rem;
+  border-left: 4px solid #6b7280;
+  transition: all 0.25s ease;
+}
+
+.schedule-row.active {
+  background: rgba(135, 77, 255, 0.04);
+}
+
+.checkbox-container {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.82rem;
+  color: #9ca3af;
+  font-weight: 600;
+  cursor: pointer;
+  user-select: none;
+}
+
+.checkbox-custom {
+  width: 18px;
+  height: 18px;
+  border-radius: 6px;
+  border: 1.5px solid #4b5563; /* gray-600 */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.7rem;
+  color: transparent;
+  transition: all 0.15s ease;
+}
+
+.checkbox-container:hover .checkbox-custom {
+  border-color: #9ca3af;
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.checkbox-container input {
+  display: none;
+}
+
+.checkbox-container input:checked + .checkbox-custom {
+  border-color: #10b981;
+  background: #10b981;
+  color: #ffffff;
+}
+
+/* 6. Advanced 3D Flashcard Carousel Widget */
+.flashcard-stage {
+  perspective: 1000px;
+  width: 100%;
+  height: 240px;
+  cursor: pointer;
+  position: relative;
+}
+
+.flashcard-flip-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  transform-style: preserve-3d;
+}
+
+.flashcard-stage.flipped .flashcard-flip-inner {
+  transform: rotateY(180deg);
+}
+
+.flashcard-face {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  border-radius: 1.5rem;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--glass-border);
+  box-shadow: 0 8px 24px var(--glass-shadow);
+}
+
+.flashcard-front {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.03) 0%, rgba(255, 255, 255, 0.005) 100%);
+  color: #f3f4f6;
+}
+
+.flashcard-back {
+  background: linear-gradient(135deg, rgba(135, 77, 255, 0.08) 0%, rgba(17, 24, 39, 0.6) 100%);
+  transform: rotateY(180deg);
+  color: #ffffff;
+  border-color: rgba(135, 77, 255, 0.2);
+}
+
+/* 7. Quiz Option Click Feedback States */
+/* Mock Exam Option Buttons */
+.mock-option {
+  width: 100%;
+  padding: 1rem 1.25rem;
+  background: rgba(255, 255, 255, 0.015);
+  border: 1px solid var(--glass-border);
+  border-radius: 0.75rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  transition: all 0.15s ease;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #e5e7eb;
+  text-align: left;
+}
+.mock-option:hover:not(:disabled) {
+  background: rgba(255, 255, 255, 0.04);
+  border-color: var(--glass-border-hover);
+}
+.mock-option-letter {
+  display: inline-flex;
+  width: 26px; height: 26px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.04);
+  align-items: center;
+  justify-content: center;
+  margin-right: 0.75rem;
+  font-size: 0.8rem;
+  font-weight: 800;
+  color: #9ca3af;
+  border: 1px solid var(--glass-border);
+  transition: all 0.15s ease;
+  flex-shrink: 0;
+}
+.mock-option.selected { background: rgba(135,77,255,0.12); border-color: rgba(135,77,255,0.4); }
+.mock-option.selected .mock-option-letter { background: #874dff; color: #fff; border-color: #874dff; }
+.mock-option.correct { background: rgba(16,185,129,0.15); border-color: #10b981; }
+.mock-option.correct .mock-option-letter { background: #10b981; color: #fff; border-color: #10b981; }
+.mock-option.incorrect { background: rgba(239,68,68,0.15); border-color: #ef4444; }
+.mock-option.incorrect .mock-option-letter { background: #ef4444; color: #fff; border-color: #ef4444; }
+.mock-option-result-icon { font-size: 1.1rem; flex-shrink: 0; margin-left: 0.5rem; }
+.mock-option.correct .mock-option-result-icon { color: #10b981; }
+.mock-option.incorrect .mock-option-result-icon { color: #ef4444; }
+
+/* Mock Exam Explanation Box */
+.mock-explanation-box {
+  margin-top: 1.5rem;
+  padding: 1.25rem;
+  background: linear-gradient(135deg, rgba(16, 185, 129, 0.08) 0%, rgba(6, 182, 212, 0.08) 100%);
+  border: 1px solid rgba(16, 185, 129, 0.2);
+  border-radius: 1rem;
+  animation: slideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.mock-explanation-header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: #10b981;
+  margin-bottom: 0.75rem;
+}
+
+.mock-explanation-text {
+  font-size: 0.9rem;
+  line-height: 1.6;
+  color: #d1d5db;
+}
+
+/* Chapter Quiz Option Styles */
+.quiz-option {
+  width: 100%;
+  padding: 1rem 1.25rem;
+  background: rgba(255, 255, 255, 0.015);
+  border: 1px solid var(--glass-border);
+  border-radius: 0.75rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  transition: all 0.15s ease;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #e5e7eb;
+  text-align: left;
+}
+
+.quiz-option:hover:not(:disabled) {
+  background: rgba(255, 255, 255, 0.04);
+  border-color: var(--glass-border-hover);
+}
+
+.quiz-option:disabled {
+  cursor: not-allowed;
+  opacity: 1;
+}
+
+.quiz-option.correct {
+  background: rgba(16, 185, 129, 0.15);
+  border-color: #10b981;
+  color: #10b981;
+}
+
+.quiz-option.incorrect {
+  background: rgba(239, 68, 68, 0.15);
+  border-color: #ef4444;
+  color: #ef4444;
+}
+
+.option-letter {
+  display: inline-flex;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.04);
+  align-items: center;
+  justify-content: center;
+  margin-right: 0.75rem;
+  font-size: 0.8rem;
+  font-weight: 800;
+  color: #9ca3af;
+  border: 1px solid var(--glass-border);
+  transition: all 0.15s ease;
+  flex-shrink: 0;
+}
+
+.quiz-option.correct .option-letter {
+  background: #10b981;
+  color: #fff;
+  border-color: #10b981;
+}
+
+.quiz-option.incorrect .option-letter {
+  background: #ef4444;
+  color: #fff;
+  border-color: #ef4444;
+}
+
+.option-result-icon {
+  font-size: 1.1rem;
+  flex-shrink: 0;
+  margin-left: 0.5rem;
+}
+
+.quiz-option.correct .option-result-icon {
+  color: #10b981;
+}
+
+.quiz-option.incorrect .option-result-icon {
+  color: #ef4444;
+}
+
+/* Quiz Explanation Box */
+.quiz-explanation-box {
+  margin-top: 1.5rem;
+  padding: 1.25rem;
+  background: linear-gradient(135deg, rgba(16, 185, 129, 0.08) 0%, rgba(6, 182, 212, 0.08) 100%);
+  border: 1px solid rgba(16, 185, 129, 0.2);
+  border-radius: 1rem;
+  animation: slideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.quiz-explanation-title {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: #10b981;
+  margin-bottom: 0.75rem;
+}
+
+.quiz-explanation-text {
+  font-size: 0.9rem;
+  line-height: 1.6;
+  color: #d1d5db;
+}
+
+/* 8. Full-screen Timed Mock Assessment viewports */
+.mock-exam-workspace {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: #090d16;
+  z-index: 1050;
+  display: none;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.mock-exam-navbar {
+  height: 70px;
+  flex-shrink: 0;
+}
+
+.mock-exam-console {
+  display: flex;
+  flex-grow: 1;
+  overflow: hidden;
+}
+
+.mock-question-panel {
+  flex-grow: 1;
+  height: 100%;
+  overflow-y: auto;
+}
+
+.mock-palette-sidebar {
+  flex-shrink: 0;
+}
+
+.palette-btn {
+  aspect-ratio: 1;
+  border-radius: 0.5rem;
+  border: 1px solid var(--glass-border);
+  background: rgba(255, 255, 255, 0.015);
+  color: #9ca3af;
+  font-size: 0.88rem;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.palette-btn:hover {
+  border-color: var(--glass-border-hover);
+  color: #ffffff;
+}
+
+.palette-btn.active {
+  box-shadow: 0 0 0 2px #ffffff;
+}
+
+/* Dynamic visual codes for CEE Nepal mock states */
+.palette-btn.unvisited {
+  background: rgba(255, 255, 255, 0.01);
+  color: #4b5563;
+}
+
+.palette-btn.visited-unanswered {
+  background: rgba(239, 68, 68, 0.12);
+  border-color: rgba(239, 68, 68, 0.25);
+  color: #ef4444;
+}
+
+.palette-btn.answered {
+  background: rgba(16, 185, 129, 0.15);
+  border-color: rgba(16, 185, 129, 0.35);
+  color: #10b981;
+}
+
+.palette-btn.marked {
+  background: rgba(245, 158, 11, 0.15);
+  border-color: rgba(245, 158, 11, 0.35);
+  color: #f59e0b;
+}
+
+.exam-submit-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.82);
+  backdrop-filter: blur(12px);
+  z-index: 1060;
+  display: none;
+  align-items: center;
+  justify-content: center;
+}
+
+/* 9. Contact expanding accordions */
+.faq-row {
+  border: 1px solid var(--glass-border);
+  background: rgba(255, 255, 255, 0.005);
+  border-radius: 0.75rem;
+  overflow: hidden;
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+.faq-summary {
+  padding: 1.1rem 1.25rem;
+  font-weight: 700;
+  font-size: 0.92rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  user-select: none;
+  transition: all 0.15s ease;
+}
+
+.faq-summary:hover {
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.faq-arrow {
+  font-size: 0.8rem;
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  color: #9ca3af;
+}
+
+.faq-details {
+  display: none;
+  padding: 0 1.25rem 1.25rem 1.25rem;
+  font-size: 0.85rem;
+  color: #9ca3af;
+  line-height: 1.55;
+  animation: slideDown 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.faq-row.open {
+  background: rgba(255, 255, 255, 0.02);
+  border-color: var(--glass-border-hover);
+}
+
+.faq-row.open .faq-arrow {
+  transform: rotate(180deg);
+}
+
+.faq-row.open .faq-details {
+  display: block;
+}
+
+@keyframes slideDown {
+  from { opacity: 0; transform: translateY(-6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* 10. Floating Utility Notes Scratchpad */
+.scratchpad-launcher {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #874dff, #06b6d4);
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.3rem;
+  cursor: pointer;
+  z-index: 95;
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+.scratchpad-launcher:hover {
+  transform: scale(1.08) rotate(15deg);
+}
+
+.scratchpad-panel {
+  position: fixed;
+  bottom: 92px;
+  right: 24px;
+  width: 320px;
+  height: 400px;
+  background: #0c1220;
+  border: 1px solid var(--glass-border-hover);
+  border-radius: 1.5rem;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.65);
+  z-index: 95;
+  display: none;
+  flex-direction: column;
+  overflow: hidden;
+  animation: scaleIn 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+@keyframes scaleIn {
+  from { opacity: 0; transform: scale(0.8) translateY(20px); }
+  to { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+.scratchpad-body {
+  background: #060a12;
+}
+
+.scratchpad-textarea {
+  width: 100%;
+  height: 100%;
+  border: none;
+  background: transparent;
+  color: #ffffff;
+  font-family: inherit;
+  font-size: 0.9rem;
+  padding: 1.25rem;
+  resize: none;
+  outline: none;
+  line-height: 1.5;
+}
+
+/* 11. Toast Notifications overlay portal */
+.toast-overlay {
+  position: fixed;
+  top: 30px;
+  right: 30px;
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  pointer-events: none;
+}
+
+.toast {
+  padding: 0.9rem 1.25rem;
+  border-radius: 0.75rem;
+  background: #0c1220;
+  border: 1px solid var(--glass-border-hover);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  color: #f3f4f6;
+  font-size: 0.88rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  pointer-events: auto;
+  animation: slideInLeft 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: opacity 0.3s ease;
+}
+
+@keyframes slideInLeft {
+  from { transform: translateX(100%) scale(0.9); opacity: 0; }
+  to { transform: translateX(0) scale(1); opacity: 1; }
+}
+
+.toast.success i { color: var(--brand-success); }
+.toast.info i { color: var(--brand-info); }
+.toast.warning i { color: var(--brand-warning); }
+.toast.danger i { color: #ef4444; }
+
+/* 12. Input control valid/invalid support */
+.input-control {
+  background: rgba(17, 22, 37, 0.6);
+  border: 1px solid var(--glass-border);
+  color: #ffffff;
+  border-radius: 0.75rem;
+  padding: 0.85rem 1.15rem;
+  outline: none;
+  transition: all 0.2s ease;
+}
+
+.input-control::placeholder {
+  color: #4b5563;
+}
+
+.input-control:focus {
+  border-color: #874dff;
+  box-shadow: 0 0 0 3px rgba(135, 77, 255, 0.25);
+}
+
+.input-control:user-valid {
+  border-color: #10b981;
+}
+
+.input-control:user-invalid {
+  border-color: #ef4444;
+}
+
+/* 13. Responsive Sidebar/Header Display toggles */
+.mobile-header {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 64px;
+  background: rgba(9, 13, 22, 0.82);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--glass-border);
+  display: none;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 1.25rem;
+  z-index: 9;
+}
+
+@media (max-width: 768px) {
+  .mobile-header {
+    display: flex;
+  }
+  
+  .view-section {
+    padding: calc(64px + 1.25rem) 1rem 2rem 1rem !important;
+    height: 100vh;
+  }
+  
+  /* Mobile Hamburger drawer sheets */
+  .drawer-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.65);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    z-index: 999;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+  }
+  
+  .drawer-overlay.active {
+    opacity: 1;
+    visibility: visible;
+  }
+  
+  .drawer-sheet {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 290px;
+    height: 100%;
+    background: #0c1220;
+    border-right: 1px solid var(--glass-border-hover);
+    box-shadow: 10px 0 40px rgba(0, 0, 0, 0.85);
+    z-index: 1000;
+    transform: translateX(-100%);
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .drawer-overlay.active .drawer-sheet {
+    transform: translateX(0);
+  }
+  
+  .drawer-header {
+    padding: 1.25rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--glass-border);
+  }
+  
+  .drawer-close {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    border: 1px solid var(--glass-border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.05rem;
+    cursor: pointer;
+    background: rgba(255, 255, 255, 0.02);
+    color: #f3f4f6;
+  }
+  
+  .drawer-nav {
+    flex-grow: 1;
+    padding: 1.25rem 0.75rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    overflow-y: auto;
+  }
+  
+  .drawer-user {
+    padding: 1.25rem;
+    border-top: 1px solid var(--glass-border);
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    background: rgba(12, 18, 32, 0.5);
+  }
+
+  /* Mock simulations adjustments on mobile */
+  .mock-palette-sidebar {
+    width: 100% !important;
+    height: auto !important;
+    max-height: 250px !important;
+    border-left: none !important;
+    border-top: 1px solid var(--glass-border-hover) !important;
+  }
+  
+  .palette-grid {
+    grid-template-columns: repeat(8, 1fr) !important;
+    padding: 1rem !important;
+    gap: 0.5rem !important;
+  }
+  
+  .mock-q-controls {
+    flex-direction: column !important;
+    align-items: stretch !important;
+  }
+  
+  .mock-controls-left {
+    width: 100% !important;
+  }
+}
