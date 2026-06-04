@@ -1,4 +1,4 @@
-# ✅ EDUPEAK QUIZ FIXES - FINAL SUMMARY
+# ✅  QUIZ FIXES - FINAL SUMMARY
 
 ## What You Reported
 ```
