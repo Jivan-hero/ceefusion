@@ -1,0 +1,788 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, minimum-scale=1.0">
+  <title>CeeFusion – CEE & NEET Full-Stack Preparation Platform</title>
+  
+  <!-- SEO Meta Tags -->
+  <meta name="description" content="Master the Nepal CEE and NEET entrance exams with CeeFusion. Explore detailed 3-panel chapter guides, practice 30+ question quizzes with negative marking, and take timed 200-question CEE mock tests.">
+  <meta name="keywords" content="CEE Nepal Prep, Medical Entrance Nepal, MBBS BDS, NEET Prep, 200 Qs CEE Mock Test, Physics formulas, Zoology botany CEE, Mental Agility CEE">
+  <meta name="author" content="CeeFusion Full-Stack Ecosystem">
+  
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect width=%22100%22 height=%22100%22 rx=%2220%22 fill=%22%236366f1%22/><text y=%2270%22 x=%2220%22 font-size=%2260%22 font-weight=%22bold%22 fill=%22white%22>EP</text></svg>">
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  
+  <!-- TailwindCSS via CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            heading: ['DM Sans', 'sans-serif'],
+          },
+          colors: {
+            brand: {
+              primary: '#874dff',
+              success: '#10b981',
+              danger: '#ef4444',
+              warning: '#f59e0b',
+              info: '#06b6d4',
+              darkBg: '#090d16',
+              cardBg: 'rgba(17, 24, 39, 0.45)',
+            }
+          }
+        }
+      }
+    }
+  </script>
+  
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <!-- Custom Core Glassmorphic Stylesheet -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="bg-[#090d16] text-gray-100 font-sans min-h-screen overflow-hidden relative">
+
+  <!-- Core App Layout -->
+  <div class="flex w-screen h-screen overflow-hidden relative">
+    
+    <!-- 1. LEFT SIDEBAR (Desktop Persistent Navigation) -->
+    <aside class="w-[280px] h-full bg-[#0c1220] border-r border-white/5 flex flex-col flex-shrink-0 z-10 transition-all duration-300 md:flex hidden" aria-label="Main Navigation">
+      <div class="p-6 flex items-center gap-3 border-b border-white/5">
+        <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-brand-primary to-brand-info flex items-center justify-center text-lg text-white shadow-[0_0_15px_rgba(135,77,255,0.25)]">
+          <i class="fa-solid fa-graduation-cap"></i>
+        </div>
+        <div class="text-xl font-bold tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-white to-gray-400 font-heading">
+          CeeFusion
+        </div>
+      </div>
+      
+      <nav class="flex-grow p-5 flex flex-col gap-1.5 overflow-y-auto">
+        <button class="nav-item active" data-route="dashboard" id="nav-dash" aria-current="page">
+          <i class="fa-solid fa-chart-pie"></i>
+          <span>Dashboard</span>
+        </button>
+        <button class="nav-item" data-route="physics" id="nav-phy">
+          <i class="fa-solid fa-atom"></i>
+          <span>Physics</span>
+        </button>
+        <button class="nav-item" data-route="chemistry" id="nav-chem">
+          <i class="fa-solid fa-flask"></i>
+          <span>Chemistry</span>
+        </button>
+        <button class="nav-item" data-route="biology" id="nav-bio">
+          <i class="fa-solid fa-leaf"></i>
+          <span>Biology</span>
+        </button>
+        <button class="nav-item" data-route="mathematics" id="nav-math">
+          <i class="fa-solid fa-calculator"></i>
+          <span>Mathematics</span>
+        </button>
+        <button class="nav-item" data-route="mock-exam" id="nav-mock">
+          <i class="fa-solid fa-pen-to-square"></i>
+          <span>Mock Exam</span>
+        </button>
+        <button class="nav-item" data-route="contact" id="nav-contact">
+          <i class="fa-solid fa-envelope"></i>
+          <span>Contact Us</span>
+        </button>
+      </nav>
+      
+      <div class="p-5 border-t border-white/5 flex items-center justify-between bg-[#0c1220]/50">
+        <div class="flex items-center gap-3">
+          <div class="w-11 h-11 rounded-full bg-gradient-to-br from-indigo-900 to-slate-800 border border-white/10 flex items-center justify-center font-bold text-white font-heading" id="user-avatar-initials" aria-hidden="true">
+            JD
+          </div>
+          <div class="flex flex-col">
+            <span class="text-sm font-bold text-gray-200" id="user-display-name">Your Name</span>
+            <span class="text-[0.7rem] text-gray-500 font-semibold flex items-center gap-1" id="user-display-badge">
+              <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span> CEE Nepal Aspirant
+            </span>
+          </div>
+        </div>
+        <button class="text-gray-500 hover:text-red-400 transition-colors p-1" id="btn-sign-out" title="Sign Out">
+          <i class="fa-solid fa-right-from-bracket"></i>
+        </button>
+      </div>
+    </aside>
+
+    <!-- 2. MOBILE DRAWER PORTAL -->
+    <div class="drawer-container z-[999] relative" id="mobile-drawer-portal">
+      <div class="drawer-overlay" id="drawer-overlay" aria-hidden="true">
+        <div class="drawer-sheet" role="dialog" aria-modal="true" aria-label="Mobile Navigation">
+          <div class="drawer-header">
+            <div class="flex items-center gap-3">
+              <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-brand-primary to-brand-info flex items-center justify-center text-lg text-white">
+                <i class="fa-solid fa-graduation-cap"></i>
+              </div>
+              <div class="text-xl font-bold tracking-tight text-white font-heading">CeeFusion</div>
+            </div>
+            <button class="drawer-close" id="drawer-close-btn" aria-label="Close menu">
+              <i class="fa-solid fa-xmark"></i>
+            </button>
+          </div>
+          
+          <nav class="drawer-nav">
+            <button class="nav-item active" data-route="dashboard">
+              <i class="fa-solid fa-chart-pie"></i>
+              <span>Dashboard</span>
+            </button>
+            <button class="nav-item" data-route="physics">
+              <i class="fa-solid fa-atom"></i>
+              <span>Physics</span>
+            </button>
+            <button class="nav-item" data-route="chemistry">
+              <i class="fa-solid fa-flask"></i>
+              <span>Chemistry</span>
+            </button>
+            <button class="nav-item" data-route="biology">
+              <i class="fa-solid fa-leaf"></i>
+              <span>Biology</span>
+            </button>
+            <button class="nav-item" data-route="mathematics">
+              <i class="fa-solid fa-calculator"></i>
+              <span>Mathematics</span>
+            </button>
+            <button class="nav-item" data-route="mock-exam">
+              <i class="fa-solid fa-pen-to-square"></i>
+              <span>Mock Exam</span>
+            </button>
+            <button class="nav-item" data-route="contact">
+              <i class="fa-solid fa-envelope"></i>
+              <span>Contact Us</span>
+            </button>
+          </nav>
+          
+          <div class="drawer-user flex justify-between items-center w-full">
+            <div class="flex items-center gap-3">
+              <div class="w-11 h-11 rounded-full bg-gradient-to-br from-indigo-900 to-slate-800 border border-white/10 flex items-center justify-center font-bold text-white" id="mobile-user-avatar-initials" aria-hidden="true">JD</div>
+              <div class="flex flex-col">
+                <span class="text-sm font-bold text-gray-200" id="mobile-user-display-name">Your Name</span>
+                <span class="text-[0.7rem] text-gray-500 font-semibold flex items-center gap-1" id="mobile-user-display-badge">
+                  <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span> CEE Nepal Aspirant
+                </span>
+              </div>
+            </div>
+            <button class="text-gray-500 hover:text-red-400 transition-colors p-1" id="mobile-btn-sign-out" title="Sign Out">
+              <i class="fa-solid fa-right-from-bracket"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3. MAIN CONTENT PANELS -->
+    <main class="main-wrapper flex-grow h-full flex flex-col overflow-hidden relative">
+      
+      <!-- Mobile View Header -->
+      <header class="mobile-header">
+        <button class="menu-trigger" id="hamburger-menu-btn" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-drawer-portal">
+          <i class="fa-solid fa-bars-staggered"></i>
+        </button>
+        <div class="text-xl font-bold tracking-tight text-white font-heading">CeeFusion</div>
+        <div class="w-9 h-9 rounded-full bg-gradient-to-br from-indigo-900 to-slate-800 border border-white/10 flex items-center justify-center font-bold text-white text-xs" id="mobile-header-avatar">JD</div>
+      </header>
+
+      <!-- ====================================================================
+           ROUTER VIEW SECTION WRAPPERS
+           ==================================================================== -->
+      
+      <!-- A. HOME / DASHBOARD SCREEN -->
+      <section class="view-section active p-4 md:p-10 space-y-8" id="view-dashboard" aria-labelledby="dash-heading">
+        
+        <!-- Hero banner -->
+        <div class="glass-card p-6 md:p-8 flex flex-col md:flex-row md:items-center justify-between gap-6 bg-gradient-to-r from-violet-950/20 via-slate-900/10 to-cyan-950/15 border border-white/5 rounded-3xl">
+          <div class="space-y-2">
+            <h1 id="dash-heading" class="text-2xl md:text-3.5xl font-extrabold tracking-tight font-heading">
+              Welcome back, <span class="bg-gradient-to-r from-violet-400 to-cyan-400 bg-clip-text text-transparent" id="welcome-user-name">Student</span>!
+            </h1>
+            <p class="text-sm text-gray-400">CEE Nepal entrance date is approaching. Jump into practice quizzes to maintain your stats.</p>
+          </div>
+          <button class="btn btn-primary self-start md:self-auto bg-gradient-to-r from-brand-primary to-indigo-600 shadow-[0_4px_15px_rgba(135,77,255,0.3)] hover:shadow-brand-primary/40 font-bold" id="btn-quick-mock-launch">
+            <i class="fa-solid fa-bolt"></i> Start Full CEE Mock Exam
+          </button>
+        </div>
+
+        <!-- Analytical metrics boxes -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div class="glass-card p-6 flex items-center gap-5">
+            <div class="w-14 h-14 rounded-2xl bg-brand-primary/10 border border-brand-primary/20 flex items-center justify-center text-lg text-brand-primary shadow-inner">
+              <i class="fa-solid fa-percent"></i>
+            </div>
+            <div class="flex flex-col">
+              <span class="text-2xl font-black font-heading tracking-tight" id="stat-total-progress">0%</span>
+              <span class="text-[0.8rem] text-gray-400 font-semibold">Overall Progress</span>
+            </div>
+          </div>
+          
+          <div class="glass-card p-6 flex items-center gap-5">
+            <div class="w-14 h-14 rounded-2xl bg-brand-success/10 border border-brand-success/20 flex items-center justify-center text-lg text-brand-success shadow-inner">
+              <i class="fa-solid fa-circle-check"></i>
+            </div>
+            <div class="flex flex-col">
+              <span class="text-2xl font-black font-heading tracking-tight" id="stat-chapters-done">0/0</span>
+              <span class="text-[0.8rem] text-gray-400 font-semibold">Chapters Mastered</span>
+            </div>
+          </div>
+          
+          <div class="glass-card p-6 flex items-center gap-5">
+            <div class="w-14 h-14 rounded-2xl bg-brand-info/10 border border-brand-info/20 flex items-center justify-center text-lg text-brand-info shadow-inner">
+              <i class="fa-solid fa-trophy"></i>
+            </div>
+            <div class="flex flex-col">
+              <span class="text-2xl font-black font-heading tracking-tight" id="stat-avg-score">0%</span>
+              <span class="text-[0.8rem] text-gray-400 font-semibold">Average Quiz Grade</span>
+            </div>
+          </div>
+          
+          <div class="glass-card p-6 flex items-center gap-5">
+            <div class="w-14 h-14 rounded-2xl bg-brand-danger/10 border border-brand-danger/20 flex items-center justify-center text-lg text-brand-danger shadow-inner">
+              <i class="fa-solid fa-stopwatch"></i>
+            </div>
+            <div class="flex flex-col">
+              <span class="text-2xl font-black font-heading tracking-tight" id="stat-exams-taken">0</span>
+              <span class="text-[0.8rem] text-gray-400 font-semibold">Mock Exams Graded</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Dashboard Columns -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          
+          <!-- Subject Navigation Cards (2 Cols) -->
+          <div class="glass-card p-6 lg:col-span-2 space-y-6">
+            <div class="flex justify-between items-center border-b border-white/5 pb-4">
+              <h3 class="text-lg font-bold font-heading">Course Curriculum Tracker</h3>
+              <span class="badge badge-primary text-[0.7rem]">Click subject to study</span>
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-5" id="subject-wheel-container">
+              <!-- Rendered dynamically in script.js -->
+            </div>
+          </div>
+
+          <!-- Daily scheduler Planner (1 Col) -->
+          <div class="glass-card p-6 space-y-6">
+            <div class="flex justify-between items-center border-b border-white/5 pb-4">
+              <h3 class="text-lg font-bold font-heading">Daily Focus Scheduler</h3>
+              <i class="fa-solid fa-calendar-day text-brand-primary"></i>
+            </div>
+            <p class="text-xs text-gray-400">Auto-generate a custom syllabus-based revision timetable for today.</p>
+            
+            <div class="planner-widget-content space-y-4">
+              <div class="scheduler-config bg-white/2 p-4 rounded-xl space-y-3">
+                <div class="flex gap-2">
+                  <select class="select-control w-full bg-[#161c2a] text-sm py-2" id="sched-select-focus" aria-label="Scheduler Focus">
+                    <option value="all">Balanced Review</option>
+                    <option value="physics">Physics Focus</option>
+                    <option value="chemistry">Chemistry Focus</option>
+                    <option value="biology">Biology Focus</option>
+                    <option value="mathematics">Mathematics Focus</option>
+                  </select>
+                </div>
+                <button class="btn btn-secondary w-full text-xs py-2 bg-slate-800/80 hover:bg-slate-700 font-bold border-white/5" id="btn-generate-schedule">
+                  <i class="fa-solid fa-arrows-rotate"></i> Compile Schedule
+                </button>
+              </div>
+              
+              <div class="planner-list space-y-3" id="planner-schedule-list">
+                <!-- Populated dynamically -->
+              </div>
+            </div>
+          </div>
+          
+        </div>
+      </section>
+
+      <!-- B. SUBJECT PORTAL AND DRILL-DOWN CHAPTER VIEWS -->
+      <section class="view-section p-4 md:p-10 space-y-8" id="view-subject" aria-labelledby="subject-heading">
+        
+        <!-- Back Navigation row -->
+        <div class="drilldown-navigation" style="display: none;" id="drilldown-nav-header">
+          <button class="btn-back-drill bg-slate-800/80 hover:bg-slate-700 text-xs px-4 py-2 border border-white/5 rounded-lg flex items-center gap-2 font-bold text-gray-200" id="btn-back-to-subject">
+            <i class="fa-solid fa-arrow-left"></i> Back to Curriculum Syllabus
+          </button>
+        </div>
+
+        <!-- Subject main chapter listings container -->
+        <div id="subject-main-syllabus-container">
+          <!-- Dynamically built via script -->
+        </div>
+
+        <!-- Dynamic THREE PANEL CHAPTER STUDY DRILLDOWN (Revealed when clicking study) -->
+        <div class="drilldown-container space-y-8" id="chapter-drilldown-container" style="display: none;">
+          <!-- Custom template code parsed dynamically inside script.js -->
+        </div>
+      </section>
+
+      <!-- C. QUIZ SIMULATOR VIEW (Inline assessment consoles) -->
+      <section class="view-section p-4 md:p-10" id="view-quiz-simulator" aria-labelledby="quiz-heading">
+        <div class="mb-6">
+          <button class="btn-back-drill bg-slate-800/80 hover:bg-slate-700 text-xs px-4 py-2 border border-white/5 rounded-lg flex items-center gap-2 font-bold text-gray-200" id="btn-exit-quiz-immediate">
+            <i class="fa-solid fa-xmark"></i> Terminate Chapter Quiz
+          </button>
+        </div>
+
+        <div class="glass-card quiz-main-card max-w-4xl mx-auto p-6 md:p-8" id="quiz-interactive-console">
+          <!-- Rendered dynamically -->
+        </div>
+      </section>
+
+      <!-- D. MOCK EXAM SIMULATION ROUTE -->
+      <section class="view-section p-4 md:p-10 space-y-8" id="view-mock-exam" aria-labelledby="mock-heading">
+        <div class="subject-header-banner p-8 rounded-3xl flex items-center gap-6 bg-gradient-to-r from-red-950/20 via-slate-900/10 to-slate-900 border border-red-500/10 shadow-[0_0_20px_rgba(239,68,68,0.05)]">
+          <div class="subject-header-icon w-16 h-16 rounded-2xl bg-brand-danger flex items-center justify-center text-2xl text-white shadow-[0_0_20px_rgba(239,68,68,0.25)]">
+            <i class="fa-solid fa-pen-to-square"></i>
+          </div>
+          <div class="subject-header-details">
+            <h1 id="mock-heading" class="text-2xl md:text-3.5xl font-extrabold tracking-tight font-heading">
+              CEE Nepal Entrance Simulator
+            </h1>
+            <p class="text-sm text-gray-400">Take 200 MCQ assessments designed directly on MEC Nepal official blueprints (Zoology, Botany, Physics, Chemistry, and MAT).</p>
+          </div>
+        </div>
+
+        <!-- Dashboard Console setup -->
+        <div id="mock-setup-console" class="space-y-8">
+          <div class="mock-setup-grid grid grid-cols-1 lg:grid-cols-3 gap-8">
+            
+            <!-- Setup box -->
+            <div class="glass-card p-6 lg:col-span-2 space-y-6">
+              <div class="glass-card-header border-b border-white/5 pb-4">
+                <h3 class="text-lg font-bold font-heading">MEC Assessment Configuration</h3>
+                <span class="badge badge-danger text-[0.7rem]">CEE Blueprint</span>
+              </div>
+              
+              <div class="setup-form space-y-5">
+                <div class="space-y-3">
+                  <span class="text-sm font-bold text-gray-300">1. Exam Blueprint Subject Ratio:</span>
+                  <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div class="sub-chip-selector select-none border border-white/5 bg-[#111625]/60 p-4 rounded-xl flex items-center gap-3">
+                      <div class="w-8 h-8 rounded-lg bg-cyan-500/10 flex items-center justify-center text-cyan-400 font-bold text-xs">Phy</div>
+                      <div class="flex flex-col">
+                        <span class="text-sm font-bold">Physics</span>
+                        <span class="text-[0.7rem] text-gray-500">50 CEE Questions</span>
+                      </div>
+                    </div>
+                    <div class="sub-chip-selector select-none border border-white/5 bg-[#111625]/60 p-4 rounded-xl flex items-center gap-3">
+                      <div class="w-8 h-8 rounded-lg bg-pink-500/10 flex items-center justify-center text-pink-400 font-bold text-xs">Che</div>
+                      <div class="flex flex-col">
+                        <span class="text-sm font-bold">Chemistry</span>
+                        <span class="text-[0.7rem] text-gray-500">50 CEE Questions</span>
+                      </div>
+                    </div>
+                    <div class="sub-chip-selector select-none border border-white/5 bg-[#111625]/60 p-4 rounded-xl flex items-center gap-3">
+                      <div class="w-8 h-8 rounded-lg bg-emerald-500/10 flex items-center justify-center text-emerald-400 font-bold text-xs">Bio</div>
+                      <div class="flex flex-col">
+                        <span class="text-sm font-bold">Biology (Botany + Zoology)</span>
+                        <span class="text-[0.7rem] text-gray-500">80 CEE Questions</span>
+                      </div>
+                    </div>
+                    <div class="sub-chip-selector select-none border border-white/5 bg-[#111625]/60 p-4 rounded-xl flex items-center gap-3">
+                      <div class="w-8 h-8 rounded-lg bg-amber-500/10 flex items-center justify-center text-amber-400 font-bold text-xs">MAT</div>
+                      <div class="flex flex-col">
+                        <span class="text-sm font-bold">Mental Agility</span>
+                        <span class="text-[0.7rem] text-gray-500">20 CEE Questions</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div class="flex flex-col gap-2">
+                    <label class="text-sm font-bold text-gray-300" for="mock-q-count">Total MCQs:</label>
+                    <select class="select-control w-full bg-[#161c2a]" id="mock-q-count" disabled>
+                      <option value="200" selected>200 Questions (CEE Nepal Exam)</option>
+                    </select>
+                  </div>
+                  
+                  <div class="flex flex-col gap-2">
+                    <label class="text-sm font-bold text-gray-300" for="mock-duration">Time Limit:</label>
+                    <select class="select-control w-full bg-[#161c2a]" id="mock-duration" disabled>
+                      <option value="180" selected>3 Hours (180 Minutes)</option>
+                    </select>
+                  </div>
+                </div>
+                
+                <button class="btn btn-primary w-full bg-gradient-to-r from-red-600 to-rose-700 shadow-[0_4px_15px_rgba(239,68,68,0.2)] hover:shadow-red-600/40 text-base font-bold py-4 mt-2" id="btn-start-mock-simulation">
+                  <i class="fa-solid fa-circle-play"></i> Initiate Timed CEE Mock Test
+                </button>
+              </div>
+            </div>
+            
+            <!-- Rules sidebar -->
+            <div class="glass-card p-6 mock-info-card space-y-6">
+              <h3 class="text-lg font-bold font-heading border-b border-white/5 pb-4">CEE Grading Guidelines</h3>
+              
+              <div class="space-y-5">
+                <div class="flex gap-4 items-start">
+                  <div class="w-9 h-9 rounded-lg bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-400 font-bold text-sm flex-shrink-0">
+                    +1
+                  </div>
+                  <div class="space-y-0.5">
+                    <h5 class="text-xs font-bold text-gray-200">Correct Answer</h5>
+                    <p class="text-[0.7rem] text-gray-400">Earn exactly +1.0 mark for every correctly selected multiple-choice response.</p>
+                  </div>
+                </div>
+                
+                <div class="flex gap-4 items-start">
+                  <div class="w-9 h-9 rounded-lg bg-red-500/10 border border-red-500/20 flex items-center justify-center text-brand-danger font-bold text-sm flex-shrink-0">
+                    -0.25
+                  </div>
+                  <div class="space-y-0.5">
+                    <h5 class="text-xs font-bold text-gray-200">Negative Marking</h5>
+                    <p class="text-[0.7rem] text-gray-400">Incorrect answers deduct -0.25 marks, while unattempted questions score 0.</p>
+                  </div>
+                </div>
+                
+                <div class="flex gap-4 items-start">
+                  <div class="w-9 h-9 rounded-lg bg-amber-500/10 border border-amber-500/20 flex items-center justify-center text-brand-warning text-xs flex-shrink-0">
+                    <i class="fa-solid fa-brain"></i>
+                  </div>
+                  <div class="space-y-0.5">
+                    <h5 class="text-xs font-bold text-gray-200">MAT Segment</h5>
+                    <p class="text-[0.7rem] text-gray-400">Includes 20 Mental Agility Questions covering sequence puzzles and spatial logic.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+          </div>
+
+          <!-- Exam History -->
+          <div class="glass-card p-6 space-y-6">
+            <div class="flex justify-between items-center border-b border-white/5 pb-4">
+              <h3 class="text-lg font-bold font-heading">Attempts History Logs</h3>
+              <i class="fa-solid fa-clock-rotate-left text-brand-info"></i>
+            </div>
+            <div class="history-table-container" id="mock-history-container">
+              <!-- Populated dynamically -->
+            </div>
+          </div>
+        </div>
+
+        <!-- Post-Exam Solution & Performance Dashboard -->
+        <div class="analysis-dashboard flex flex-col gap-8" id="mock-results-analysis" style="display: none;">
+          <!-- Dynamically generated upon submission -->
+        </div>
+      </section>
+
+      <!-- E. CONTACT US ROUTE -->
+      <section class="view-section p-4 md:p-10 space-y-8" id="view-contact" aria-labelledby="contact-heading">
+        <div class="glass-card p-8 flex justify-between items-center bg-gradient-to-r from-cyan-950/20 via-slate-900/10 to-slate-900 border border-cyan-500/10 shadow-[0_0_20px_rgba(6,182,212,0.05)] rounded-3xl">
+          <div class="space-y-2">
+            <h1 id="contact-heading" class="text-2xl md:text-3.5xl font-extrabold tracking-tight font-heading">
+              Support Coordinates
+            </h1>
+            <p class="text-sm text-gray-400">Have questions about syllabus items, mock grades, or found errors? Reach out.</p>
+          </div>
+          <i class="fa-solid fa-envelope-open-text text-5xl text-brand-info/30 md:block hidden"></i>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+          
+          <div class="glass-card p-6 space-y-6">
+            <div class="glass-card-header border-b border-white/5 pb-4">
+              <h3 class="text-lg font-bold font-heading">Send Support Request</h3>
+              <span class="badge badge-primary text-[0.7rem]">Direct Desk</span>
+            </div>
+            
+            <form class="contact-form space-y-4" id="edupeak-contact-form" novalidate>
+              <div class="form-field-wrapper space-y-1">
+                <label class="text-xs font-bold text-gray-300" for="contact-name">Full Name</label>
+                <input class="input-control w-full bg-[#111625]/60 py-3 text-sm" type="text" id="contact-name" placeholder="E.g. Your Name" required minlength="3">
+                <span class="field-error-text text-[0.7rem]" id="error-contact-name">Please provide a valid name (min 3 characters).</span>
+              </div>
+              
+              <div class="form-field-wrapper space-y-1">
+                <label class="text-xs font-bold text-gray-300" for="contact-email">Email Address</label>
+                <input class="input-control w-full bg-[#111625]/60 py-3 text-sm" type="email" id="contact-email" placeholder="E.g. yourname@mail.com" required>
+                <span class="field-error-text text-[0.7rem]" id="error-contact-email">Please enter a valid email address.</span>
+              </div>
+              
+              <div class="form-field-wrapper space-y-1">
+                <label class="text-xs font-bold text-gray-300" for="contact-message">Detail Query</label>
+                <textarea class="input-control w-full bg-[#111625]/60 py-3 text-sm" id="contact-message" placeholder="Describe the issue or feedback..." rows="5" required minlength="10"></textarea>
+                <span class="field-error-text text-[0.7rem]" id="error-contact-message">Message must be at least 10 characters long.</span>
+              </div>
+              
+              <button class="btn btn-primary w-full bg-gradient-to-r from-brand-primary to-indigo-600 shadow-[0_4px_15px_rgba(135,77,255,0.2)] font-bold py-3 text-sm" type="submit">
+                <i class="fa-solid fa-paper-plane"></i> Transmit Message
+              </button>
+            </form>
+          </div>
+          
+          <div class="space-y-8">
+            <div class="glass-card p-6 space-y-5">
+              <h3 class="text-lg font-bold font-heading border-b border-white/5 pb-4">Natively Registered Details</h3>
+              <div class="space-y-4">
+                <div class="flex gap-4 items-start">
+                  <div class="w-10 h-10 rounded-xl bg-brand-primary/10 border border-brand-primary/20 flex items-center justify-center text-brand-primary flex-shrink-0">
+                    <i class="fa-solid fa-envelope"></i>
+                  </div>
+                  <div class="space-y-0.5">
+                    <h5 class="text-xs font-bold text-gray-400">Direct Email</h5>
+                    <p class="text-sm font-bold text-gray-200">contact@edupeak.com</p>
+                  </div>
+                </div>
+                
+                <div class="flex gap-4 items-start">
+                  <div class="w-10 h-10 rounded-xl bg-brand-info/10 border border-brand-info/20 flex items-center justify-center text-brand-info flex-shrink-0">
+                    <i class="fa-solid fa-map-location-dot"></i>
+                  </div>
+                  <div class="space-y-0.5">
+                    <h5 class="text-xs font-bold text-gray-400">Office Location</h5>
+                    <p class="text-sm font-bold text-gray-200">Austin, TX</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <div class="glass-card p-6 space-y-6">
+              <h3 class="text-lg font-bold font-heading border-b border-white/5 pb-4">Common FAQS</h3>
+              <div class="faq-accordion-group space-y-3" id="faq-accordion-group">
+                <div class="faq-row">
+                  <div class="faq-summary">
+                    <span>What is the Nepal CEE marking scheme?</span>
+                    <i class="fa-solid fa-chevron-down faq-arrow"></i>
+                  </div>
+                  <div class="faq-details">
+                    The MEC CEE Nepal exam carries 200 marks. Correct selections add +1.0 mark. Incorrect answers trigger negative marking, deducting -0.25 marks per question. Unattempted questions receive 0.
+                  </div>
+                </div>
+                <div class="faq-row">
+                  <div class="faq-summary">
+                    <span>Are mock exams synchronized with CEE rules?</span>
+                    <i class="fa-solid fa-chevron-down faq-arrow"></i>
+                  </div>
+                  <div class="faq-details">
+                    Yes, our timed simulator provides 200 questions across Botany, Zoology, Physics, Chemistry, and MAT with a strict 3-hour timer and negative marking calculations automatically applied.
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+        </div>
+      </section>
+      
+    </main>
+  </div>
+
+  <!-- ====================================================================
+       ASSESSMENT SIMULATOR VIEWS (FULL-SCREEN PORTALS)
+       ==================================================================== -->
+  
+  <!-- 1. CEE 200 MCQ ASSESSMENT WORKSPACE -->
+  <div class="mock-exam-workspace select-none" id="mock-exam-simulation-workspace" role="dialog" aria-modal="true">
+    <div class="mock-exam-navbar flex items-center justify-between px-6 bg-[#0c1220] border-b border-white/5">
+      <div class="flex items-center gap-3">
+        <i class="fa-solid fa-graduation-cap text-brand-info text-xl"></i>
+        <span class="text-base font-extrabold tracking-tight font-heading text-transparent bg-clip-text bg-gradient-to-r from-white to-gray-400">CeeFusion CEE Assessment Console</span>
+      </div>
+      
+      <div class="flex items-center gap-4">
+        <span class="text-xs text-gray-500 font-bold hidden md:block">CEE Exam Session</span>
+        <div class="exam-timer-box text-brand-danger font-mono font-extrabold flex items-center gap-2 bg-red-500/10 border border-red-500/20 px-4 py-2 rounded-lg text-lg" id="exam-live-countdown-timer">
+          <i class="fa-solid fa-hourglass-half"></i> <span id="exam-time-string">03:00:00</span>
+        </div>
+      </div>
+    </div>
+    
+    <div class="mock-exam-console flex-grow flex overflow-hidden">
+      <!-- Left side question card -->
+      <main class="mock-question-panel flex-grow h-full overflow-y-auto p-6 md:p-10 flex flex-col">
+        <div class="flex justify-between items-center mb-6">
+          <span class="text-sm font-extrabold tracking-wider text-brand-primary uppercase" id="exam-live-q-subject">Physics</span>
+          <span class="text-sm font-bold text-gray-400" id="exam-live-q-index">Question 1 of 200</span>
+        </div>
+        
+        <h2 class="text-lg md:text-2xl font-bold leading-snug mb-8 text-gray-200" id="exam-live-q-content">
+          Loading assessment content...
+        </h2>
+        
+        <div class="flex flex-col gap-4 mb-8" id="exam-live-options-container">
+          <!-- Dynamically populated MCQ buttons -->
+        </div>
+        
+        <footer class="mock-q-controls flex flex-col md:flex-row justify-between items-center gap-4 border-t border-white/5 pt-6 mt-auto">
+          <div class="mock-controls-left flex gap-3 w-full md:w-auto">
+            <button class="btn btn-secondary flex-grow md:flex-grow-0 py-3 px-6 bg-slate-800/80 hover:bg-slate-700 font-bold border-white/5" id="btn-exam-prev-q">
+              <i class="fa-solid fa-angle-left"></i> Previous
+            </button>
+            <button class="btn btn-secondary flex-grow md:flex-grow-0 py-3 px-6 bg-slate-800/80 hover:bg-slate-700 font-bold border-white/5 text-brand-warning border-brand-warning/10" id="btn-exam-mark-review">
+              <i class="fa-solid fa-flag"></i> Flag
+            </button>
+            <button class="btn btn-secondary flex-grow md:flex-grow-0 py-3 px-6 bg-slate-800/80 hover:bg-slate-700 font-bold border-white/5" id="btn-exam-clear-ans">
+              <i class="fa-solid fa-eraser"></i> Clear
+            </button>
+          </div>
+          
+          <button class="btn btn-primary w-full md:w-auto bg-gradient-to-r from-brand-primary to-indigo-600 shadow-[0_4px_15px_rgba(135,77,255,0.2)] font-bold py-3 px-8 text-base" id="btn-exam-next-q">
+            Save & Next <i class="fa-solid fa-angle-right"></i>
+          </button>
+        </footer>
+      </main>
+      
+      <!-- Right side grid indexes palette -->
+      <aside class="mock-palette-sidebar w-[340px] h-full bg-[#0c1220] border-l border-white/5 flex flex-col flex-shrink-0" aria-label="Question Selection Grid">
+        <div class="p-6 border-b border-white/5">
+          <h4 class="text-sm font-bold text-gray-200 font-heading">Question Selection Grid</h4>
+          <p class="text-[0.7rem] text-gray-500">Tap an index block to navigate instantly.</p>
+        </div>
+        
+        <div class="palette-grid flex-grow overflow-y-auto p-5 grid grid-cols-5 gap-2.5 content-start" id="exam-live-palette-grid">
+          <!-- color codes generated dynamically -->
+        </div>
+        
+        <!-- Legend -->
+        <div class="palette-legend p-5 bg-[#090d16] border-t border-white/5 grid grid-cols-2 gap-3.5">
+          <div class="flex items-center gap-2 text-[0.7rem] font-bold text-gray-400">
+            <div class="w-3.5 h-3.5 rounded bg-slate-800 border border-white/5"></div>
+            <span>Unvisited</span>
+          </div>
+          <div class="flex items-center gap-2 text-[0.7rem] font-bold text-gray-400">
+            <div class="w-3.5 h-3.5 rounded bg-red-500/10 border border-red-500/20"></div>
+            <span>Skipped</span>
+          </div>
+          <div class="flex items-center gap-2 text-[0.7rem] font-bold text-gray-400">
+            <div class="w-3.5 h-3.5 rounded bg-emerald-500/20 border border-emerald-500/40"></div>
+            <span>Answered</span>
+          </div>
+          <div class="flex items-center gap-2 text-[0.7rem] font-bold text-gray-400">
+            <div class="w-3.5 h-3.5 rounded bg-amber-500/20 border border-amber-500/40"></div>
+            <span>Flagged</span>
+          </div>
+        </div>
+        
+        <div class="p-5 border-t border-white/5">
+          <button class="btn btn-danger w-full bg-gradient-to-r from-red-600 to-rose-700 shadow-[0_4px_15px_rgba(239,68,68,0.2)] font-bold py-3.5" id="btn-exam-submit-trigger">
+            <i class="fa-solid fa-circle-check"></i> Submit CEE Exam
+          </button>
+        </div>
+      </aside>
+    </div>
+  </div>
+
+  <!-- 2. PRE-SUBMISSION CONFIRMATION CONSOLE -->
+  <div class="exam-submit-modal" id="mock-submission-confirm-overlay" role="dialog" aria-modal="true" aria-labelledby="confirm-heading">
+    <div class="glass-card max-w-lg w-[90%] text-center p-8 flex flex-col gap-5 border border-white/10 rounded-3xl bg-[#0e1424]">
+      <i class="fa-solid fa-circle-exclamation text-4xl text-brand-warning mx-auto animate-pulse"></i>
+      <h3 id="confirm-heading" class="text-xl font-bold font-heading text-gray-200">Confirm Exam Submission</h3>
+      <p class="text-sm text-gray-400">Are you sure you want to end and grade your CEE Assessment? Verify your attempt summary:</p>
+      
+      <div class="confirm-stats-grid grid grid-cols-3 gap-3 my-4">
+        <div class="bg-emerald-500/10 border border-emerald-500/20 py-3.5 rounded-xl flex flex-col gap-1 text-emerald-400">
+          <span class="text-xl font-bold font-heading" id="confirm-stat-answered">0</span>
+          <span class="text-[0.7rem] text-gray-400 font-bold uppercase">Answered</span>
+        </div>
+        <div class="bg-red-500/10 border border-red-500/20 py-3.5 rounded-xl flex flex-col gap-1 text-brand-danger">
+          <span class="text-xl font-bold font-heading" id="confirm-stat-skipped">0</span>
+          <span class="text-[0.7rem] text-gray-400 font-bold uppercase">Skipped</span>
+        </div>
+        <div class="bg-amber-500/10 border border-amber-500/20 py-3.5 rounded-xl flex flex-col gap-1 text-brand-warning">
+          <span class="text-xl font-bold font-heading" id="confirm-stat-marked">0</span>
+          <span class="text-[0.7rem] text-gray-400 font-bold uppercase">Flagged</span>
+        </div>
+      </div>
+      
+      <div class="flex gap-3 justify-center">
+        <button class="btn btn-secondary bg-slate-800/80 hover:bg-slate-700 py-2.5 px-6 border border-white/5 rounded-lg text-sm text-gray-200 font-bold" id="btn-confirm-return-exam">
+          Resume Test
+        </button>
+        <button class="btn btn-danger bg-gradient-to-r from-red-600 to-rose-700 shadow-[0_4px_15px_rgba(239,68,68,0.2)] font-bold py-2.5 px-6 rounded-lg text-sm text-white" id="btn-confirm-submit-exam">
+          Confirm Submit
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 3. REVISION SCRATCHPAD OVERLAY -->
+  <button class="scratchpad-launcher shadow-[0_4px_20px_rgba(135,77,255,0.3)] hover:shadow-brand-primary/50 text-white font-semibold" id="scratchpad-trigger-fab" aria-label="Open scratchpad" aria-haspopup="true">
+    <i class="fa-solid fa-notes-medical"></i>
+  </button>
+  
+  <div class="scratchpad-panel" id="scratchpad-utility-panel" aria-label="Notes scratchpad" role="complementary">
+    <div class="scratchpad-header px-4 py-3 bg-[#0f1524] border-b border-white/5 flex justify-between items-center">
+      <h4 class="text-xs font-bold text-gray-200 font-heading flex items-center gap-2">
+        <i class="fa-solid fa-pen-nib text-brand-primary"></i> Revision Scratchpad
+      </h4>
+      <button class="scratchpad-close text-gray-400 hover:text-white p-1 text-xs" id="scratchpad-close-btn" aria-label="Close scratchpad">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+    </div>
+    <div class="scratchpad-body flex-grow relative bg-[#060a12]">
+      <textarea class="scratchpad-textarea" id="scratchpad-writing-area" placeholder="Jot down notes, mathematical equations or formulas during timed mock quizzes..."></textarea>
+    </div>
+  </div>
+
+  <!-- 4. TOAST CONTAINER -->
+  <div class="toast-overlay" id="global-toast-portal" aria-live="polite"></div>
+
+  <!-- DYNAMIC SESSION LOCK / SIGN-IN OVERLAY -->
+  <div id="sign-in-screen" class="fixed inset-0 z-[1100] flex items-center justify-center bg-[#090d16]/95 backdrop-blur-md transition-all duration-500">
+    <div class="absolute inset-0 overflow-hidden pointer-events-none" aria-hidden="true">
+      <div class="absolute top-[20%] left-[20%] w-[300px] h-[300px] rounded-full bg-brand-primary/10 blur-[120px] animate-pulse"></div>
+      <div class="absolute bottom-[20%] right-[20%] w-[300px] h-[300px] rounded-full bg-brand-info/10 blur-[120px] animate-pulse"></div>
+    </div>
+    
+    <div class="glass-card max-w-md w-[90%] p-8 relative flex flex-col gap-6 border border-white/10 rounded-3xl bg-[#0c1220]/80 shadow-[0_20px_50px_rgba(0,0,0,0.5)]">
+      <div class="text-center space-y-2">
+        <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-brand-primary to-brand-info flex items-center justify-center text-2xl text-white mx-auto shadow-[0_0_20px_rgba(135,77,255,0.3)] mb-4">
+          <i class="fa-solid fa-graduation-cap"></i>
+        </div>
+        <h2 class="text-2xl font-black font-heading text-white tracking-tight">Unlock CeeFusion Platform</h2>
+        <p class="text-xs text-gray-400">Initialize your dashboard and start customized exam revisions.</p>
+      </div>
+      
+      <form class="space-y-4" id="edupeak-signin-form" novalidate>
+        <div class="form-field-wrapper space-y-1">
+          <label class="text-[0.7rem] font-bold uppercase tracking-wider text-gray-400" for="signin-name">Full Name</label>
+          <input class="input-control w-full bg-[#111625]/60 py-3 text-sm border-white/5 focus:border-brand-primary" type="text" id="signin-name" placeholder="Your Full Name" required minlength="3">
+          <span class="field-error-text text-[0.68rem] text-red-500 hidden" id="error-signin-name">Please provide your full name (min 3 characters).</span>
+        </div>
+        
+        <div class="form-field-wrapper space-y-1">
+          <label class="text-[0.7rem] font-bold uppercase tracking-wider text-gray-400" for="signin-email">Email Address</label>
+          <input class="input-control w-full bg-[#111625]/60 py-3 text-sm border-white/5 focus:border-brand-primary" type="email" id="signin-email" placeholder="yourname@mail.com" required>
+          <span class="field-error-text text-[0.68rem] text-red-500 hidden" id="error-signin-email">Please enter a valid email address.</span>
+        </div>
+
+        <div class="form-field-wrapper space-y-1">
+          <label class="text-[0.7rem] font-bold uppercase tracking-wider text-gray-400" for="signin-exam">Target Exam</label>
+          <select class="select-control w-full bg-[#111625]/60 text-gray-300 py-3 px-4 text-sm border border-white/5 rounded-xl outline-none focus:border-brand-primary" id="signin-exam" required>
+            <option value="" disabled selected>Select target exam...</option>
+            <option value="cee">CEE Nepal (Common Entrance Exam)</option>
+            <option value="neet">NEET (National Eligibility cum Entrance Test)</option>
+            <option value="both">Both CEE & NEET</option>
+          </select>
+          <span class="field-error-text text-[0.68rem] text-red-500 hidden" id="error-signin-exam">Please select your target exam.</span>
+        </div>
+
+        <div class="form-field-wrapper space-y-1">
+          <label class="text-[0.7rem] font-bold uppercase tracking-wider text-gray-400" for="signin-password">Credentials Password</label>
+          <input class="input-control w-full bg-[#111625]/60 py-3 text-sm border-white/5 focus:border-brand-primary" type="password" id="signin-password" placeholder="••••••••" required minlength="6">
+          <span class="field-error-text text-[0.68rem] text-red-500 hidden" id="error-signin-password">Password must be at least 6 characters.</span>
+        </div>
+        
+        <button class="btn btn-primary w-full bg-gradient-to-r from-brand-primary to-indigo-600 shadow-[0_4px_15px_rgba(135,77,255,0.25)] font-bold py-3.5 text-sm mt-6" type="submit">
+          <i class="fa-solid fa-lock-open mr-1"></i> Unlock Platform
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Sequential Application Logic Loader Scripts -->
+  <script src="data.js"></script>
+  <script src="questions.js"></script>
+  <script src="script.js" defer></script>
+</body>
+</html>
