@@ -4,7 +4,7 @@
 
 ```
 ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
-┃  EDUPEAK MOCK EXAM                         ┃
+┃  CEE MOCK EXAM                         ┃
 ┃  Physics Question 42 of 200                ┃
 ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
 
@@ -48,7 +48,7 @@ Score: +1.0 ✅ | Next Question →
 
 ```
 ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
-┃  EDUPEAK CHAPTER QUIZ                      ┃
+┃  CEE CHAPTER QUIZ                      ┃
 ┃  Biology Question 15 of 30                 ┃
 ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
 
