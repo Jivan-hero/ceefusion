@@ -158,12 +158,70 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  // Bind Sign-In submit validation
+  // Helper for authentication error field styling
+  function setFieldError(inputEl, errorEl, message) {
+    if (inputEl) inputEl.style.borderColor = '#ef4444';
+    if (errorEl) {
+      errorEl.textContent = message;
+      errorEl.classList.remove('hidden');
+    }
+  }
+
+  function resetFieldErrors() {
+    ['signin-name', 'signin-email', 'signin-exam', 'signin-password'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.style.borderColor = '';
+    });
+    ['error-signin-name', 'error-signin-email', 'error-signin-exam', 'error-signin-password'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.classList.add('hidden');
+    });
+  }
+
+  // Auth Tab Switching Logic
+  const tabSignup = document.getElementById('auth-tab-signup');
+  const tabLogin = document.getElementById('auth-tab-login');
+  const modeInput = document.getElementById('auth-mode-input');
+  const modalTitle = document.getElementById('auth-modal-title');
+  const modalSub = document.getElementById('auth-modal-subtitle');
+  const wrapperName = document.getElementById('wrapper-signin-name');
+  const wrapperExam = document.getElementById('wrapper-signin-exam');
+  const btnAuthSubmit = document.getElementById('btn-auth-submit');
+
+  if (tabSignup && tabLogin) {
+    tabSignup.addEventListener('click', () => {
+      resetFieldErrors();
+      if (modeInput) modeInput.value = 'signup';
+      tabSignup.className = "flex-1 py-2 text-sm font-bold text-center text-brand-primary border-b-2 border-brand-primary transition-all";
+      tabLogin.className = "flex-1 py-2 text-sm font-bold text-center text-gray-400 border-b-2 border-transparent hover:text-gray-200 transition-all";
+      if (modalTitle) modalTitle.textContent = "Create CeeFusion Account";
+      if (modalSub) modalSub.textContent = "Initialize your student profile and unlock exam revisions.";
+      if (wrapperName) wrapperName.style.display = 'block';
+      if (wrapperExam) wrapperExam.style.display = 'block';
+      if (btnAuthSubmit) btnAuthSubmit.innerHTML = `<i class="fa-solid fa-user-plus mr-1"></i> Create Account`;
+    });
+
+    tabLogin.addEventListener('click', () => {
+      resetFieldErrors();
+      if (modeInput) modeInput.value = 'login';
+      tabLogin.className = "flex-1 py-2 text-sm font-bold text-center text-brand-primary border-b-2 border-brand-primary transition-all";
+      tabSignup.className = "flex-1 py-2 text-sm font-bold text-center text-gray-400 border-b-2 border-transparent hover:text-gray-200 transition-all";
+      if (modalTitle) modalTitle.textContent = "Log In to CeeFusion";
+      if (modalSub) modalSub.textContent = "Enter your credentials to access your saved progress.";
+      if (wrapperName) wrapperName.style.display = 'none';
+      if (wrapperExam) wrapperExam.style.display = 'none';
+      if (btnAuthSubmit) btnAuthSubmit.innerHTML = `<i class="fa-solid fa-lock-open mr-1"></i> Log In`;
+    });
+  }
+
+  // Bind Sign-In / Sign-Up submit validation
   const signinForm = document.getElementById('edupeak-signin-form');
   if (signinForm) {
     signinForm.addEventListener('submit', (e) => {
       e.preventDefault();
-      
+      resetFieldErrors();
+
+      const mode = modeInput ? modeInput.value : 'signup';
       const nameInput = document.getElementById('signin-name');
       const emailInput = document.getElementById('signin-email');
       const examInput = document.getElementById('signin-exam');
@@ -175,68 +233,123 @@ document.addEventListener('DOMContentLoaded', () => {
       const errPassword = document.getElementById('error-signin-password');
       
       let valid = true;
-      
-      // Resets
-      [nameInput, emailInput, examInput, passwordInput].forEach(inp => {
-        if (inp) inp.style.borderColor = '';
-      });
-      [errName, errEmail, errExam, errPassword].forEach(err => {
-        if (err) err.classList.add('hidden');
-      });
-      
-      // Validations
-      if (!nameInput.value.trim() || nameInput.value.trim().length < 3) {
-        nameInput.focus();
-        nameInput.style.borderColor = '#ef4444';
-        if (errName) errName.classList.remove('hidden');
-        valid = false;
+      let registeredUsers = [];
+      try {
+        registeredUsers = JSON.parse(localStorage.getItem('registeredUsers')) || [];
+      } catch (err) {
+        registeredUsers = [];
       }
-      
-      const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-      if (!emailPattern.test(emailInput.value.trim())) {
-        if (valid) emailInput.focus();
-        emailInput.style.borderColor = '#ef4444';
-        if (errEmail) errEmail.classList.remove('hidden');
-        valid = false;
-      }
-      
-      if (!examInput.value) {
-        if (valid) examInput.focus();
-        examInput.style.borderColor = '#ef4444';
-        if (errExam) errExam.classList.remove('hidden');
-        valid = false;
-      }
-      
-      if (!passwordInput.value || passwordInput.value.length < 6) {
-        if (valid) passwordInput.focus();
-        passwordInput.style.borderColor = '#ef4444';
-        if (errPassword) errPassword.classList.remove('hidden');
-        valid = false;
-      }
-      
-      if (valid) {
-        const profile = {
-          name: nameInput.value.trim(),
-          email: emailInput.value.trim(),
-          targetExam: examInput.value,
-          password: passwordInput.value
-        };
-        
-        localStorage.setItem('edupeak_user_profile', JSON.stringify(profile));
-        updateUserProfileUI(profile);
-        
-        // Close overlay with smooth fade
-        const overlay = document.getElementById('sign-in-screen');
-        overlay.style.opacity = '0';
-        overlay.style.pointerEvents = 'none';
-        setTimeout(() => overlay.classList.add('hidden'), 500);
-        
-        loadState();
-        navigateTo('dashboard');
-        showToast("Platform unlocked! Welcome, " + profile.name, "success");
-        signinForm.reset();
+
+      const emailVal = emailInput.value.trim();
+      const passVal = passwordInput.value;
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+
+      if (mode === 'signup') {
+        // 1. Full name validation: at least two words, each at least 2 chars
+        const nameVal = nameInput.value.trim();
+        const words = nameVal ? nameVal.split(/\s+/) : [];
+        if (words.length < 2 || !words.every(w => w.length >= 2)) {
+          if (valid) nameInput.focus();
+          setFieldError(nameInput, errName, "Full name must contain at least two words (min 2 letters each).");
+          valid = false;
+        }
+
+        // 2. Email validation
+        if (!emailRegex.test(emailVal)) {
+          if (valid) emailInput.focus();
+          setFieldError(emailInput, errEmail, "Please enter a valid email address.");
+          valid = false;
+        } else {
+          // 3. Duplicate email check
+          const exists = registeredUsers.some(u => u.email.toLowerCase() === emailVal.toLowerCase());
+          if (exists) {
+            if (valid) emailInput.focus();
+            setFieldError(emailInput, errEmail, "This email is already registered. Please log in instead.");
+            valid = false;
+          }
+        }
+
+        // 4. Target Exam
+        if (!examInput.value) {
+          if (valid) examInput.focus();
+          setFieldError(examInput, errExam, "Please select your target exam.");
+          valid = false;
+        }
+
+        // 5. Password validation: min 7 chars AND at least one number
+        if (!passVal || passVal.length < 7) {
+          if (valid) passwordInput.focus();
+          setFieldError(passwordInput, errPassword, "Password must be at least 7 characters long.");
+          valid = false;
+        } else if (!/\d/.test(passVal)) {
+          if (valid) passwordInput.focus();
+          setFieldError(passwordInput, errPassword, "Password must contain at least one number.");
+          valid = false;
+        }
+
+        if (valid) {
+          const newUser = {
+            name: nameVal,
+            email: emailVal,
+            targetExam: examInput.value,
+            password: passVal
+          };
+          registeredUsers.push(newUser);
+          localStorage.setItem('registeredUsers', JSON.stringify(registeredUsers));
+
+          localStorage.setItem('edupeak_user_profile', JSON.stringify(newUser));
+          updateUserProfileUI(newUser);
+
+          const overlay = document.getElementById('sign-in-screen');
+          overlay.style.opacity = '0';
+          overlay.style.pointerEvents = 'none';
+          setTimeout(() => overlay.classList.add('hidden'), 500);
+
+          loadState();
+          navigateTo('dashboard');
+          showToast("Account registered! Welcome, " + newUser.name, "success");
+          signinForm.reset();
+        } else {
+          showToast("Please check validation requirements.", "warning");
+        }
+
       } else {
-        showToast("Please check validation requirements.", "warning");
+        // LOGIN MODE
+        if (!emailRegex.test(emailVal)) {
+          if (valid) emailInput.focus();
+          setFieldError(emailInput, errEmail, "Please enter a valid email address.");
+          valid = false;
+        } else {
+          const userMatch = registeredUsers.find(u => u.email.toLowerCase() === emailVal.toLowerCase());
+          if (!userMatch) {
+            if (valid) emailInput.focus();
+            setFieldError(emailInput, errEmail, "No account found with this email.");
+            valid = false;
+          } else if (userMatch.password !== passVal) {
+            if (valid) passwordInput.focus();
+            setFieldError(passwordInput, errPassword, "Incorrect password.");
+            valid = false;
+          } else {
+            // Success Login
+            localStorage.setItem('edupeak_user_profile', JSON.stringify(userMatch));
+            updateUserProfileUI(userMatch);
+
+            const overlay = document.getElementById('sign-in-screen');
+            overlay.style.opacity = '0';
+            overlay.style.pointerEvents = 'none';
+            setTimeout(() => overlay.classList.add('hidden'), 500);
+
+            loadState();
+            navigateTo('dashboard');
+            showToast("Welcome back, " + userMatch.name, "success");
+            signinForm.reset();
+            return;
+          }
+        }
+
+        if (!valid) {
+          showToast("Login failed. Please check field errors.", "warning");
+        }
       }
     });
   }
@@ -1027,13 +1140,32 @@ document.addEventListener('DOMContentLoaded', () => {
   // ==========================================================================
   // PROCEDURAL QUESTION COMPILER (DYNAMIC GENERATION OF 30 MCQS PER CHAPTER)
   // ==========================================================================
+  const LETTERS_MAP = ['A', 'B', 'C', 'D'];
+  function ensureQuestionDataStructure(q) {
+    if (!q) return q;
+    if (q.correct !== undefined && typeof q.correct === 'number') {
+      q.correctAnswer = LETTERS_MAP[q.correct] || 'A';
+    } else if (typeof q.correctAnswer === 'string') {
+      const idx = LETTERS_MAP.indexOf(q.correctAnswer.toUpperCase());
+      q.correct = idx !== -1 ? idx : 0;
+      q.correctAnswer = q.correctAnswer.toUpperCase();
+    } else {
+      q.correct = 0;
+      q.correctAnswer = 'A';
+    }
+    return q;
+  }
+
   function compile30Questions(subjectKey, categoryKey, chapterKey) {
     const subData = window.eduPeakData[subjectKey];
     const category = subData[categoryKey];
     const chapter = category[chapterKey];
     
     if (!chapter.quiz) chapter.quiz = [];
-    if (chapter.quiz.length >= 30) return chapter.quiz;
+    if (chapter.quiz.length >= 30) {
+      chapter.quiz.forEach(ensureQuestionDataStructure);
+      return chapter.quiz;
+    }
     
     const compiled = [...chapter.quiz];
     const name = chapter.name;
@@ -1054,6 +1186,7 @@ document.addEventListener('DOMContentLoaded', () => {
         question: `Which of the following equations representing a core relationship is directly studied in "${name}"?`,
         options: [`${f0}`, `F = m * c^2 * ${i}`, `PV = nRT * ${i}`, `E_n = -13.6 * ${i} eV`],
         correct: 0,
+        correctAnswer: "A",
         explanation: `The primary equation representing the physical model for "${name}" is: ${f0}.`
       }),
       (i) => ({
@@ -1062,6 +1195,7 @@ document.addEventListener('DOMContentLoaded', () => {
         question: `In a CEE exam numerical context for "${name}", if the main parameter of expression '${f0}' is scaled by a factor of 2, how will the output be affected?`,
         options: ["It is scaled by a factor of 2", "It increases by a factor of 4", "It scales down to 0.5", "It remains constant"],
         correct: 0,
+        correctAnswer: "A",
         explanation: `The equation '${f0}' demonstrates direct linear proportionality, so scaling the variable by 2 doubles the outcome.`
       }),
       (i) => ({
@@ -1070,6 +1204,7 @@ document.addEventListener('DOMContentLoaded', () => {
         question: `To which specific division of the entrance exam syllabus is "${name}" categorized?`,
         options: [`${catName}`, "Applied Dynamics", "Introductory Biochemistry", "Analytical Calculus"],
         correct: 0,
+        correctAnswer: "A",
         explanation: `In standard CEE mock outlines, "${name}" is grouped under ${catName}.`
       }),
       (i) => ({
@@ -1083,6 +1218,7 @@ document.addEventListener('DOMContentLoaded', () => {
           `The constants are variable and fluctuate during the cardiac cycle.`
         ],
         correct: 0,
+        correctAnswer: "A",
         explanation: `The quantitative framework for "${name}" relies on the conservation laws modeled by: ${f0}.`
       }),
       (i) => ({
@@ -1096,6 +1232,7 @@ document.addEventListener('DOMContentLoaded', () => {
           "All of the above"
         ],
         correct: 3,
+        correctAnswer: "D",
         explanation: `Exam metrics show students commonly lose marks in "${name}" due to SI unit issues, sign errors, and formula boundaries.`
       }),
       (i) => ({
@@ -1109,6 +1246,7 @@ document.addEventListener('DOMContentLoaded', () => {
           "The system shuts down due to feedback loops."
         ],
         correct: 0,
+        correctAnswer: "A",
         explanation: `Equation '${f1}' governs system equilibria. Changing boundary states shifts parameters to restore stability.`
       }),
       (i) => ({
@@ -1122,6 +1260,7 @@ document.addEventListener('DOMContentLoaded', () => {
           "Because the chapter carries 50% weightage in the final blueprint."
         ],
         correct: 0,
+        correctAnswer: "A",
         explanation: `Exam analysis shows questions in "${name}" are highly structured and resolve quickly by applying equations like: ${f0}.`
       }),
       (i) => ({
@@ -1135,6 +1274,7 @@ document.addEventListener('DOMContentLoaded', () => {
           `Zero units`
         ],
         correct: 0,
+        correctAnswer: "A",
         explanation: `Substituting the values into the equation '${f2}' yields: ${i * 2} * 0.5 = ${(i * 2 * 0.5).toFixed(1)} units.`
       }),
       (i) => ({
@@ -1148,6 +1288,7 @@ document.addEventListener('DOMContentLoaded', () => {
           "It has been rendered obsolete by modern computing algorithms."
         ],
         correct: 0,
+        correctAnswer: "A",
         explanation: `The relation defined by '${f0}' constitutes a core standard syllabus milestone in ${subject} - ${catName}.`
       }),
       (i) => ({
@@ -1161,6 +1302,7 @@ document.addEventListener('DOMContentLoaded', () => {
           "Skipping all numerical questions and focusing only on definitions"
         ],
         correct: 0,
+        correctAnswer: "A",
         explanation: `The ideal prep path for "${name}" involves studying the formulas, concept notes, and doing practice quizzes.`
       })
     ];
@@ -1171,6 +1313,7 @@ document.addEventListener('DOMContentLoaded', () => {
       compiled.push(generator(qId++));
     }
 
+    compiled.forEach(ensureQuestionDataStructure);
     return compiled;
   }
 
@@ -1213,7 +1356,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (!consoleBox) return;
     consoleBox.innerHTML = '';
 
-    const currentQ = activeQuiz.questions[activeQuiz.currentIndex];
+    const currentQ = ensureQuestionDataStructure(activeQuiz.questions[activeQuiz.currentIndex]);
     const progressPercent = Math.round((activeQuiz.currentIndex / activeQuiz.questions.length) * 100);
 
     const mins = Math.floor(activeQuiz.timeRemaining / 60);
@@ -1274,14 +1417,20 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     let paletteHTML = "";
-    activeQuiz.questions.forEach((_, idx) => {
+    activeQuiz.questions.forEach((qObj, idx) => {
+      ensureQuestionDataStructure(qObj);
       const isAns = activeQuiz.answers[idx] !== undefined;
       let palClass = "bg-slate-800 border-white/5 text-gray-500";
       
       if (idx === activeQuiz.currentIndex) {
         palClass = "bg-brand-primary border-brand-primary text-white font-extrabold ring-2 ring-white/20";
       } else if (isAns) {
-        palClass = "bg-emerald-500/20 border-emerald-500/40 text-emerald-400 font-bold";
+        const uAns = activeQuiz.answers[idx];
+        if (uAns === qObj.correct) {
+          palClass = "bg-emerald-500/20 border-emerald-500/40 text-emerald-400 font-bold";
+        } else {
+          palClass = "bg-red-500/20 border-red-500/40 text-red-400 font-bold";
+        }
       }
 
       paletteHTML += `
@@ -1605,19 +1754,23 @@ document.addEventListener('DOMContentLoaded', () => {
   /**
    * Converts a real bank question object into the exam question format.
    */
+  /**
+   * Converts a real bank question object into the exam question format.
+   */
   function formatRealQ(q, subKey) {
-    return {
+    const formatted = {
       subject:     q.subject,
       type:        q.subject,
       subKey:      subKey,
       question:    q.question,
       options:     q.options,
-      correct:     q.correct,
+      correct:     q.correct !== undefined ? q.correct : 0,
       explanation: q.explanation,
       chapterName: q.chapter || q.subject,
       difficulty:  q.difficulty || 'M',
       id:          q.id
     };
+    return ensureQuestionDataStructure(formatted);
   }
 
   /**
@@ -1682,21 +1835,21 @@ document.addEventListener('DOMContentLoaded', () => {
     let matIndex = 0;
     while (matPool.length < 20 && legacyMAT.length > 0) {
       const baseline = legacyMAT[matIndex % legacyMAT.length];
-      matPool.push({
+      matPool.push(ensureQuestionDataStructure({
         subject: 'Mental Agility', type: 'Mental Agility', subKey: 'mentalAgility',
         question: baseline.question, options: [...baseline.options],
         correct: baseline.correct, explanation: baseline.explanation,
         chapterName: 'Logical Reasoning', difficulty: 'M'
-      });
+      }));
       matIndex++;
     }
     const finalMAT = matPool.slice(0, 20);
 
     activeExam.questions = [
-      ...finalPhysics.map(q   => ({ ...q, type: 'Physics',        subKey: 'physics'       })),
-      ...finalChemistry.map(q => ({ ...q, type: 'Chemistry',      subKey: 'chemistry'     })),
-      ...finalBiology.map(q   => ({ ...q, type: 'Biology',        subKey: 'biology'       })),
-      ...finalMAT.map(q       => ({ ...q, type: 'Mental Agility', subKey: 'mentalAgility' }))
+      ...finalPhysics.map(q   => ensureQuestionDataStructure({ ...q, type: 'Physics',        subKey: 'physics'       })),
+      ...finalChemistry.map(q => ensureQuestionDataStructure({ ...q, type: 'Chemistry',      subKey: 'chemistry'     })),
+      ...finalBiology.map(q   => ensureQuestionDataStructure({ ...q, type: 'Biology',        subKey: 'biology'       })),
+      ...finalMAT.map(q       => ensureQuestionDataStructure({ ...q, type: 'Mental Agility', subKey: 'mentalAgility' }))
     ];
   }
 
@@ -1732,7 +1885,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const qContent = document.getElementById('exam-live-q-content');
     const optionsBox = document.getElementById('exam-live-options-container');
 
-    const currentQ = activeExam.questions[activeExam.currentIndex];
+    const currentQ = ensureQuestionDataStructure(activeExam.questions[activeExam.currentIndex]);
     
     const subColors = {
       physics: '#06b6d4',
@@ -1862,6 +2015,35 @@ document.addEventListener('DOMContentLoaded', () => {
     renderPaletteSidebarGrid();
   });
 
+  function openMobilePalette() {
+    const sidebar = document.getElementById('mock-palette-sidebar');
+    const overlay = document.getElementById('mock-palette-overlay');
+    if (sidebar) sidebar.classList.add('mobile-open');
+    if (overlay) overlay.classList.add('active');
+  }
+
+  function closeMobilePalette() {
+    const sidebar = document.getElementById('mock-palette-sidebar');
+    const overlay = document.getElementById('mock-palette-overlay');
+    if (sidebar) sidebar.classList.remove('mobile-open');
+    if (overlay) overlay.classList.remove('active');
+  }
+
+  const togglePalBtn = document.getElementById('btn-toggle-mobile-palette');
+  if (togglePalBtn) {
+    togglePalBtn.addEventListener('click', openMobilePalette);
+  }
+
+  const closePalBtn = document.getElementById('btn-close-mobile-palette');
+  if (closePalBtn) {
+    closePalBtn.addEventListener('click', closeMobilePalette);
+  }
+
+  const palOverlay = document.getElementById('mock-palette-overlay');
+  if (palOverlay) {
+    palOverlay.addEventListener('click', closeMobilePalette);
+  }
+
   function renderPaletteSidebarGrid() {
     const grid = document.getElementById('exam-live-palette-grid');
     if (!grid) return;
@@ -1895,6 +2077,7 @@ document.addEventListener('DOMContentLoaded', () => {
         activeExam.visited[index] = true;
         renderLiveMockQuestion();
         renderPaletteSidebarGrid();
+        closeMobilePalette();
       });
 
       grid.appendChild(btn);
@@ -1902,6 +2085,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function triggerSubmissionConfirmOverlay() {
+    closeMobilePalette();
     const overlay = document.getElementById('mock-submission-confirm-overlay');
     let answered = 0;
     let skipped = 0;
