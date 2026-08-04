@@ -158,12 +158,70 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  // Bind Sign-In submit validation
+  // Helper for authentication error field styling
+  function setFieldError(inputEl, errorEl, message) {
+    if (inputEl) inputEl.style.borderColor = '#ef4444';
+    if (errorEl) {
+      errorEl.textContent = message;
+      errorEl.classList.remove('hidden');
+    }
+  }
+
+  function resetFieldErrors() {
+    ['signin-name', 'signin-email', 'signin-exam', 'signin-password'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.style.borderColor = '';
+    });
+    ['error-signin-name', 'error-signin-email', 'error-signin-exam', 'error-signin-password'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.classList.add('hidden');
+    });
+  }
+
+  // Auth Tab Switching Logic
+  const tabSignup = document.getElementById('auth-tab-signup');
+  const tabLogin = document.getElementById('auth-tab-login');
+  const modeInput = document.getElementById('auth-mode-input');
+  const modalTitle = document.getElementById('auth-modal-title');
+  const modalSub = document.getElementById('auth-modal-subtitle');
+  const wrapperName = document.getElementById('wrapper-signin-name');
+  const wrapperExam = document.getElementById('wrapper-signin-exam');
+  const btnAuthSubmit = document.getElementById('btn-auth-submit');
+
+  if (tabSignup && tabLogin) {
+    tabSignup.addEventListener('click', () => {
+      resetFieldErrors();
+      if (modeInput) modeInput.value = 'signup';
+      tabSignup.className = "flex-1 py-2 text-sm font-bold text-center text-brand-primary border-b-2 border-brand-primary transition-all";
+      tabLogin.className = "flex-1 py-2 text-sm font-bold text-center text-gray-400 border-b-2 border-transparent hover:text-gray-200 transition-all";
+      if (modalTitle) modalTitle.textContent = "Create CeeFusion Account";
+      if (modalSub) modalSub.textContent = "Initialize your student profile and unlock exam revisions.";
+      if (wrapperName) wrapperName.style.display = 'block';
+      if (wrapperExam) wrapperExam.style.display = 'block';
+      if (btnAuthSubmit) btnAuthSubmit.innerHTML = `<i class="fa-solid fa-user-plus mr-1"></i> Create Account`;
+    });
+
+    tabLogin.addEventListener('click', () => {
+      resetFieldErrors();
+      if (modeInput) modeInput.value = 'login';
+      tabLogin.className = "flex-1 py-2 text-sm font-bold text-center text-brand-primary border-b-2 border-brand-primary transition-all";
+      tabSignup.className = "flex-1 py-2 text-sm font-bold text-center text-gray-400 border-b-2 border-transparent hover:text-gray-200 transition-all";
+      if (modalTitle) modalTitle.textContent = "Log In to CeeFusion";
+      if (modalSub) modalSub.textContent = "Enter your credentials to access your saved progress.";
+      if (wrapperName) wrapperName.style.display = 'none';
+      if (wrapperExam) wrapperExam.style.display = 'none';
+      if (btnAuthSubmit) btnAuthSubmit.innerHTML = `<i class="fa-solid fa-lock-open mr-1"></i> Log In`;
+    });
+  }
+
+  // Bind Sign-In / Sign-Up submit validation
   const signinForm = document.getElementById('edupeak-signin-form');
   if (signinForm) {
     signinForm.addEventListener('submit', (e) => {
       e.preventDefault();
-      
+      resetFieldErrors();
+
+      const mode = modeInput ? modeInput.value : 'signup';
       const nameInput = document.getElementById('signin-name');
       const emailInput = document.getElementById('signin-email');
       const examInput = document.getElementById('signin-exam');
@@ -175,68 +233,123 @@ document.addEventListener('DOMContentLoaded', () => {
       const errPassword = document.getElementById('error-signin-password');
       
       let valid = true;
-      
-      // Resets
-      [nameInput, emailInput, examInput, passwordInput].forEach(inp => {
-        if (inp) inp.style.borderColor = '';
-      });
-      [errName, errEmail, errExam, errPassword].forEach(err => {
-        if (err) err.classList.add('hidden');
-      });
-      
-      // Validations
-      if (!nameInput.value.trim() || nameInput.value.trim().length < 3) {
-        nameInput.focus();
-        nameInput.style.borderColor = '#ef4444';
-        if (errName) errName.classList.remove('hidden');
-        valid = false;
+      let registeredUsers = [];
+      try {
+        registeredUsers = JSON.parse(localStorage.getItem('registeredUsers')) || [];
+      } catch (err) {
+        registeredUsers = [];
       }
-      
-      const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-      if (!emailPattern.test(emailInput.value.trim())) {
-        if (valid) emailInput.focus();
-        emailInput.style.borderColor = '#ef4444';
-        if (errEmail) errEmail.classList.remove('hidden');
-        valid = false;
-      }
-      
-      if (!examInput.value) {
-        if (valid) examInput.focus();
-        examInput.style.borderColor = '#ef4444';
-        if (errExam) errExam.classList.remove('hidden');
-        valid = false;
-      }
-      
-      if (!passwordInput.value || passwordInput.value.length < 6) {
-        if (valid) passwordInput.focus();
-        passwordInput.style.borderColor = '#ef4444';
-        if (errPassword) errPassword.classList.remove('hidden');
-        valid = false;
-      }
-      
-      if (valid) {
-        const profile = {
-          name: nameInput.value.trim(),
-          email: emailInput.value.trim(),
-          targetExam: examInput.value,
-          password: passwordInput.value
-        };
-        
-        localStorage.setItem('edupeak_user_profile', JSON.stringify(profile));
-        updateUserProfileUI(profile);
-        
-        // Close overlay with smooth fade
-        const overlay = document.getElementById('sign-in-screen');
-        overlay.style.opacity = '0';
-        overlay.style.pointerEvents = 'none';
-        setTimeout(() => overlay.classList.add('hidden'), 500);
-        
-        loadState();
-        navigateTo('dashboard');
-        showToast("Platform unlocked! Welcome, " + profile.name, "success");
-        signinForm.reset();
+
+      const emailVal = emailInput.value.trim();
+      const passVal = passwordInput.value;
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+
+      if (mode === 'signup') {
+        // 1. Full name validation: at least two words, each at least 2 chars
+        const nameVal = nameInput.value.trim();
+        const words = nameVal ? nameVal.split(/\s+/) : [];
+        if (words.length < 2 || !words.every(w => w.length >= 2)) {
+          if (valid) nameInput.focus();
+          setFieldError(nameInput, errName, "Full name must contain at least two words (min 2 letters each).");
+          valid = false;
+        }
+
+        // 2. Email validation
+        if (!emailRegex.test(emailVal)) {
+          if (valid) emailInput.focus();
+          setFieldError(emailInput, errEmail, "Please enter a valid email address.");
+          valid = false;
+        } else {
+          // 3. Duplicate email check
+          const exists = registeredUsers.some(u => u.email.toLowerCase() === emailVal.toLowerCase());
+          if (exists) {
+            if (valid) emailInput.focus();
+            setFieldError(emailInput, errEmail, "This email is already registered. Please log in instead.");
+            valid = false;
+          }
+        }
+
+        // 4. Target Exam
+        if (!examInput.value) {
+          if (valid) examInput.focus();
+          setFieldError(examInput, errExam, "Please select your target exam.");
+          valid = false;
+        }
+
+        // 5. Password validation: min 7 chars AND at least one number
+        if (!passVal || passVal.length < 7) {
+          if (valid) passwordInput.focus();
+          setFieldError(passwordInput, errPassword, "Password must be at least 7 characters long.");
+          valid = false;
+        } else if (!/\d/.test(passVal)) {
+          if (valid) passwordInput.focus();
+          setFieldError(passwordInput, errPassword, "Password must contain at least one number.");
+          valid = false;
+        }
+
+        if (valid) {
+          const newUser = {
+            name: nameVal,
+            email: emailVal,
+            targetExam: examInput.value,
+            password: passVal
+          };
+          registeredUsers.push(newUser);
+          localStorage.setItem('registeredUsers', JSON.stringify(registeredUsers));
+
+          localStorage.setItem('edupeak_user_profile', JSON.stringify(newUser));
+          updateUserProfileUI(newUser);
+
+          const overlay = document.getElementById('sign-in-screen');
+          overlay.style.opacity = '0';
+          overlay.style.pointerEvents = 'none';
+          setTimeout(() => overlay.classList.add('hidden'), 500);
+
+          loadState();
+          navigateTo('dashboard');
+          showToast("Account registered! Welcome, " + newUser.name, "success");
+          signinForm.reset();
+        } else {
+          showToast("Please check validation requirements.", "warning");
+        }
+
       } else {
-        showToast("Please check validation requirements.", "warning");
+        // LOGIN MODE
+        if (!emailRegex.test(emailVal)) {
+          if (valid) emailInput.focus();
+          setFieldError(emailInput, errEmail, "Please enter a valid email address.");
+          valid = false;
+        } else {
+          const userMatch = registeredUsers.find(u => u.email.toLowerCase() === emailVal.toLowerCase());
+          if (!userMatch) {
+            if (valid) emailInput.focus();
+            setFieldError(emailInput, errEmail, "No account found with this email.");
+            valid = false;
+          } else if (userMatch.password !== passVal) {
+            if (valid) passwordInput.focus();
+            setFieldError(passwordInput, errPassword, "Incorrect password.");
+            valid = false;
+          } else {
+            // Success Login
+            localStorage.setItem('edupeak_user_profile', JSON.stringify(userMatch));
+            updateUserProfileUI(userMatch);
+
+            const overlay = document.getElementById('sign-in-screen');
+            overlay.style.opacity = '0';
+            overlay.style.pointerEvents = 'none';
+            setTimeout(() => overlay.classList.add('hidden'), 500);
+
+            loadState();
+            navigateTo('dashboard');
+            showToast("Welcome back, " + userMatch.name, "success");
+            signinForm.reset();
+            return;
+          }
+        }
+
+        if (!valid) {
+          showToast("Login failed. Please check field errors.", "warning");
+        }
       }
     });
   }
@@ -506,18 +619,22 @@ document.addEventListener('DOMContentLoaded', () => {
       const strokeOffset = circumference - (circumference * percent) / 100;
 
       const card = document.createElement('div');
-      card.className = 'sub-progress-card hover:border-white/10 transition-all duration-300';
+      card.className = 'sub-progress-card cursor-pointer';
+      card.setAttribute('data-subject', sub.key);
       card.style.borderLeft = `4px solid ${sub.color}`;
       card.setAttribute('role', 'button');
       card.setAttribute('aria-label', `Study ${sub.name}. Progress is ${percent}% completed.`);
 
       card.innerHTML = `
-        <div class="flex flex-col gap-1.5 max-w-[70%]">
-          <span class="text-base font-extrabold text-white flex items-center gap-2">
+        <div class="flex flex-col gap-2 max-w-[70%]">
+          <span class="text-lg font-black text-white flex items-center gap-2.5 font-heading">
             <i class="fa-solid ${sub.icon}" style="color: ${sub.color};"></i> ${sub.name}
           </span>
-          <span class="text-[0.7rem] text-gray-500 font-semibold leading-tight">${sub.desc}</span>
-          <span class="text-[0.72rem] text-gray-400 font-bold">${subDone} of ${subChapters} Chapters Mastered</span>
+          <span class="text-xs text-gray-400 font-semibold leading-relaxed">${sub.desc}</span>
+          <span class="text-xs text-gray-300 font-bold flex items-center gap-1 mt-1">
+            <span class="w-1.5 h-1.5 rounded-full" style="background: ${sub.color};"></span>
+            ${subDone} of ${subChapters} Chapters Mastered
+          </span>
         </div>
         
         <div class="progress-circle-wrapper flex-shrink-0" aria-hidden="true">
@@ -760,22 +877,23 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         const card = document.createElement('article');
-        card.className = 'glass-card p-5 flex flex-col gap-4';
+        card.className = 'chapter-card p-6 flex flex-col justify-between gap-5 cursor-pointer';
+        card.setAttribute('data-subject', subjectKey);
         card.innerHTML = `
-          <div class="flex justify-between items-start">
-            <div class="space-y-1">
-              <span class="badge badge-info text-[0.58rem] py-0.5 px-2">Chapter</span>
-              <h4 class="text-sm font-extrabold leading-tight text-white min-h-[2.4rem] line-clamp-2">${chapter.name}</h4>
+          <div class="flex justify-between items-start gap-2">
+            <div class="space-y-1.5 flex-grow">
+              <span class="badge badge-info text-[0.62rem] py-0.5 px-2.5 font-bold uppercase tracking-wider">Chapter</span>
+              <h4 class="text-base md:text-lg font-black leading-snug text-white font-heading min-h-[2.8rem] line-clamp-2">${chapter.name}</h4>
             </div>
-            ${chProgress.completed ? `<i class="fa-solid fa-circle-check text-brand-success text-base flex-shrink-0"></i>` : ''}
+            ${chProgress.completed ? `<i class="fa-solid fa-circle-check text-brand-success text-lg flex-shrink-0 mt-1"></i>` : ''}
           </div>
           
-          <div class="flex flex-wrap gap-1.5 min-h-[28px] items-center">
+          <div class="flex flex-wrap gap-1.5 min-h-[32px] items-center">
             ${tagHTML}
           </div>
           
-          <div class="flex justify-between items-center border-t border-white/5 pt-4 mt-auto">
-            <label class="checkbox-container cursor-pointer select-none text-[0.72rem] font-extrabold">
+          <div class="flex justify-between items-center border-t border-white/5 pt-4 mt-auto gap-2">
+            <label class="checkbox-container cursor-pointer select-none text-xs font-extrabold min-h-[36px] flex items-center">
               <input type="checkbox" ${chProgress.completed ? 'checked' : ''} data-chapter-id="${chId}">
               <div class="checkbox-custom">
                 <i class="fa-solid fa-check"></i>
@@ -783,9 +901,9 @@ document.addEventListener('DOMContentLoaded', () => {
               <span>Mastered</span>
             </label>
             
-            <div class="flex items-center gap-1.5">
+            <div class="flex items-center gap-2">
               ${scoreBadge}
-              <button class="btn-card-launch bg-[#161c2a] border border-white/5 hover:bg-brand-primary text-[0.72rem] font-black py-1.5 px-3 rounded-lg flex items-center gap-1 text-white transition-all btn-study-chapter">
+              <button class="btn-card-launch bg-[#161c2a] border border-white/10 hover:bg-brand-primary text-xs font-black py-2 px-3.5 rounded-xl flex items-center gap-1.5 text-white transition-all btn-study-chapter min-h-[38px]">
                 Study <i class="fa-solid fa-angle-right"></i>
               </button>
             </div>
@@ -826,30 +944,58 @@ document.addEventListener('DOMContentLoaded', () => {
   function generateChapterNotes(subjectKey, categoryKey, chapterKey) {
     const subject = subjectKey.charAt(0).toUpperCase() + subjectKey.slice(1);
     const category = categoryNames[categoryKey] || categoryKey;
-    const chapter = window.eduPeakData[subjectKey][categoryKey][chapterKey];
+    const chapter = window.eduPeakData[subjectKey]?.[categoryKey]?.[chapterKey];
+    if (!chapter) return '';
+
+    if (chapter.notes) {
+      return `
+        <div class="space-y-4">
+          <h4 class="text-sm font-bold text-white uppercase tracking-wider border-b border-white/5 pb-2 flex items-center gap-2">
+            <span class="w-2 h-2 rounded-full bg-brand-info"></span> 1. Theoretical Foundation
+          </h4>
+          <p class="text-xs md:text-sm text-gray-300 leading-relaxed font-normal">
+            ${chapter.notes.theoretical}
+          </p>
+          
+          <h4 class="text-sm font-bold text-white uppercase tracking-wider border-b border-white/5 pb-2 flex items-center gap-2">
+            <span class="w-2 h-2 rounded-full bg-brand-primary"></span> 2. Key Framework & Derivations
+          </h4>
+          <p class="text-xs md:text-sm text-gray-300 leading-relaxed font-normal">
+            ${chapter.notes.framework}
+          </p>
+          
+          <h4 class="text-sm font-bold text-white uppercase tracking-wider border-b border-white/5 pb-2 flex items-center gap-2">
+            <span class="w-2 h-2 rounded-full bg-brand-warning"></span> 3. MEC Exam Strategy & Common Traps
+          </h4>
+          <p class="text-xs md:text-sm text-gray-300 leading-relaxed font-normal">
+            ${chapter.notes.strategy}
+          </p>
+        </div>
+      `;
+    }
+
     const name = chapter.name;
     const formulas = chapter.formulas;
-
     let formulasExplanation = "";
     if (formulas && formulas.length > 0) {
-      formulasExplanation = ` The mathematical framework of this chapter is structured around key relationships. For instance, the formula **${formulas[0]}** represents a core governing principle. Additionally, the relationship **${formulas[1] || formulas[0]}** provides a quantitative method to analyze system variables. Aspirants must be capable of manipulating these equations to solve both direct and ratio-based numerical questions.`;
+      formulasExplanation = ` Core governing relationship: <b>${formulas[0]}</b>. Secondary analytical relation: <b>${formulas[1] || formulas[0]}</b>.`;
     }
 
     return `
       <div class="space-y-4">
         <h4 class="text-sm font-bold text-white uppercase tracking-wider border-b border-white/5 pb-2">1. Theoretical Foundation</h4>
-        <p class="text-xs md:text-sm text-gray-400 leading-relaxed">
-          ${name} is a highly significant chapter in the CEE & NEET ${subject} syllabus, situated under the broader category of <b>${category}</b>. In classical entrance examinations, this chapter serves as a foundational building block for understanding advanced physical systems and chemical-biological processes. The concepts covered here describe the fundamental nature of physical quantities, thermodynamic properties, chemical equilibria, or physiological systems depending on the target discipline. Mastery of this chapter requires a strong grasp of both microscopic details and macroscopic variables.
+        <p class="text-xs md:text-sm text-gray-300 leading-relaxed">
+          ${name} is a key topic in CEE ${subject} (${category}). Focus on fundamental definitions, microscopic models, and system properties.
         </p>
         
         <h4 class="text-sm font-bold text-white uppercase tracking-wider border-b border-white/5 pb-2">2. Key Framework & Derivations</h4>
-        <p class="text-xs md:text-sm text-gray-400 leading-relaxed">
-          To analyze systems in ${name}, several theoretical models are utilized. For CEE aspirants, it is crucial to understand the derivation and limits of these models. ${formulasExplanation} Physical and conceptual variables must be checked for dimensional consistency, especially when applying these formulas to complex multi-step problems. Pay special attention to sign conventions, standard units (SI), and structural organization during revisions.
+        <p class="text-xs md:text-sm text-gray-300 leading-relaxed">
+          ${formulasExplanation} Maintain SI units, sign conventions, and dimensional consistency across multi-step calculations.
         </p>
         
         <h4 class="text-sm font-bold text-white uppercase tracking-wider border-b border-white/5 pb-2">3. MEC Exam Strategy & Common Traps</h4>
-        <p class="text-xs md:text-sm text-gray-400 leading-relaxed">
-          Historically, questions from ${name} appear as a combination of direct conceptual questions and formula-based numerical applications. In the MEC CEE exam, a common pitfall is overlooking minor unit prefixes (e.g., micro vs nano) or misapplying conservation laws. We highly recommend practice of at least 30 MCQs in our timed simulator to build speed and accuracy. Remember, the CEE exam penalizes incorrect answers with a -0.25 negative marking scheme, so strategic guessing must be exercised with caution.
+        <p class="text-xs md:text-sm text-gray-300 leading-relaxed">
+          Verify unit prefixes (micro/nano) and watch out for CEE -0.25 negative marking on speculative numerical guesses.
         </p>
       </div>
     `;
@@ -1027,13 +1173,59 @@ document.addEventListener('DOMContentLoaded', () => {
   // ==========================================================================
   // PROCEDURAL QUESTION COMPILER (DYNAMIC GENERATION OF 30 MCQS PER CHAPTER)
   // ==========================================================================
+  const LETTERS_MAP = ['A', 'B', 'C', 'D'];
+  function ensureQuestionDataStructure(q) {
+    if (!q) return q;
+    if (q.correct !== undefined && typeof q.correct === 'number') {
+      q.correctAnswer = LETTERS_MAP[q.correct] || 'A';
+    } else if (typeof q.correctAnswer === 'string') {
+      const idx = LETTERS_MAP.indexOf(q.correctAnswer.toUpperCase());
+      q.correct = idx !== -1 ? idx : 0;
+      q.correctAnswer = q.correctAnswer.toUpperCase();
+    } else {
+      q.correct = 0;
+      q.correctAnswer = 'A';
+    }
+    return q;
+  }
+
+  /**
+   * Shuffles a question's options array in place and remaps q.correct /
+   * q.correctAnswer to the new position of the correct option. This runs
+   * fresh every time a quiz/exam is compiled (not baked into data.js /
+   * questions.js), so option order — and therefore the correct answer's
+   * A/B/C/D position — is randomized on every load and every retake,
+   * even for questions authored with a fixed correct index (e.g. 0/"A").
+   */
+  function shuffleQuestionOptions(q) {
+    if (!q || !Array.isArray(q.options) || q.options.length < 2) return q;
+    ensureQuestionDataStructure(q);
+
+    const correctOptionText = q.options[q.correct];
+    const indices = q.options.map((_, i) => i);
+
+    for (let i = indices.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [indices[i], indices[j]] = [indices[j], indices[i]];
+    }
+
+    q.options = indices.map(i => q.options[i]);
+    q.correct = q.options.indexOf(correctOptionText);
+    q.correctAnswer = LETTERS_MAP[q.correct] || 'A';
+
+    return q;
+  }
+
   function compile30Questions(subjectKey, categoryKey, chapterKey) {
     const subData = window.eduPeakData[subjectKey];
     const category = subData[categoryKey];
     const chapter = category[chapterKey];
     
     if (!chapter.quiz) chapter.quiz = [];
-    if (chapter.quiz.length >= 30) return chapter.quiz;
+    if (chapter.quiz.length >= 30) {
+      chapter.quiz.forEach(ensureQuestionDataStructure);
+      return chapter.quiz;
+    }
     
     const compiled = [...chapter.quiz];
     const name = chapter.name;
@@ -1054,6 +1246,7 @@ document.addEventListener('DOMContentLoaded', () => {
         question: `Which of the following equations representing a core relationship is directly studied in "${name}"?`,
         options: [`${f0}`, `F = m * c^2 * ${i}`, `PV = nRT * ${i}`, `E_n = -13.6 * ${i} eV`],
         correct: 0,
+        correctAnswer: "A",
         explanation: `The primary equation representing the physical model for "${name}" is: ${f0}.`
       }),
       (i) => ({
@@ -1062,6 +1255,7 @@ document.addEventListener('DOMContentLoaded', () => {
         question: `In a CEE exam numerical context for "${name}", if the main parameter of expression '${f0}' is scaled by a factor of 2, how will the output be affected?`,
         options: ["It is scaled by a factor of 2", "It increases by a factor of 4", "It scales down to 0.5", "It remains constant"],
         correct: 0,
+        correctAnswer: "A",
         explanation: `The equation '${f0}' demonstrates direct linear proportionality, so scaling the variable by 2 doubles the outcome.`
       }),
       (i) => ({
@@ -1070,6 +1264,7 @@ document.addEventListener('DOMContentLoaded', () => {
         question: `To which specific division of the entrance exam syllabus is "${name}" categorized?`,
         options: [`${catName}`, "Applied Dynamics", "Introductory Biochemistry", "Analytical Calculus"],
         correct: 0,
+        correctAnswer: "A",
         explanation: `In standard CEE mock outlines, "${name}" is grouped under ${catName}.`
       }),
       (i) => ({
@@ -1083,6 +1278,7 @@ document.addEventListener('DOMContentLoaded', () => {
           `The constants are variable and fluctuate during the cardiac cycle.`
         ],
         correct: 0,
+        correctAnswer: "A",
         explanation: `The quantitative framework for "${name}" relies on the conservation laws modeled by: ${f0}.`
       }),
       (i) => ({
@@ -1096,6 +1292,7 @@ document.addEventListener('DOMContentLoaded', () => {
           "All of the above"
         ],
         correct: 3,
+        correctAnswer: "D",
         explanation: `Exam metrics show students commonly lose marks in "${name}" due to SI unit issues, sign errors, and formula boundaries.`
       }),
       (i) => ({
@@ -1109,6 +1306,7 @@ document.addEventListener('DOMContentLoaded', () => {
           "The system shuts down due to feedback loops."
         ],
         correct: 0,
+        correctAnswer: "A",
         explanation: `Equation '${f1}' governs system equilibria. Changing boundary states shifts parameters to restore stability.`
       }),
       (i) => ({
@@ -1122,6 +1320,7 @@ document.addEventListener('DOMContentLoaded', () => {
           "Because the chapter carries 50% weightage in the final blueprint."
         ],
         correct: 0,
+        correctAnswer: "A",
         explanation: `Exam analysis shows questions in "${name}" are highly structured and resolve quickly by applying equations like: ${f0}.`
       }),
       (i) => ({
@@ -1135,6 +1334,7 @@ document.addEventListener('DOMContentLoaded', () => {
           `Zero units`
         ],
         correct: 0,
+        correctAnswer: "A",
         explanation: `Substituting the values into the equation '${f2}' yields: ${i * 2} * 0.5 = ${(i * 2 * 0.5).toFixed(1)} units.`
       }),
       (i) => ({
@@ -1148,6 +1348,7 @@ document.addEventListener('DOMContentLoaded', () => {
           "It has been rendered obsolete by modern computing algorithms."
         ],
         correct: 0,
+        correctAnswer: "A",
         explanation: `The relation defined by '${f0}' constitutes a core standard syllabus milestone in ${subject} - ${catName}.`
       }),
       (i) => ({
@@ -1161,6 +1362,7 @@ document.addEventListener('DOMContentLoaded', () => {
           "Skipping all numerical questions and focusing only on definitions"
         ],
         correct: 0,
+        correctAnswer: "A",
         explanation: `The ideal prep path for "${name}" involves studying the formulas, concept notes, and doing practice quizzes.`
       })
     ];
@@ -1171,6 +1373,7 @@ document.addEventListener('DOMContentLoaded', () => {
       compiled.push(generator(qId++));
     }
 
+    compiled.forEach(ensureQuestionDataStructure);
     return compiled;
   }
 
@@ -1185,7 +1388,11 @@ document.addEventListener('DOMContentLoaded', () => {
     activeQuiz.subjectKey = subjectKey;
     activeQuiz.categoryKey = categoryKey;
     activeQuiz.chapterKey = chapterKey;
-    activeQuiz.questions = compile30Questions(subjectKey, categoryKey, chapterKey);
+    // Clone the compiled pool (it may be a cached array shared across attempts)
+    // and shuffle each question's option order fresh for this attempt/retake,
+    // so the correct answer's A/B/C/D position isn't fixed by the source data.
+    activeQuiz.questions = compile30Questions(subjectKey, categoryKey, chapterKey)
+      .map(q => shuffleQuestionOptions({ ...q, options: [...q.options] }));
     activeQuiz.currentIndex = 0;
     activeQuiz.answers = {};
     activeQuiz.score = 0;
@@ -1213,7 +1420,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (!consoleBox) return;
     consoleBox.innerHTML = '';
 
-    const currentQ = activeQuiz.questions[activeQuiz.currentIndex];
+    const currentQ = ensureQuestionDataStructure(activeQuiz.questions[activeQuiz.currentIndex]);
     const progressPercent = Math.round((activeQuiz.currentIndex / activeQuiz.questions.length) * 100);
 
     const mins = Math.floor(activeQuiz.timeRemaining / 60);
@@ -1274,14 +1481,20 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     let paletteHTML = "";
-    activeQuiz.questions.forEach((_, idx) => {
+    activeQuiz.questions.forEach((qObj, idx) => {
+      ensureQuestionDataStructure(qObj);
       const isAns = activeQuiz.answers[idx] !== undefined;
       let palClass = "bg-slate-800 border-white/5 text-gray-500";
       
       if (idx === activeQuiz.currentIndex) {
         palClass = "bg-brand-primary border-brand-primary text-white font-extrabold ring-2 ring-white/20";
       } else if (isAns) {
-        palClass = "bg-emerald-500/20 border-emerald-500/40 text-emerald-400 font-bold";
+        const uAns = activeQuiz.answers[idx];
+        if (uAns === qObj.correct) {
+          palClass = "bg-emerald-500/20 border-emerald-500/40 text-emerald-400 font-bold";
+        } else {
+          palClass = "bg-red-500/20 border-red-500/40 text-red-400 font-bold";
+        }
       }
 
       paletteHTML += `
@@ -1605,19 +1818,23 @@ document.addEventListener('DOMContentLoaded', () => {
   /**
    * Converts a real bank question object into the exam question format.
    */
+  /**
+   * Converts a real bank question object into the exam question format.
+   */
   function formatRealQ(q, subKey) {
-    return {
+    const formatted = {
       subject:     q.subject,
       type:        q.subject,
       subKey:      subKey,
       question:    q.question,
       options:     q.options,
-      correct:     q.correct,
+      correct:     q.correct !== undefined ? q.correct : 0,
       explanation: q.explanation,
       chapterName: q.chapter || q.subject,
       difficulty:  q.difficulty || 'M',
       id:          q.id
     };
+    return ensureQuestionDataStructure(formatted);
   }
 
   /**
@@ -1682,22 +1899,30 @@ document.addEventListener('DOMContentLoaded', () => {
     let matIndex = 0;
     while (matPool.length < 20 && legacyMAT.length > 0) {
       const baseline = legacyMAT[matIndex % legacyMAT.length];
-      matPool.push({
+      matPool.push(ensureQuestionDataStructure({
         subject: 'Mental Agility', type: 'Mental Agility', subKey: 'mentalAgility',
         question: baseline.question, options: [...baseline.options],
         correct: baseline.correct, explanation: baseline.explanation,
         chapterName: 'Logical Reasoning', difficulty: 'M'
-      });
+      }));
       matIndex++;
     }
     const finalMAT = matPool.slice(0, 20);
 
     activeExam.questions = [
-      ...finalPhysics.map(q   => ({ ...q, type: 'Physics',        subKey: 'physics'       })),
-      ...finalChemistry.map(q => ({ ...q, type: 'Chemistry',      subKey: 'chemistry'     })),
-      ...finalBiology.map(q   => ({ ...q, type: 'Biology',        subKey: 'biology'       })),
-      ...finalMAT.map(q       => ({ ...q, type: 'Mental Agility', subKey: 'mentalAgility' }))
+      ...finalPhysics.map(q   => ensureQuestionDataStructure({ ...q, type: 'Physics',        subKey: 'physics'       })),
+      ...finalChemistry.map(q => ensureQuestionDataStructure({ ...q, type: 'Chemistry',      subKey: 'chemistry'     })),
+      ...finalBiology.map(q   => ensureQuestionDataStructure({ ...q, type: 'Biology',        subKey: 'biology'       })),
+      ...finalMAT.map(q       => ensureQuestionDataStructure({ ...q, type: 'Mental Agility', subKey: 'mentalAgility' }))
     ];
+
+    // Shuffle each question's option order fresh for this exam attempt, so
+    // the correct answer's A/B/C/D position is randomized every time the
+    // mock exam is launched/retaken, regardless of how it's positioned
+    // in the source question bank.
+    activeExam.questions = activeExam.questions.map(q =>
+      shuffleQuestionOptions({ ...q, options: [...q.options] })
+    );
   }
 
   function launchCEEMockTimer() {
@@ -1732,7 +1957,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const qContent = document.getElementById('exam-live-q-content');
     const optionsBox = document.getElementById('exam-live-options-container');
 
-    const currentQ = activeExam.questions[activeExam.currentIndex];
+    const currentQ = ensureQuestionDataStructure(activeExam.questions[activeExam.currentIndex]);
     
     const subColors = {
       physics: '#06b6d4',
@@ -1862,6 +2087,35 @@ document.addEventListener('DOMContentLoaded', () => {
     renderPaletteSidebarGrid();
   });
 
+  function openMobilePalette() {
+    const sidebar = document.getElementById('mock-palette-sidebar');
+    const overlay = document.getElementById('mock-palette-overlay');
+    if (sidebar) sidebar.classList.add('mobile-open');
+    if (overlay) overlay.classList.add('active');
+  }
+
+  function closeMobilePalette() {
+    const sidebar = document.getElementById('mock-palette-sidebar');
+    const overlay = document.getElementById('mock-palette-overlay');
+    if (sidebar) sidebar.classList.remove('mobile-open');
+    if (overlay) overlay.classList.remove('active');
+  }
+
+  const togglePalBtn = document.getElementById('btn-toggle-mobile-palette');
+  if (togglePalBtn) {
+    togglePalBtn.addEventListener('click', openMobilePalette);
+  }
+
+  const closePalBtn = document.getElementById('btn-close-mobile-palette');
+  if (closePalBtn) {
+    closePalBtn.addEventListener('click', closeMobilePalette);
+  }
+
+  const palOverlay = document.getElementById('mock-palette-overlay');
+  if (palOverlay) {
+    palOverlay.addEventListener('click', closeMobilePalette);
+  }
+
   function renderPaletteSidebarGrid() {
     const grid = document.getElementById('exam-live-palette-grid');
     if (!grid) return;
@@ -1895,6 +2149,7 @@ document.addEventListener('DOMContentLoaded', () => {
         activeExam.visited[index] = true;
         renderLiveMockQuestion();
         renderPaletteSidebarGrid();
+        closeMobilePalette();
       });
 
       grid.appendChild(btn);
@@ -1902,6 +2157,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function triggerSubmissionConfirmOverlay() {
+    closeMobilePalette();
     const overlay = document.getElementById('mock-submission-confirm-overlay');
     let answered = 0;
     let skipped = 0;
@@ -2189,12 +2445,36 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // ==========================================================================
-  // REVISION SCRATCHPAD
+  // REVISION SCRATCHPAD + AI ASSISTANT (shared "+" FAB panel)
   // ==========================================================================
   const fab = document.getElementById('scratchpad-trigger-fab');
   const panel = document.getElementById('scratchpad-utility-panel');
   const panelClose = document.getElementById('scratchpad-close-btn');
   const textarea = document.getElementById('scratchpad-writing-area');
+
+  const tabAssistant = document.getElementById('utility-tab-assistant');
+  const tabNotes = document.getElementById('utility-tab-notes');
+  const paneAssistant = document.getElementById('utility-pane-assistant');
+  const paneNotes = document.getElementById('utility-pane-notes');
+
+  function switchUtilityTab(target) {
+    const isAssistant = target === 'assistant';
+    tabAssistant.classList.toggle('active', isAssistant);
+    tabNotes.classList.toggle('active', !isAssistant);
+    tabAssistant.setAttribute('aria-selected', isAssistant ? 'true' : 'false');
+    tabNotes.setAttribute('aria-selected', !isAssistant ? 'true' : 'false');
+    paneAssistant.classList.toggle('hidden', !isAssistant);
+    paneNotes.classList.toggle('hidden', isAssistant);
+    if (isAssistant) {
+      refreshAssistantContext();
+      document.getElementById('assistant-input').focus();
+    } else {
+      textarea.focus();
+    }
+  }
+
+  tabAssistant.addEventListener('click', () => switchUtilityTab('assistant'));
+  tabNotes.addEventListener('click', () => switchUtilityTab('notes'));
 
   fab.addEventListener('click', () => {
     const isShowing = panel.style.display === 'flex';
@@ -2203,7 +2483,10 @@ document.addEventListener('DOMContentLoaded', () => {
     } else {
       panel.style.display = 'flex';
       textarea.value = appState.scratchpad;
-      textarea.focus();
+      switchUtilityTab('assistant');
+      if (assistantMessages.length === 0) {
+        renderAssistantWelcomeMessage();
+      }
     }
   });
 
@@ -2214,6 +2497,191 @@ document.addEventListener('DOMContentLoaded', () => {
   textarea.addEventListener('input', (e) => {
     appState.scratchpad = e.target.value;
     saveState();
+  });
+
+  // --------------------------------------------------------------------
+  // AI ASSISTANT MODULE
+  //
+  // Backend: Anthropic API (Claude). This is a static front-end site, so
+  // the API key must NEVER live in this client-side file — anything here
+  // is publicly visible in page source. Instead this calls a small
+  // backend/serverless proxy endpoint (ASSISTANT_API_ENDPOINT below) that
+  // you control, which holds the real Anthropic API key server-side and
+  // forwards the request to https://api.anthropic.com/v1/messages.
+  //
+  // TODO(you): stand up a proxy endpoint (e.g. a Cloudflare Worker /
+  // Vercel function / small Node server) matching the request/response
+  // contract documented above sendAssistantMessage() below, then set
+  // ASSISTANT_API_ENDPOINT to its URL.
+  // --------------------------------------------------------------------
+  const ASSISTANT_API_ENDPOINT = '/api/assistant'; // TODO: point this at your backend proxy
+
+  let assistantMessages = []; // { role: 'user' | 'assistant' | 'system', content: string }
+  let assistantIsLoading = false;
+
+  const assistantMessagesEl = document.getElementById('assistant-messages');
+  const assistantForm = document.getElementById('assistant-input-form');
+  const assistantInput = document.getElementById('assistant-input');
+  const assistantSendBtn = document.getElementById('assistant-send-btn');
+  const assistantContextChip = document.getElementById('assistant-context-chip');
+  const assistantContextChipLabel = document.getElementById('assistant-context-chip-label');
+
+  const SITE_HELP_CONTEXT = `
+CeeFusion is a CEE Nepal / NEET entrance exam preparation platform. Key facts to use when answering general "how do I use this site" questions:
+- Subjects covered: Physics, Chemistry, Biology, Mathematics — each broken into categories and chapters, accessible from the left sidebar.
+- Each chapter has a 3-panel Study Workspace: Concept Notes, Equations Index, and a 30-question Revision Quiz (100-minute timer).
+- The CEE Mock Exam is a 200-question timed simulation (3 hours): Physics 50, Chemistry 50, Biology 80, Mental Agility (MAT) 20.
+- Marking scheme: +1.0 for a correct answer, -0.25 negative marking for an incorrect answer, 0 for unattempted.
+- The Question Selection Grid (right sidebar during an exam/quiz) lets students jump to any question; colors indicate Unvisited, Answered, Skipped, and Flagged.
+- Students can Flag a question for review, Clear their answer, and navigate with Previous/Save & Next.
+- Progress (chapters mastered, quiz scores, mock exam history) is tracked on the Dashboard.
+- The Scratchpad (Notes tab in this same panel) is for jotting formulas/notes during timed sessions.
+`.trim();
+
+  /**
+   * Builds the current-question context (if the user is viewing a quiz/
+   * exam question right now) to inject into the assistant automatically,
+   * so the user never has to retype the question. Returns null when
+   * there's no active question in view.
+   */
+  function getCurrentQuestionContext() {
+    const quizView = document.getElementById('view-quiz-simulator');
+    if (activeQuiz && Array.isArray(activeQuiz.questions) && activeQuiz.questions.length > 0
+        && quizView && quizView.classList.contains('active')) {
+      const q = activeQuiz.questions[activeQuiz.currentIndex];
+      if (q) {
+        return {
+          source: 'Chapter Quiz',
+          question: q.question,
+          options: q.options,
+          correctAnswer: q.correctAnswer || LETTERS_MAP[q.correct],
+          explanation: q.explanation || null
+        };
+      }
+    }
+    const examWorkspace = document.getElementById('mock-exam-simulation-workspace');
+    if (activeExam && Array.isArray(activeExam.questions) && activeExam.questions.length > 0
+        && examWorkspace && examWorkspace.style.display === 'flex') {
+      const q = activeExam.questions[activeExam.currentIndex];
+      if (q) {
+        return {
+          source: 'CEE Mock Exam',
+          question: q.question,
+          options: q.options,
+          correctAnswer: q.correctAnswer || LETTERS_MAP[q.correct],
+          explanation: q.explanation || null
+        };
+      }
+    }
+    return null;
+  }
+
+  function refreshAssistantContext() {
+    const ctx = getCurrentQuestionContext();
+    if (ctx) {
+      assistantContextChip.classList.remove('hidden');
+      assistantContextChipLabel.textContent = `Viewing: ${ctx.source} question`;
+      assistantInput.placeholder = 'Ask about this question...';
+    } else {
+      assistantContextChip.classList.add('hidden');
+      assistantInput.placeholder = 'Ask about this question or the site...';
+    }
+  }
+
+  function renderAssistantWelcomeMessage() {
+    appendAssistantMessage('system', "Hi! I'm your CeeFusion study assistant. Open me while viewing a quiz question and I'll automatically know what you're looking at — just ask me to explain it. I can also answer questions about how the site works.");
+  }
+
+  function appendAssistantMessage(role, text) {
+    assistantMessages.push({ role, content: text });
+    const bubble = document.createElement('div');
+    const roleClass = role === 'user' ? 'assistant-msg-user'
+      : role === 'system' ? 'assistant-msg-system'
+      : role === 'error' ? 'assistant-msg-error'
+      : 'assistant-msg-bot';
+    bubble.className = `assistant-msg ${roleClass}`;
+    bubble.textContent = text;
+    assistantMessagesEl.appendChild(bubble);
+    assistantMessagesEl.scrollTop = assistantMessagesEl.scrollHeight;
+    return bubble;
+  }
+
+  function appendAssistantTypingIndicator() {
+    const bubble = document.createElement('div');
+    bubble.className = 'assistant-msg assistant-msg-bot assistant-typing-bubble';
+    bubble.innerHTML = `<span class="assistant-typing-dots"><span></span><span></span><span></span></span>`;
+    assistantMessagesEl.appendChild(bubble);
+    assistantMessagesEl.scrollTop = assistantMessagesEl.scrollHeight;
+    return bubble;
+  }
+
+  /**
+   * Sends the conversation + auto-injected question/site context to the
+   * backend proxy, which should call Anthropic's /v1/messages endpoint
+   * server-side and return { reply: string }.
+   *
+   * Expected POST body sent to ASSISTANT_API_ENDPOINT:
+   * {
+   *   messages: [{ role: 'user' | 'assistant', content: string }, ...],
+   *   context: {
+   *     site: string,              // SITE_HELP_CONTEXT
+   *     currentQuestion: {         // null if not viewing a question
+   *       source, question, options, correctAnswer, explanation
+   *     } | null
+   *   }
+   * }
+   *
+   * Expected response JSON: { reply: string }
+   */
+  async function sendAssistantMessage(userText) {
+    const questionCtx = getCurrentQuestionContext();
+
+    appendAssistantMessage('user', userText);
+    assistantInput.value = '';
+    assistantIsLoading = true;
+    assistantSendBtn.disabled = true;
+    const typingBubble = appendAssistantTypingIndicator();
+
+    try {
+      const response = await fetch(ASSISTANT_API_ENDPOINT, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          messages: assistantMessages
+            .filter(m => m.role === 'user' || m.role === 'assistant')
+            .map(m => ({ role: m.role, content: m.content })),
+          context: {
+            site: SITE_HELP_CONTEXT,
+            currentQuestion: questionCtx
+          }
+        })
+      });
+
+      typingBubble.remove();
+
+      if (!response.ok) {
+        throw new Error(`Assistant backend responded with status ${response.status}`);
+      }
+
+      const data = await response.json();
+      const replyText = (data && data.reply) ? data.reply : "Sorry, I didn't get a usable response. Please try again.";
+      appendAssistantMessage('assistant', replyText);
+
+    } catch (err) {
+      typingBubble.remove();
+      console.error('Assistant request failed:', err);
+      appendAssistantMessage('error', "I couldn't reach the assistant backend. This feature needs a server-side proxy configured with an Anthropic API key (see ASSISTANT_API_ENDPOINT in script.js) — it isn't wired up yet.");
+    } finally {
+      assistantIsLoading = false;
+      assistantSendBtn.disabled = false;
+    }
+  }
+
+  assistantForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const text = assistantInput.value.trim();
+    if (!text || assistantIsLoading) return;
+    sendAssistantMessage(text);
   });
 
   // ==========================================================================

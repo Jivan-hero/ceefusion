@@ -530,7 +530,7 @@
                   </div>
                   <div class="space-y-0.5">
                     <h5 class="text-xs font-bold text-gray-400">Direct Email</h5>
-                    <p class="text-sm font-bold text-gray-200">contact@edupeak.com</p>
+                    <p class="text-sm font-bold text-gray-200">jivandevkota456@gmail.com</p>
                   </div>
                 </div>
                 
@@ -540,7 +540,7 @@
                   </div>
                   <div class="space-y-0.5">
                     <h5 class="text-xs font-bold text-gray-400">Office Location</h5>
-                    <p class="text-sm font-bold text-gray-200">Austin, TX</p>
+                    <p class="text-sm font-bold text-gray-200">Nepal</p>
                   </div>
                 </div>
               </div>
@@ -583,68 +583,78 @@
   
   <!-- 1. CEE 200 MCQ ASSESSMENT WORKSPACE -->
   <div class="mock-exam-workspace select-none" id="mock-exam-simulation-workspace" role="dialog" aria-modal="true">
-    <div class="mock-exam-navbar flex items-center justify-between px-6 bg-[#0c1220] border-b border-white/5">
-      <div class="flex items-center gap-3">
-        <i class="fa-solid fa-graduation-cap text-brand-info text-xl"></i>
-        <span class="text-base font-extrabold tracking-tight font-heading text-transparent bg-clip-text bg-gradient-to-r from-white to-gray-400">CeeFusion CEE Assessment Console</span>
+    <div class="mock-exam-navbar flex items-center justify-between px-3 sm:px-6 bg-[#0c1220] border-b border-white/5">
+      <div class="flex items-center gap-2 sm:gap-3 overflow-hidden">
+        <i class="fa-solid fa-graduation-cap text-brand-info text-lg sm:text-xl flex-shrink-0"></i>
+        <span class="text-xs sm:text-base font-extrabold tracking-tight font-heading text-transparent bg-clip-text bg-gradient-to-r from-white to-gray-400 truncate">CEE Assessment Console</span>
       </div>
       
-      <div class="flex items-center gap-4">
-        <span class="text-xs text-gray-500 font-bold hidden md:block">CEE Exam Session</span>
-        <div class="exam-timer-box text-brand-danger font-mono font-extrabold flex items-center gap-2 bg-red-500/10 border border-red-500/20 px-4 py-2 rounded-lg text-lg" id="exam-live-countdown-timer">
+      <div class="flex items-center gap-2 sm:gap-4 flex-shrink-0">
+        <button class="btn btn-secondary text-xs px-3 py-2 flex items-center gap-1.5 lg:hidden bg-slate-800 border-white/10 text-gray-200 min-h-[40px]" id="btn-toggle-mobile-palette" aria-label="Toggle Question Grid">
+          <i class="fa-solid fa-border-all text-brand-primary"></i> <span>Grid</span>
+        </button>
+        <span class="text-xs text-gray-500 font-bold hidden lg:block">CEE Exam Session</span>
+        <div class="exam-timer-box text-brand-danger font-mono font-extrabold flex items-center gap-1.5 sm:gap-2 bg-red-500/10 border border-red-500/20 px-2.5 sm:px-4 py-1.5 sm:py-2 rounded-lg text-sm sm:text-lg min-h-[40px]" id="exam-live-countdown-timer">
           <i class="fa-solid fa-hourglass-half"></i> <span id="exam-time-string">03:00:00</span>
         </div>
       </div>
     </div>
     
-    <div class="mock-exam-console flex-grow flex overflow-hidden">
+    <div class="mock-exam-console flex-grow flex overflow-hidden relative">
+      <div class="mock-palette-overlay lg:hidden" id="mock-palette-overlay" aria-hidden="true"></div>
+      
       <!-- Left side question card -->
-      <main class="mock-question-panel flex-grow h-full overflow-y-auto p-6 md:p-10 flex flex-col">
-        <div class="flex justify-between items-center mb-6">
-          <span class="text-sm font-extrabold tracking-wider text-brand-primary uppercase" id="exam-live-q-subject">Physics</span>
-          <span class="text-sm font-bold text-gray-400" id="exam-live-q-index">Question 1 of 200</span>
+      <main class="mock-question-panel flex-grow h-full overflow-y-auto p-4 md:p-10 flex flex-col">
+        <div class="flex justify-between items-center mb-4 md:mb-6">
+          <span class="text-xs md:text-sm font-extrabold tracking-wider text-brand-primary uppercase" id="exam-live-q-subject">Physics</span>
+          <span class="text-xs md:text-sm font-bold text-gray-400" id="exam-live-q-index">Question 1 of 200</span>
         </div>
         
-        <h2 class="text-lg md:text-2xl font-bold leading-snug mb-8 text-gray-200" id="exam-live-q-content">
+        <h2 class="text-base md:text-2xl font-bold leading-snug mb-6 md:mb-8 text-gray-200" id="exam-live-q-content">
           Loading assessment content...
         </h2>
         
-        <div class="flex flex-col gap-4 mb-8" id="exam-live-options-container">
+        <div class="flex flex-col gap-3 md:gap-4 mb-6 md:mb-8" id="exam-live-options-container">
           <!-- Dynamically populated MCQ buttons -->
         </div>
         
-        <footer class="mock-q-controls flex flex-col md:flex-row justify-between items-center gap-4 border-t border-white/5 pt-6 mt-auto">
-          <div class="mock-controls-left flex gap-3 w-full md:w-auto">
-            <button class="btn btn-secondary flex-grow md:flex-grow-0 py-3 px-6 bg-slate-800/80 hover:bg-slate-700 font-bold border-white/5" id="btn-exam-prev-q">
+        <footer class="mock-q-controls flex flex-col md:flex-row justify-between items-center gap-4 border-t border-white/5 pt-4 md:pt-6 mt-auto">
+          <div class="mock-controls-left flex gap-2 sm:gap-3 w-full md:w-auto">
+            <button class="btn btn-secondary flex-1 md:flex-grow-0 py-2.5 px-2 sm:px-6 bg-slate-800/80 hover:bg-slate-700 font-bold border-white/5 text-xs sm:text-sm" id="btn-exam-prev-q">
               <i class="fa-solid fa-angle-left"></i> Previous
             </button>
-            <button class="btn btn-secondary flex-grow md:flex-grow-0 py-3 px-6 bg-slate-800/80 hover:bg-slate-700 font-bold border-white/5 text-brand-warning border-brand-warning/10" id="btn-exam-mark-review">
+            <button class="btn btn-secondary flex-1 md:flex-grow-0 py-2.5 px-2 sm:px-6 bg-slate-800/80 hover:bg-slate-700 font-bold border-white/5 text-brand-warning border-brand-warning/10 text-xs sm:text-sm" id="btn-exam-mark-review">
               <i class="fa-solid fa-flag"></i> Flag
             </button>
-            <button class="btn btn-secondary flex-grow md:flex-grow-0 py-3 px-6 bg-slate-800/80 hover:bg-slate-700 font-bold border-white/5" id="btn-exam-clear-ans">
+            <button class="btn btn-secondary flex-1 md:flex-grow-0 py-2.5 px-2 sm:px-6 bg-slate-800/80 hover:bg-slate-700 font-bold border-white/5 text-xs sm:text-sm" id="btn-exam-clear-ans">
               <i class="fa-solid fa-eraser"></i> Clear
             </button>
           </div>
           
-          <button class="btn btn-primary w-full md:w-auto bg-gradient-to-r from-brand-primary to-indigo-600 shadow-[0_4px_15px_rgba(135,77,255,0.2)] font-bold py-3 px-8 text-base" id="btn-exam-next-q">
+          <button class="btn btn-primary w-full md:w-auto bg-gradient-to-r from-brand-primary to-indigo-600 shadow-[0_4px_15px_rgba(135,77,255,0.2)] font-bold py-3 px-8 text-sm sm:text-base" id="btn-exam-next-q">
             Save & Next <i class="fa-solid fa-angle-right"></i>
           </button>
         </footer>
       </main>
       
       <!-- Right side grid indexes palette -->
-      <aside class="mock-palette-sidebar w-[340px] h-full bg-[#0c1220] border-l border-white/5 flex flex-col flex-shrink-0" aria-label="Question Selection Grid">
-        <div class="p-6 border-b border-white/5">
-          <h4 class="text-sm font-bold text-gray-200 font-heading">Question Selection Grid</h4>
-          <p class="text-[0.7rem] text-gray-500">Tap an index block to navigate instantly.</p>
+      <aside class="mock-palette-sidebar w-[340px] h-full bg-[#0c1220] border-l border-white/5 flex flex-col flex-shrink-0" id="mock-palette-sidebar" aria-label="Question Selection Grid">
+        <div class="p-4 sm:p-6 border-b border-white/5 flex justify-between items-center">
+          <div>
+            <h4 class="text-sm font-bold text-gray-200 font-heading">Question Selection Grid</h4>
+            <p class="text-[0.7rem] text-gray-500">Tap an index block to navigate instantly.</p>
+          </div>
+          <button class="lg:hidden text-gray-400 hover:text-white p-2 text-lg min-h-[44px] min-w-[44px] flex items-center justify-center" id="btn-close-mobile-palette" aria-label="Close question grid">
+            <i class="fa-solid fa-xmark"></i>
+          </button>
         </div>
         
-        <div class="palette-grid flex-grow overflow-y-auto p-5 grid grid-cols-5 gap-2.5 content-start" id="exam-live-palette-grid">
+        <div class="palette-grid flex-grow overflow-y-auto p-4 sm:p-5 grid grid-cols-5 gap-2 sm:gap-2.5 content-start" id="exam-live-palette-grid">
           <!-- color codes generated dynamically -->
         </div>
         
         <!-- Legend -->
-        <div class="palette-legend p-5 bg-[#090d16] border-t border-white/5 grid grid-cols-2 gap-3.5">
+        <div class="palette-legend p-4 sm:p-5 bg-[#090d16] border-t border-white/5 grid grid-cols-2 gap-3.5">
           <div class="flex items-center gap-2 text-[0.7rem] font-bold text-gray-400">
             <div class="w-3.5 h-3.5 rounded bg-slate-800 border border-white/5"></div>
             <span>Unvisited</span>
@@ -663,8 +673,8 @@
           </div>
         </div>
         
-        <div class="p-5 border-t border-white/5">
-          <button class="btn btn-danger w-full bg-gradient-to-r from-red-600 to-rose-700 shadow-[0_4px_15px_rgba(239,68,68,0.2)] font-bold py-3.5" id="btn-exam-submit-trigger">
+        <div class="p-4 sm:p-5 border-t border-white/5">
+          <button class="btn btn-danger w-full bg-gradient-to-r from-red-600 to-rose-700 shadow-[0_4px_15px_rgba(239,68,68,0.2)] font-bold py-3 sm:py-3.5 text-sm sm:text-base" id="btn-exam-submit-trigger">
             <i class="fa-solid fa-circle-check"></i> Submit CEE Exam
           </button>
         </div>
@@ -705,21 +715,50 @@
     </div>
   </div>
 
-  <!-- 3. REVISION SCRATCHPAD OVERLAY -->
-  <button class="scratchpad-launcher shadow-[0_4px_20px_rgba(135,77,255,0.3)] hover:shadow-brand-primary/50 text-white font-semibold" id="scratchpad-trigger-fab" aria-label="Open scratchpad" aria-haspopup="true">
-    <i class="fa-solid fa-notes-medical"></i>
+  <!-- 3. REVISION SCRATCHPAD + AI ASSISTANT OVERLAY -->
+  <button class="scratchpad-launcher shadow-[0_4px_20px_rgba(135,77,255,0.3)] hover:shadow-brand-primary/50 text-white font-semibold" id="scratchpad-trigger-fab" aria-label="Open study tools" aria-haspopup="true">
+    <i class="fa-solid fa-plus"></i>
   </button>
-  
-  <div class="scratchpad-panel" id="scratchpad-utility-panel" aria-label="Notes scratchpad" role="complementary">
-    <div class="scratchpad-header px-4 py-3 bg-[#0f1524] border-b border-white/5 flex justify-between items-center">
-      <h4 class="text-xs font-bold text-gray-200 font-heading flex items-center gap-2">
-        <i class="fa-solid fa-pen-nib text-brand-primary"></i> Revision Scratchpad
-      </h4>
-      <button class="scratchpad-close text-gray-400 hover:text-white p-1 text-xs" id="scratchpad-close-btn" aria-label="Close scratchpad">
+
+  <div class="scratchpad-panel utility-panel-expanded" id="scratchpad-utility-panel" aria-label="Study tools panel" role="complementary">
+    <div class="scratchpad-header px-4 py-3 bg-[#0f1524] border-b border-white/5 flex justify-between items-center flex-shrink-0">
+      <div class="utility-tabs flex items-center gap-1" role="tablist" aria-label="Study tools">
+        <button class="utility-tab active" id="utility-tab-assistant" role="tab" aria-selected="true" aria-controls="utility-pane-assistant">
+          <i class="fa-solid fa-wand-magic-sparkles"></i> Assistant
+        </button>
+        <button class="utility-tab" id="utility-tab-notes" role="tab" aria-selected="false" aria-controls="utility-pane-notes">
+          <i class="fa-solid fa-pen-nib"></i> Notes
+        </button>
+      </div>
+      <button class="scratchpad-close text-gray-400 hover:text-white p-1 text-xs" id="scratchpad-close-btn" aria-label="Close panel">
         <i class="fa-solid fa-xmark"></i>
       </button>
     </div>
-    <div class="scratchpad-body flex-grow relative bg-[#060a12]">
+
+    <!-- AI Assistant Pane -->
+    <div class="utility-pane flex-grow flex flex-col overflow-hidden" id="utility-pane-assistant" role="tabpanel" aria-labelledby="utility-tab-assistant">
+      <div class="assistant-context-chip badge badge-info text-[0.62rem] mx-4 mt-3 hidden" id="assistant-context-chip">
+        <i class="fa-solid fa-circle-question"></i> <span id="assistant-context-chip-label">Viewing current question</span>
+      </div>
+      <div class="assistant-messages flex-grow overflow-y-auto px-4 py-3 space-y-3" id="assistant-messages">
+        <!-- Messages rendered dynamically by script.js -->
+      </div>
+      <form class="assistant-input-row flex items-center gap-2 px-3 py-3 border-t border-white/5 bg-[#0c1220] flex-shrink-0" id="assistant-input-form">
+        <input
+          type="text"
+          class="input-control assistant-input flex-grow text-xs py-2.5"
+          id="assistant-input"
+          placeholder="Ask about this question or the site..."
+          autocomplete="off"
+        />
+        <button type="submit" class="btn-icon assistant-send-btn flex-shrink-0" id="assistant-send-btn" aria-label="Send message" style="width:38px;height:38px;">
+          <i class="fa-solid fa-paper-plane text-sm"></i>
+        </button>
+      </form>
+    </div>
+
+    <!-- Notes Pane -->
+    <div class="utility-pane scratchpad-body flex-grow relative bg-[#060a12] hidden" id="utility-pane-notes" role="tabpanel" aria-labelledby="utility-tab-notes">
       <textarea class="scratchpad-textarea" id="scratchpad-writing-area" placeholder="Jot down notes, mathematical equations or formulas during timed mock quizzes..."></textarea>
     </div>
   </div>
@@ -734,29 +773,37 @@
       <div class="absolute bottom-[20%] right-[20%] w-[300px] h-[300px] rounded-full bg-brand-info/10 blur-[120px] animate-pulse"></div>
     </div>
     
-    <div class="glass-card max-w-md w-[90%] p-8 relative flex flex-col gap-6 border border-white/10 rounded-3xl bg-[#0c1220]/80 shadow-[0_20px_50px_rgba(0,0,0,0.5)]">
+    <div class="glass-card max-w-md w-[90%] p-8 relative flex flex-col gap-5 border border-white/10 rounded-3xl bg-[#0c1220]/80 shadow-[0_20px_50px_rgba(0,0,0,0.5)]">
       <div class="text-center space-y-2">
-        <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-brand-primary to-brand-info flex items-center justify-center text-2xl text-white mx-auto shadow-[0_0_20px_rgba(135,77,255,0.3)] mb-4">
+        <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-brand-primary to-brand-info flex items-center justify-center text-2xl text-white mx-auto shadow-[0_0_20px_rgba(135,77,255,0.3)] mb-3">
           <i class="fa-solid fa-graduation-cap"></i>
         </div>
-        <h2 class="text-2xl font-black font-heading text-white tracking-tight">Unlock CeeFusion Platform</h2>
-        <p class="text-xs text-gray-400">Initialize your dashboard and start customized exam revisions.</p>
+        <h2 class="text-2xl font-black font-heading text-white tracking-tight" id="auth-modal-title">Create CeeFusion Account</h2>
+        <p class="text-xs text-gray-400" id="auth-modal-subtitle">Initialize your student profile and unlock exam revisions.</p>
       </div>
       
+      <!-- Mode Selector Tabs -->
+      <div class="flex border-b border-white/10">
+        <button type="button" id="auth-tab-signup" class="flex-1 py-2 text-sm font-bold text-center text-brand-primary border-b-2 border-brand-primary transition-all">Sign Up</button>
+        <button type="button" id="auth-tab-login" class="flex-1 py-2 text-sm font-bold text-center text-gray-400 border-b-2 border-transparent hover:text-gray-200 transition-all">Log In</button>
+      </div>
+
       <form class="space-y-4" id="edupeak-signin-form" novalidate>
-        <div class="form-field-wrapper space-y-1">
+        <input type="hidden" id="auth-mode-input" value="signup">
+
+        <div class="form-field-wrapper space-y-1" id="wrapper-signin-name">
           <label class="text-[0.7rem] font-bold uppercase tracking-wider text-gray-400" for="signin-name">Full Name</label>
-          <input class="input-control w-full bg-[#111625]/60 py-3 text-sm border-white/5 focus:border-brand-primary" type="text" id="signin-name" placeholder="Your Full Name" required minlength="3">
-          <span class="field-error-text text-[0.68rem] text-red-500 hidden" id="error-signin-name">Please provide your full name (min 3 characters).</span>
+          <input class="input-control w-full bg-[#111625]/60 py-3 text-sm border-white/5 focus:border-brand-primary" type="text" id="signin-name" placeholder="E.g. FULL  NAME" required minlength="3">
+          <span class="field-error-text text-[0.68rem] text-red-500 hidden block mt-1 font-semibold" id="error-signin-name">Full name must contain at least two words (min 2 letters each).</span>
         </div>
         
-        <div class="form-field-wrapper space-y-1">
+        <div class="form-field-wrapper space-y-1" id="wrapper-signin-email">
           <label class="text-[0.7rem] font-bold uppercase tracking-wider text-gray-400" for="signin-email">Email Address</label>
           <input class="input-control w-full bg-[#111625]/60 py-3 text-sm border-white/5 focus:border-brand-primary" type="email" id="signin-email" placeholder="yourname@mail.com" required>
-          <span class="field-error-text text-[0.68rem] text-red-500 hidden" id="error-signin-email">Please enter a valid email address.</span>
+          <span class="field-error-text text-[0.68rem] text-red-500 hidden block mt-1 font-semibold" id="error-signin-email">Please enter a valid email address.</span>
         </div>
 
-        <div class="form-field-wrapper space-y-1">
+        <div class="form-field-wrapper space-y-1" id="wrapper-signin-exam">
           <label class="text-[0.7rem] font-bold uppercase tracking-wider text-gray-400" for="signin-exam">Target Exam</label>
           <select class="select-control w-full bg-[#111625]/60 text-gray-300 py-3 px-4 text-sm border border-white/5 rounded-xl outline-none focus:border-brand-primary" id="signin-exam" required>
             <option value="" disabled selected>Select target exam...</option>
@@ -764,17 +811,17 @@
             <option value="neet">NEET (National Eligibility cum Entrance Test)</option>
             <option value="both">Both CEE & NEET</option>
           </select>
-          <span class="field-error-text text-[0.68rem] text-red-500 hidden" id="error-signin-exam">Please select your target exam.</span>
+          <span class="field-error-text text-[0.68rem] text-red-500 hidden block mt-1 font-semibold" id="error-signin-exam">Please select your target exam.</span>
         </div>
 
-        <div class="form-field-wrapper space-y-1">
+        <div class="form-field-wrapper space-y-1" id="wrapper-signin-password">
           <label class="text-[0.7rem] font-bold uppercase tracking-wider text-gray-400" for="signin-password">Credentials Password</label>
-          <input class="input-control w-full bg-[#111625]/60 py-3 text-sm border-white/5 focus:border-brand-primary" type="password" id="signin-password" placeholder="••••••••" required minlength="6">
-          <span class="field-error-text text-[0.68rem] text-red-500 hidden" id="error-signin-password">Password must be at least 6 characters.</span>
+          <input class="input-control w-full bg-[#111625]/60 py-3 text-sm border-white/5 focus:border-brand-primary" type="password" id="signin-password" placeholder="••••••••" required minlength="7">
+          <span class="field-error-text text-[0.68rem] text-red-500 hidden block mt-1 font-semibold" id="error-signin-password">Password must be at least 7 characters and contain a number.</span>
         </div>
         
-        <button class="btn btn-primary w-full bg-gradient-to-r from-brand-primary to-indigo-600 shadow-[0_4px_15px_rgba(135,77,255,0.25)] font-bold py-3.5 text-sm mt-6" type="submit">
-          <i class="fa-solid fa-lock-open mr-1"></i> Unlock Platform
+        <button class="btn btn-primary w-full bg-gradient-to-r from-brand-primary to-indigo-600 shadow-[0_4px_15px_rgba(135,77,255,0.25)] font-bold py-3.5 text-sm mt-4" type="submit" id="btn-auth-submit">
+          <i class="fa-solid fa-user-plus mr-1"></i> Create Account
         </button>
       </form>
     </div>
