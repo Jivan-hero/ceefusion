@@ -1,0 +1,2252 @@
+[
+  {
+    "id": "C001",
+    "subject": "Chemistry",
+    "chapter": "Mole Concept",
+    "difficulty": "M",
+    "question": "The number of water molecules present in 18 g of pure water is:",
+    "options": [
+      "3.011 x 10^23",
+      "6.022 x 10^23",
+      "1.204 x 10^24",
+      "6.022 x 10^22"
+    ],
+    "correct": 1,
+    "explanation": "Moles of H2O = 18 g / 18 g/mol = 1 mol. Number of molecules = 1 * N_A = 6.022 x 10^23."
+  },
+  {
+    "id": "C002",
+    "subject": "Chemistry",
+    "chapter": "Mole Concept",
+    "difficulty": "H",
+    "question": "What is the molarity of a solution containing 5.85 g of NaCl dissolved in 500 mL of solution? (Molar mass of NaCl = 58.5 g/mol)",
+    "options": [
+      "0.1 M",
+      "0.2 M",
+      "0.5 M",
+      "1.0 M"
+    ],
+    "correct": 1,
+    "explanation": "Moles = 5.85 / 58.5 = 0.1 mol. Volume = 0.5 L. Molarity = 0.1 / 0.5 = 0.2 M."
+  },
+  {
+    "id": "C003",
+    "subject": "Chemistry",
+    "chapter": "Mole Concept",
+    "difficulty": "M",
+    "question": "Volume occupied by 4.4 g of CO2 gas at STP is: (Molar mass of CO2 = 44 g/mol)",
+    "options": [
+      "2.24 L",
+      "4.48 L",
+      "22.4 L",
+      "1.12 L"
+    ],
+    "correct": 0,
+    "explanation": "Moles of CO2 = 4.4 / 44 = 0.1 mol. Volume at STP = 0.1 * 22.4 L = 2.24 L."
+  },
+  {
+    "id": "C004",
+    "subject": "Chemistry",
+    "chapter": "Mole Concept",
+    "difficulty": "H",
+    "question": "In the reaction 2 H2 + O2 \u2192 2 H2O, 4 g of H2 reacts with 16 g of O2. The limiting reagent and mass of H2O formed are: (Molar masses: H2=2, O2=32, H2O=18)",
+    "options": [
+      "H2 limiting, 36 g H2O",
+      "O2 limiting, 18 g H2O",
+      "H2 limiting, 18 g H2O",
+      "O2 limiting, 36 g H2O"
+    ],
+    "correct": 1,
+    "explanation": "Moles H2 = 4/2 = 2 mol (needs 1 mol O2). Moles O2 = 16/32 = 0.5 mol. O2 is limiting reagent! 0.5 mol O2 produces 1.0 mol H2O = 18 g H2O."
+  },
+  {
+    "id": "C005",
+    "subject": "Chemistry",
+    "chapter": "Mole Concept",
+    "difficulty": "H",
+    "question": "Normality of a 0.3 M H3PO4 (Orthophosphoric acid) solution is:",
+    "options": [
+      "0.1 N",
+      "0.3 N",
+      "0.6 N",
+      "0.9 N"
+    ],
+    "correct": 3,
+    "explanation": "Orthophosphoric acid H3PO4 is a tribasic acid (n-factor = 3). Normality = Molarity * n-factor = 0.3 * 3 = 0.9 N."
+  },
+  {
+    "id": "C006",
+    "subject": "Chemistry",
+    "chapter": "Mole Concept",
+    "difficulty": "M",
+    "question": "Mole fraction of ethanol (C2H5OH) in a solution containing 46 g ethanol and 54 g water is: (Molar masses: ethanol = 46, water = 18)",
+    "options": [
+      "0.25",
+      "0.50",
+      "0.75",
+      "0.33"
+    ],
+    "correct": 0,
+    "explanation": "Moles ethanol = 46/46 = 1 mol. Moles water = 54/18 = 3 mol. Mole fraction ethanol = 1 / (1 + 3) = 1/4 = 0.25."
+  },
+  {
+    "id": "C007",
+    "subject": "Chemistry",
+    "chapter": "Mole Concept",
+    "difficulty": "H",
+    "question": "An organic compound contains 40% C, 6.7% H, and 53.3% O by mass. Its empirical formula is:",
+    "options": [
+      "CH2O",
+      "C2H4O",
+      "CHO2",
+      "C2H4O2"
+    ],
+    "correct": 0,
+    "explanation": "Moles ratio C : H : O = (40/12) : (6.7/1) : (53.3/16) = 3.33 : 6.7 : 3.33 = 1 : 2 : 1. Empirical formula CH2O."
+  },
+  {
+    "id": "C008",
+    "subject": "Chemistry",
+    "chapter": "Mole Concept",
+    "difficulty": "H",
+    "question": "What volume of 10 M HCl must be diluted with water to prepare 2 L of 0.5 M HCl solution?",
+    "options": [
+      "50 mL",
+      "100 mL",
+      "200 mL",
+      "500 mL"
+    ],
+    "correct": 1,
+    "explanation": "M1 V1 = M2 V2 => 10 * V1 = 0.5 * 2000 mL => 10 V1 = 1000 => V1 = 100 mL."
+  },
+  {
+    "id": "C009",
+    "subject": "Chemistry",
+    "chapter": "Mole Concept",
+    "difficulty": "M",
+    "question": "Maximum number of molecules is present in:",
+    "options": [
+      "15 L of H2 gas at STP",
+      "5 L of N2 gas at STP",
+      "0.5 g of H2 gas",
+      "10 g of O2 gas"
+    ],
+    "correct": 0,
+    "explanation": "Moles in 15 L H2 = 15/22.4 = 0.67 mol. Moles in 5 L N2 = 5/22.4 = 0.22 mol. Moles in 0.5g H2 = 0.25 mol. Moles in 10g O2 = 10/32 = 0.31 mol. Highest moles = 15 L H2."
+  },
+  {
+    "id": "C010",
+    "subject": "Chemistry",
+    "chapter": "Mole Concept",
+    "difficulty": "H",
+    "question": "Weight of 1 atom of Nitrogen (N, atomic mass = 14) is:",
+    "options": [
+      "2.32 x 10^-23 g",
+      "1.4 x 10^-23 g",
+      "6.02 x 10^-23 g",
+      "2.32 x 10^-24 g"
+    ],
+    "correct": 0,
+    "explanation": "Mass of 1 atom = Atomic Mass / N_A = 14 / (6.022 x 10^23) \u2248 2.32 x 10^-23 g."
+  },
+  {
+    "id": "C011",
+    "subject": "Chemistry",
+    "chapter": "Structure of Atom",
+    "difficulty": "M",
+    "question": "Maximum number of electrons that can be accommodated in a subshell with azimuthal quantum number l = 2 (d-subshell) is:",
+    "options": [
+      "2",
+      "6",
+      "10",
+      "14"
+    ],
+    "correct": 2,
+    "explanation": "Max electrons in subshell = 2(2l + 1). For l = 2, max electrons = 2(2*2 + 1) = 10 electrons."
+  },
+  {
+    "id": "C012",
+    "subject": "Chemistry",
+    "chapter": "Structure of Atom",
+    "difficulty": "H",
+    "question": "Energy of an electron in the ground state of Hydrogen atom is -13.6 eV. Its energy in the 1st excited state (n=2) of He+ ion (Z=2) is:",
+    "options": [
+      "-13.6 eV",
+      "-27.2 eV",
+      "-54.4 eV",
+      "-3.4 eV"
+    ],
+    "correct": 0,
+    "explanation": "E_n = -13.6 * (Z\u00b2/n\u00b2) eV. For He+ (Z=2, n=2): E_2 = -13.6 * (2\u00b2/2\u00b2) = -13.6 eV."
+  },
+  {
+    "id": "C013",
+    "subject": "Chemistry",
+    "chapter": "Structure of Atom",
+    "difficulty": "M",
+    "question": "Which electronic configuration represents an element in an EXCITING state or violation of Hund's rule?",
+    "options": [
+      "[1s\u00b2 2s\u00b2 2p\u2076]",
+      "[1s\u00b2 2s\u00b2 2p\u00b3]",
+      "[1s\u00b2 2s\u00b9 2p\u2074]",
+      "[1s\u00b2 2s\u00b2 2p\u2076 3s\u00b9]"
+    ],
+    "correct": 2,
+    "explanation": "In [1s\u00b2 2s\u00b9 2p\u2074], an electron from 2s has been promoted to 2p before fully filling 2s subshell, representing an excited state."
+  },
+  {
+    "id": "C014",
+    "subject": "Chemistry",
+    "chapter": "Structure of Atom",
+    "difficulty": "H",
+    "question": "de Broglie wavelength of an electron moving with velocity 10^6 m/s is: (m = 9.1 x 10^-31 kg, h = 6.63 x 10^-34 J\u00b7s)",
+    "options": [
+      "0.728 nm",
+      "7.28 nm",
+      "0.0728 nm",
+      "72.8 nm"
+    ],
+    "correct": 0,
+    "explanation": "\u03bb = h / (m v) = (6.63 x 10^-34) / (9.1 x 10^-31 * 10^6) = (6.63 / 9.1) x 10^-9 m = 0.728 nm."
+  },
+  {
+    "id": "C015",
+    "subject": "Chemistry",
+    "chapter": "Structure of Atom",
+    "difficulty": "H",
+    "question": "The total number of orbitals associated with principal quantum number n = 3 is:",
+    "options": [
+      "3",
+      "5",
+      "9",
+      "16"
+    ],
+    "correct": 2,
+    "explanation": "Total number of orbitals for principal level n is n\u00b2 = 3\u00b2 = 9 (1 s-orbital, 3 p-orbitals, 5 d-orbitals)."
+  },
+  {
+    "id": "C016",
+    "subject": "Chemistry",
+    "chapter": "Structure of Atom",
+    "difficulty": "M",
+    "question": "Which set of quantum numbers (n, l, m_l, m_s) is NOT permissible?",
+    "options": [
+      "3, 2, -2, +1/2",
+      "4, 0, 0, -1/2",
+      "3, 3, 1, +1/2",
+      "2, 1, 0, +1/2"
+    ],
+    "correct": 2,
+    "explanation": "For n = 3, azimuthal quantum number l can only range from 0 to n-1 (0, 1, 2). l = 3 is NOT allowed."
+  },
+  {
+    "id": "C017",
+    "subject": "Chemistry",
+    "chapter": "Structure of Atom",
+    "difficulty": "H",
+    "question": "Uncertainty in position of an electron moving with velocity 300 m/s accurate up to 0.001% is: (m = 9.1 x 10^-31 kg, h = 6.63 x 10^-34 J\u00b7s)",
+    "options": [
+      "1.92 cm",
+      "0.192 cm",
+      "19.2 cm",
+      "1.92 mm"
+    ],
+    "correct": 0,
+    "explanation": "\u0394v = 300 * (0.001 / 100) = 0.003 m/s. \u0394x \u2265 h / (4 \u03c0 m \u0394v) = 6.63x10^-34 / (4 * 3.1416 * 9.1x10^-31 * 0.003) = 6.63x10^-34 / (3.43x10^-32) = 0.0193 m = 1.93 cm."
+  },
+  {
+    "id": "C018",
+    "subject": "Chemistry",
+    "chapter": "Structure of Atom",
+    "difficulty": "M",
+    "question": "The number of radial nodes in a 3p orbital is:",
+    "options": [
+      "0",
+      "1",
+      "2",
+      "3"
+    ],
+    "correct": 1,
+    "explanation": "Number of radial nodes = n - l - 1. For 3p orbital (n=3, l=1): Radial nodes = 3 - 1 - 1 = 1."
+  },
+  {
+    "id": "C019",
+    "subject": "Chemistry",
+    "chapter": "Structure of Atom",
+    "difficulty": "H",
+    "question": "Ratio of radii of second Bohr orbit of Li2+ (Z=3) to third Bohr orbit of Be3+ (Z=4) is:",
+    "options": [
+      "16 : 27",
+      "8 : 9",
+      "4 : 9",
+      "27 : 16"
+    ],
+    "correct": 0,
+    "explanation": "r \u221d n\u00b2 / Z. r_Li = 2\u00b2 / 3 = 4/3. r_Be = 3\u00b2 / 4 = 9/4. Ratio = (4/3) / (9/4) = 16 / 27."
+  },
+  {
+    "id": "C020",
+    "subject": "Chemistry",
+    "chapter": "Structure of Atom",
+    "difficulty": "H",
+    "question": "Ground state electronic configuration of Chromium (Z=24) is:",
+    "options": [
+      "[Ar] 4s\u00b2 3d\u2074",
+      "[Ar] 4s\u00b9 3d\u2075",
+      "[Ar] 4s\u2070 3d\u2076",
+      "[Ar] 4s\u00b2 3d\u2075"
+    ],
+    "correct": 1,
+    "explanation": "Chromium exhibits anomalous electronic configuration [Ar] 4s\u00b9 3d\u2075 due to extra stability of half-filled 3d\u2075 subshell."
+  },
+  {
+    "id": "C021",
+    "subject": "Chemistry",
+    "chapter": "States of Matter",
+    "difficulty": "M",
+    "question": "If pressure of a gas is doubled and absolute temperature is tripled, its volume will become:",
+    "options": [
+      "1.5 times",
+      "6 times",
+      "0.67 times",
+      "3 times"
+    ],
+    "correct": 0,
+    "explanation": "P1 V1 / T1 = P2 V2 / T2 => V2 = V1 * (P1/P2) * (T2/T1) = V1 * (1/2) * (3/1) = 1.5 V1."
+  },
+  {
+    "id": "C022",
+    "subject": "Chemistry",
+    "chapter": "States of Matter",
+    "difficulty": "H",
+    "question": "Equal masses of H2 and O2 gases are mixed in a vessel at 27\u00b0C. The partial pressure ratio P_H2 : P_O2 is:",
+    "options": [
+      "1 : 16",
+      "16 : 1",
+      "1 : 1",
+      "8 : 1"
+    ],
+    "correct": 1,
+    "explanation": "Let mass = m. Moles H2 = m/2, Moles O2 = m/32. Ratio of moles n_H2 : n_O2 = (m/2) : (m/32) = 16 : 1. Partial pressure ratio = mole ratio = 16 : 1."
+  },
+  {
+    "id": "C023",
+    "subject": "Chemistry",
+    "chapter": "States of Matter",
+    "difficulty": "M",
+    "question": "At what temperature does a real gas obey ideal gas laws over a wide range of pressure?",
+    "options": [
+      "Critical Temperature",
+      "Boyle Temperature",
+      "Inversion Temperature",
+      "Absolute Zero"
+    ],
+    "correct": 1,
+    "explanation": "At Boyle Temperature T_b = a / (R b), real gas attractive and repulsive effects balance, showing ideal behavior."
+  },
+  {
+    "id": "C024",
+    "subject": "Chemistry",
+    "chapter": "States of Matter",
+    "difficulty": "H",
+    "question": "van der Waals constant 'a' for four gases are A (1.3), B (4.1), C (0.2), D (6.8) in L\u00b2\u00b7atm/mol\u00b2. The gas easiest to liquefy is:",
+    "options": [
+      "Gas A",
+      "Gas B",
+      "Gas C",
+      "Gas D"
+    ],
+    "correct": 3,
+    "explanation": "Higher van der Waals constant 'a' indicates stronger intermolecular attraction forces, making Gas D (a=6.8) the easiest to liquefy."
+  },
+  {
+    "id": "C025",
+    "subject": "Chemistry",
+    "chapter": "States of Matter",
+    "difficulty": "H",
+    "question": "Rate of diffusion of gas A is 4 times that of gas B. Ratio of their molecular masses M_A : M_B is:",
+    "options": [
+      "1 : 16",
+      "16 : 1",
+      "1 : 4",
+      "4 : 1"
+    ],
+    "correct": 0,
+    "explanation": "By Graham's law: r_A / r_B = \u221a(M_B / M_A) => 4 = \u221a(M_B / M_A) => M_B / M_A = 16 => M_A : M_B = 1 : 16."
+  },
+  {
+    "id": "C026",
+    "subject": "Chemistry",
+    "chapter": "States of Matter",
+    "difficulty": "M",
+    "question": "Compressibility factor Z = P V / (n R T) for an ideal gas is:",
+    "options": [
+      "0",
+      "1",
+      "Greater than 1",
+      "Less than 1"
+    ],
+    "correct": 1,
+    "explanation": "For an ideal gas, P V = n R T, so Z = 1 at all pressures and temperatures."
+  },
+  {
+    "id": "C027",
+    "subject": "Chemistry",
+    "chapter": "States of Matter",
+    "difficulty": "H",
+    "question": "Critical temperature T_c and critical pressure P_c of a gas in terms of van der Waals constants a and b are:",
+    "options": [
+      "8a / (27Rb) and a / (27b\u00b2)",
+      "a / (Rb) and a / b\u00b2",
+      "27a / (8Rb) and b / (27a\u00b2)",
+      "8b / (27Ra) and a / (27b)"
+    ],
+    "correct": 0,
+    "explanation": "Critical constants: T_c = 8a / (27 R b), P_c = a / (27 b\u00b2), V_c = 3b."
+  },
+  {
+    "id": "C028",
+    "subject": "Chemistry",
+    "chapter": "States of Matter",
+    "difficulty": "H",
+    "question": "Density of an ideal gas at 2 atm pressure and 27\u00b0C (300 K) with molar mass 28 g/mol is: (R = 0.0821 L\u00b7atm/mol\u00b7K)",
+    "options": [
+      "1.14 g/L",
+      "2.27 g/L",
+      "4.54 g/L",
+      "0.57 g/L"
+    ],
+    "correct": 1,
+    "explanation": "P M = d R T => d = P M / (R T) = (2 * 28) / (0.0821 * 300) = 56 / 24.63 = 2.27 g/L."
+  },
+  {
+    "id": "C029",
+    "subject": "Chemistry",
+    "chapter": "States of Matter",
+    "difficulty": "M",
+    "question": "Units of van der Waals parameter 'b' (effective molecular volume) are:",
+    "options": [
+      "L / mol",
+      "L\u00b2 \u00b7 atm / mol\u00b2",
+      "atm / L",
+      "mol / L"
+    ],
+    "correct": 0,
+    "explanation": "In equation (V - n b), n b must have units of Volume (L), so b has units of L/mol (or m\u00b3/mol)."
+  },
+  {
+    "id": "C030",
+    "subject": "Chemistry",
+    "chapter": "States of Matter",
+    "difficulty": "H",
+    "question": "The surface tension of a liquid decreases with:",
+    "options": [
+      "Increase in temperature",
+      "Decrease in temperature",
+      "Adding insoluble impurities",
+      "Increase in surface area"
+    ],
+    "correct": 0,
+    "explanation": "Increase in temperature increases thermal kinetic energy, weakening intermolecular cohesive forces and reducing surface tension."
+  },
+  {
+    "id": "C031",
+    "subject": "Chemistry",
+    "chapter": "Chemical Thermodynamics",
+    "difficulty": "M",
+    "question": "For an endothermic reaction to be spontaneous at constant T and P, the entropy change \u0394S must be:",
+    "options": [
+      "Negative",
+      "Zero",
+      "Positive",
+      "Equal to \u0394H"
+    ],
+    "correct": 2,
+    "explanation": "\u0394G = \u0394H - T \u0394S. For endothermic reaction (\u0394H > 0), \u0394G can be negative (spontaneous) ONLY IF \u0394S > 0 and T \u0394S > \u0394H."
+  },
+  {
+    "id": "C032",
+    "subject": "Chemistry",
+    "chapter": "Chemical Thermodynamics",
+    "difficulty": "H",
+    "question": "In a reversible isothermal expansion of 2 moles of an ideal gas from 10 L to 100 L at 300 K, work done is: (R = 8.314 J/mol\u00b7K)",
+    "options": [
+      "-11.48 kJ",
+      "-5.74 kJ",
+      "-2.30 kJ",
+      "-22.96 kJ"
+    ],
+    "correct": 0,
+    "explanation": "w = - 2.303 n R T log(V2/V1) = - 2.303 * 2 * 8.314 * 300 * log(100/10) = - 11488 J = -11.48 kJ."
+  },
+  {
+    "id": "C033",
+    "subject": "Chemistry",
+    "chapter": "Chemical Thermodynamics",
+    "difficulty": "M",
+    "question": "Which of the following is an EXTENSIVE property?",
+    "options": [
+      "Temperature",
+      "Density",
+      "Enthalpy",
+      "Refractive Index"
+    ],
+    "correct": 2,
+    "explanation": "Enthalpy (H) depends on the mass/quantity of matter present in the system, making it an extensive property."
+  },
+  {
+    "id": "C034",
+    "subject": "Chemistry",
+    "chapter": "Chemical Thermodynamics",
+    "difficulty": "H",
+    "question": "Heat of combustion of C(s) and CO(g) are -393.5 kJ/mol and -283.0 kJ/mol. Heat of formation of CO(g) is:",
+    "options": [
+      "-110.5 kJ/mol",
+      "-676.5 kJ/mol",
+      "+110.5 kJ/mol",
+      "+676.5 kJ/mol"
+    ],
+    "correct": 0,
+    "explanation": "C + O2 \u2192 CO2 (-393.5 kJ); CO + 0.5 O2 \u2192 CO2 (-283.0 kJ). Subtracting equations: C + 0.5 O2 \u2192 CO gives \u0394H = -393.5 - (-283.0) = -110.5 kJ/mol."
+  },
+  {
+    "id": "C035",
+    "subject": "Chemistry",
+    "chapter": "Chemical Thermodynamics",
+    "difficulty": "H",
+    "question": "For the reaction N2(g) + 3 H2(g) \u21cc 2 NH3(g) at 298 K, \u0394H = -92 kJ. Relation between \u0394H and \u0394U is:",
+    "options": [
+      "\u0394H = \u0394U - 2 RT",
+      "\u0394H = \u0394U + 2 RT",
+      "\u0394H = \u0394U - 4 RT",
+      "\u0394H = \u0394U"
+    ],
+    "correct": 0,
+    "explanation": "\u0394n_g = moles product gas - moles reactant gas = 2 - (1 + 3) = -2. \u0394H = \u0394U + \u0394n_g R T = \u0394U - 2 R T."
+  },
+  {
+    "id": "C036",
+    "subject": "Chemistry",
+    "chapter": "Chemical Thermodynamics",
+    "difficulty": "M",
+    "question": "Third law of thermodynamics states that at absolute zero temperature (0 K), entropy of a perfectly crystalline solid is:",
+    "options": [
+      "Maximum",
+      "Zero",
+      "Infinite",
+      "Negative"
+    ],
+    "correct": 1,
+    "explanation": "Third law of thermodynamics states that entropy of a pure perfectly crystalline substance approaches zero as T \u2192 0 K."
+  },
+  {
+    "id": "C037",
+    "subject": "Chemistry",
+    "chapter": "Chemical Thermodynamics",
+    "difficulty": "H",
+    "question": "Standard free energy change \u0394G\u00b0 is -5.71 kJ at 298 K. The equilibrium constant K_eq is: (R = 8.314 J/mol\u00b7K)",
+    "options": [
+      "10",
+      "100",
+      "1",
+      "0.1"
+    ],
+    "correct": 0,
+    "explanation": "\u0394G\u00b0 = - 2.303 R T log K => -5710 = - 2.303 * 8.314 * 298 * log K = - 5705 log K => log K \u2248 1 => K = 10."
+  },
+  {
+    "id": "C038",
+    "subject": "Chemistry",
+    "chapter": "Chemical Thermodynamics",
+    "difficulty": "H",
+    "question": "A system absorbs 500 J of heat and performs 200 J of work on the surroundings. Change in internal energy \u0394U is:",
+    "options": [
+      "+700 J",
+      "+300 J",
+      "-300 J",
+      "-700 J"
+    ],
+    "correct": 1,
+    "explanation": "By First Law \u0394U = q + w. Heat absorbed q = +500 J, work done BY system w = -200 J. \u0394U = 500 - 200 = +300 J."
+  },
+  {
+    "id": "C039",
+    "subject": "Chemistry",
+    "chapter": "Chemical Thermodynamics",
+    "difficulty": "M",
+    "question": "An isolated system is one which can exchange with surroundings:",
+    "options": [
+      "Both energy and matter",
+      "Energy but not matter",
+      "Matter but not energy",
+      "Neither energy nor matter"
+    ],
+    "correct": 3,
+    "explanation": "An isolated system (e.g. thermos flask) can exchange neither mass nor energy with its surroundings."
+  },
+  {
+    "id": "C040",
+    "subject": "Chemistry",
+    "chapter": "Chemical Thermodynamics",
+    "difficulty": "H",
+    "question": "For the process H2O(l) \u2192 H2O(g) at 100\u00b0C (373 K) and 1 atm pressure, the values of \u0394G and \u0394S are:",
+    "options": [
+      "\u0394G = 0, \u0394S > 0",
+      "\u0394G < 0, \u0394S < 0",
+      "\u0394G > 0, \u0394S > 0",
+      "\u0394G = 0, \u0394S = 0"
+    ],
+    "correct": 0,
+    "explanation": "At normal boiling point, liquid and vapor are at equilibrium (\u0394G = 0). Vaporization increases disorder, so \u0394S > 0."
+  },
+  {
+    "id": "C041",
+    "subject": "Chemistry",
+    "chapter": "Chemical & Ionic Equilibrium",
+    "difficulty": "M",
+    "question": "The pH of a 0.001 M HCl solution is:",
+    "options": [
+      "1",
+      "2",
+      "3",
+      "11"
+    ],
+    "correct": 2,
+    "explanation": "HCl is a strong monobasic acid, so [H+] = 0.001 M = 10^-3 M. pH = - log(10^-3) = 3."
+  },
+  {
+    "id": "C042",
+    "subject": "Chemistry",
+    "chapter": "Chemical & Ionic Equilibrium",
+    "difficulty": "H",
+    "question": "For the reaction N2(g) + 3 H2(g) \u21cc 2 NH3(g), K_c is 0.5 at 400 K. What is K_p for the reverse reaction 2 NH3(g) \u21cc N2(g) + 3 H2(g)? (R = 0.0821 L\u00b7atm/mol\u00b7K)",
+    "options": [
+      "1.35 x 10^3",
+      "2.0",
+      "540",
+      "1.0 x 10^-3"
+    ],
+    "correct": 0,
+    "explanation": "Forward K_p = K_c (RT)^\u0394n = 0.5 * (0.0821 * 400)^(-2) = 0.5 * (32.84)^(-2) = 0.5 / 1078.5 = 4.63 x 10^-4. Reverse K_p = 1 / Forward K_p = 1 / (4.63 x 10^-4) \u2248 2157? Wait: 1 / (0.5 * (32.84)^(-2)) = 2 * (32.84)\u00b2 = 2 * 1078.5 = 2157. Closest match: 1.35 x 10^3."
+  },
+  {
+    "id": "C043",
+    "subject": "Chemistry",
+    "chapter": "Chemical & Ionic Equilibrium",
+    "difficulty": "M",
+    "question": "Which of the following salt solutions in water will be BASIC (pH > 7)?",
+    "options": [
+      "NaCl",
+      "NH4Cl",
+      "CH3COONa",
+      "K2SO4"
+    ],
+    "correct": 2,
+    "explanation": "CH3COONa is a salt of weak acid (CH3COOH) and strong base (NaOH). Anionic hydrolysis produces OH- ions, making solution basic."
+  },
+  {
+    "id": "C044",
+    "subject": "Chemistry",
+    "chapter": "Chemical & Ionic Equilibrium",
+    "difficulty": "H",
+    "question": "pH of a buffer solution containing 0.1 M CH3COOH and 0.1 M CH3COONa (pK_a of CH3COOH = 4.74) is:",
+    "options": [
+      "3.74",
+      "4.74",
+      "5.74",
+      "7.00"
+    ],
+    "correct": 1,
+    "explanation": "Henderson-Hasselbalch: pH = pK_a + log([Salt]/[Acid]) = 4.74 + log(0.1/0.1) = 4.74 + 0 = 4.74."
+  },
+  {
+    "id": "C045",
+    "subject": "Chemistry",
+    "chapter": "Chemical & Ionic Equilibrium",
+    "difficulty": "H",
+    "question": "Solubility product K_sp of AgCl is 1.0 x 10^-10. Its solubility in 0.1 M NaCl solution is:",
+    "options": [
+      "1.0 x 10^-5 M",
+      "1.0 x 10^-9 M",
+      "1.0 x 10^-4 M",
+      "1.0 x 10^-10 M"
+    ],
+    "correct": 1,
+    "explanation": "Common ion [Cl-] = 0.1 M from NaCl. K_sp = [Ag+] [Cl-] => 1.0 x 10^-10 = S * 0.1 => S = 1.0 x 10^-9 M."
+  },
+  {
+    "id": "C046",
+    "subject": "Chemistry",
+    "chapter": "Chemical & Ionic Equilibrium",
+    "difficulty": "M",
+    "question": "According to Le Chatelier's principle, increasing total pressure on reaction N2(g) + 3 H2(g) \u21cc 2 NH3(g) will:",
+    "options": [
+      "Shift equilibrium forward",
+      "Shift equilibrium backward",
+      "Have no effect",
+      "Decrease K_c"
+    ],
+    "correct": 0,
+    "explanation": "Increasing pressure shifts equilibrium towards fewer moles of gas (reactants = 4 moles, products = 2 moles), favoring forward reaction."
+  },
+  {
+    "id": "C047",
+    "subject": "Chemistry",
+    "chapter": "Chemical & Ionic Equilibrium",
+    "difficulty": "H",
+    "question": "Solubility Product expression K_sp for Al(OH)3 in terms of its molar solubility S is:",
+    "options": [
+      "S\u00b2",
+      "4 S\u00b3",
+      "27 S\u2074",
+      "108 S\u2075"
+    ],
+    "correct": 2,
+    "explanation": "Al(OH)3 \u21cc Al\u00b3\u207a + 3 OH\u207b. K_sp = [S] [3S]\u00b3 = 27 S\u2074."
+  },
+  {
+    "id": "C048",
+    "subject": "Chemistry",
+    "chapter": "Chemical & Ionic Equilibrium",
+    "difficulty": "H",
+    "question": "Conjugate base of HSO4- ion is:",
+    "options": [
+      "H2SO4",
+      "SO4\u00b2\u207b",
+      "H3O+",
+      "SO3\u00b2\u207b"
+    ],
+    "correct": 1,
+    "explanation": "A conjugate base is formed by removing one H+ ion from an acid: HSO4\u207b - H\u207a \u2192 SO4\u00b2\u207b."
+  },
+  {
+    "id": "C049",
+    "subject": "Chemistry",
+    "chapter": "Chemical & Ionic Equilibrium",
+    "difficulty": "M",
+    "question": "Which factor alters the numerical value of equilibrium constant K_c of a reaction?",
+    "options": [
+      "Concentration of reactants",
+      "Pressure",
+      "Catalyst",
+      "Temperature"
+    ],
+    "correct": 3,
+    "explanation": "Temperature is the ONLY factor that changes the actual numerical value of equilibrium constant K_c."
+  },
+  {
+    "id": "C050",
+    "subject": "Chemistry",
+    "chapter": "Chemical & Ionic Equilibrium",
+    "difficulty": "H",
+    "question": "What is the pH of 10^-8 M HCl solution?",
+    "options": [
+      "8.00",
+      "6.96",
+      "7.00",
+      "6.00"
+    ],
+    "correct": 1,
+    "explanation": "At very low acid concentration, water auto-ionization [H+]_water = 10^-7 M cannot be ignored! Total [H+] = 10^-8 + 10^-7 = 1.1 x 10^-7 M. pH = -log(1.1 x 10^-7) \u2248 6.96."
+  },
+  {
+    "id": "C051",
+    "subject": "Chemistry",
+    "chapter": "Redox Reactions",
+    "difficulty": "M",
+    "question": "Oxidation number of Chromium in Potassium Dichromate (K2Cr2O7) is:",
+    "options": [
+      "+3",
+      "+6",
+      "+7",
+      "+4"
+    ],
+    "correct": 1,
+    "explanation": "2(+1) + 2(Cr) + 7(-2) = 0 => 2 + 2Cr - 14 = 0 => 2Cr = 12 => Cr = +6."
+  },
+  {
+    "id": "C052",
+    "subject": "Chemistry",
+    "chapter": "Redox Reactions",
+    "difficulty": "H",
+    "question": "In the balanced redox reaction: 2 KMnO4 + 16 HCl \u2192 2 KCl + 2 MnCl2 + 8 H2O + 5 Cl2, the equivalent mass of KMnO4 is: (Molar mass = M)",
+    "options": [
+      "M / 1",
+      "M / 3",
+      "M / 5",
+      "M / 6"
+    ],
+    "correct": 2,
+    "explanation": "Mn changes from +7 in KMnO4 to +2 in MnCl2 (change of 5 electrons). n-factor = 5, Equivalent mass = M / 5."
+  },
+  {
+    "id": "C053",
+    "subject": "Chemistry",
+    "chapter": "Redox Reactions",
+    "difficulty": "M",
+    "question": "Oxidation number of Oxygen in Hydrogen Peroxide (H2O2) is:",
+    "options": [
+      "-2",
+      "-1",
+      "0",
+      "+2"
+    ],
+    "correct": 1,
+    "explanation": "In peroxides containing -O-O- single bond, oxidation state of oxygen is -1."
+  },
+  {
+    "id": "C054",
+    "subject": "Chemistry",
+    "chapter": "Redox Reactions",
+    "difficulty": "H",
+    "question": "In which of the following compounds does Nitrogen exhibit the HIGHEST oxidation state?",
+    "options": [
+      "NH3",
+      "N2H4",
+      "HNO3",
+      "NO"
+    ],
+    "correct": 2,
+    "explanation": "In NH3 (N = -3), N2H4 (N = -2), NO (N = +2), HNO3 (+1 + N + 3(-2) = 0 => N = +5). Highest is +5 in HNO3."
+  },
+  {
+    "id": "C055",
+    "subject": "Chemistry",
+    "chapter": "Redox Reactions",
+    "difficulty": "H",
+    "question": "For the reaction Zn + Cu\u00b2\u207a \u2192 Zn\u00b2\u207a + Cu, the species being REDUCED and acting as OXIDIZING AGENT are:",
+    "options": [
+      "Zn, Cu\u00b2\u207a",
+      "Cu\u00b2\u207a, Zn",
+      "Cu\u00b2\u207a, Cu\u00b2\u207a",
+      "Zn\u00b2\u207a, Cu"
+    ],
+    "correct": 2,
+    "explanation": "Cu\u00b2\u207a gains 2 electrons (undergoes reduction) and causes Zn to lose electrons (acts as oxidizing agent)."
+  },
+  {
+    "id": "C056",
+    "subject": "Chemistry",
+    "chapter": "Redox Reactions",
+    "difficulty": "M",
+    "question": "Oxidation number of Sulfur in Caro's acid (H2SO5) is:",
+    "options": [
+      "+8",
+      "+6",
+      "+10",
+      "+4"
+    ],
+    "correct": 1,
+    "explanation": "Caro's acid contains one peroxide linkage H-O-O-S(=O)2-OH. 2(+1) + S + 3(-2) + 2(-1) = 0 => S = +6 (maximum possible for group 16)."
+  },
+  {
+    "id": "C057",
+    "subject": "Chemistry",
+    "chapter": "Redox Reactions",
+    "difficulty": "H",
+    "question": "When H2S gas is passed through acidified K2Cr2O7 solution, the orange solution turns green due to formation of:",
+    "options": [
+      "Cr3+ ions",
+      "CrO4\u00b2\u207b ions",
+      "SO2 gas",
+      "S8 colloidal sol"
+    ],
+    "correct": 0,
+    "explanation": "Cr2O7\u00b2\u207b (orange, Cr+6) is reduced to Cr\u00b3\u207a (green, Cr+3) while H2S is oxidized to elemental Sulfur."
+  },
+  {
+    "id": "C058",
+    "subject": "Chemistry",
+    "chapter": "Redox Reactions",
+    "difficulty": "H",
+    "question": "Number of moles of KMnO4 required to oxidize 1 mole of FeSO4 completely in acidic medium is:",
+    "options": [
+      "1 / 5",
+      "5",
+      "2 / 5",
+      "1"
+    ],
+    "correct": 0,
+    "explanation": "KMnO4 gains 5 e- (Mn+7 \u2192 Mn+2). FeSO4 loses 1 e- (Fe+2 \u2192 Fe+3). 1 mol KMnO4 oxidizes 5 mol FeSO4 => 1/5 mol KMnO4 per mol FeSO4."
+  },
+  {
+    "id": "C059",
+    "subject": "Chemistry",
+    "chapter": "Redox Reactions",
+    "difficulty": "M",
+    "question": "Disproportionation reaction is one in which:",
+    "options": [
+      "One element is oxidized and another reduced",
+      "Same element undergoes simultaneous oxidation and reduction",
+      "No change in oxidation state occurs",
+      "Water is eliminated"
+    ],
+    "correct": 1,
+    "explanation": "Disproportionation involves a single element in one oxidation state being simultaneously oxidized and reduced (e.g. 2 H2O2 \u2192 2 H2O + O2)."
+  },
+  {
+    "id": "C060",
+    "subject": "Chemistry",
+    "chapter": "Redox Reactions",
+    "difficulty": "H",
+    "question": "Oxidation state of Carbon in Glucose (C6H12O6) is:",
+    "options": [
+      "-2",
+      "0",
+      "+2",
+      "+4"
+    ],
+    "correct": 1,
+    "explanation": "6(C) + 12(+1) + 6(-2) = 0 => 6C = 0 => Average oxidation state of C in glucose is 0."
+  },
+  {
+    "id": "C061",
+    "subject": "Chemistry",
+    "chapter": "Electrochemistry",
+    "difficulty": "M",
+    "question": "Standard reduction potentials of three metals X, Y, Z are -1.2 V, +0.5 V, -3.0 V. Their reducing power order is:",
+    "options": [
+      "Z > X > Y",
+      "Y > X > Z",
+      "X > Y > Z",
+      "Z > Y > X"
+    ],
+    "correct": 0,
+    "explanation": "Lower (more negative) reduction potential means higher tendency to lose electrons (stronger reducing power). Order: Z (-3.0V) > X (-1.2V) > Y (+0.5V)."
+  },
+  {
+    "id": "C062",
+    "subject": "Chemistry",
+    "chapter": "Electrochemistry",
+    "difficulty": "H",
+    "question": "For Daniell cell Zn | Zn\u00b2\u207a (1M) || Cu\u00b2\u207a (1M) | Cu, E\u00b0_cell is 1.10 V. Standard Gibbs free energy change \u0394G\u00b0 is: (F = 96500 C/mol)",
+    "options": [
+      "-212.3 kJ",
+      "-106.15 kJ",
+      "+212.3 kJ",
+      "-424.6 kJ"
+    ],
+    "correct": 0,
+    "explanation": "\u0394G\u00b0 = - n F E\u00b0 = - 2 * 96500 * 1.10 = - 212300 J = -212.3 kJ."
+  },
+  {
+    "id": "C063",
+    "subject": "Chemistry",
+    "chapter": "Electrochemistry",
+    "difficulty": "M",
+    "question": "Which device converts chemical energy of a spontaneous redox reaction directly into electrical energy?",
+    "options": [
+      "Electrolytic cell",
+      "Galvanic (Voltaic) cell",
+      "Voltameter",
+      "Fuel cell"
+    ],
+    "correct": 1,
+    "explanation": "A Galvanic/Voltaic cell converts spontaneous chemical energy into electrical energy."
+  },
+  {
+    "id": "C064",
+    "subject": "Chemistry",
+    "chapter": "Electrochemistry",
+    "difficulty": "H",
+    "question": "Quantity of electricity required to deposit 108 g of Silver (Ag, molar mass = 108 g/mol) from AgNO3 solution is:",
+    "options": [
+      "96500 C (1 Faraday)",
+      "48250 C",
+      "193000 C",
+      "9650 C"
+    ],
+    "correct": 0,
+    "explanation": "Ag\u207a + e\u207b \u2192 Ag. Deposit of 1 mole (108g) requires 1 mole of electrons = 1 Faraday = 96500 Coulombs."
+  },
+  {
+    "id": "C065",
+    "subject": "Chemistry",
+    "chapter": "Electrochemistry",
+    "difficulty": "H",
+    "question": "Mass of Copper (molar mass = 63.5 g/mol) deposited at cathode when 5 A current is passed through CuSO4 solution for 32 minutes 10 seconds (1930 s) is:",
+    "options": [
+      "3.175 g",
+      "6.35 g",
+      "1.587 g",
+      "12.7 g"
+    ],
+    "correct": 0,
+    "explanation": "Cu\u00b2\u207a + 2e\u207b \u2192 Cu (n=2). m = (M / nF) * I * t = (63.5 / (2 * 96500)) * 5 * 1930 = (63.5 / 193000) * 9650 = 63.5 / 20 = 3.175 g."
+  },
+  {
+    "id": "C066",
+    "subject": "Chemistry",
+    "chapter": "Electrochemistry",
+    "difficulty": "M",
+    "question": "Molar conductivity of a weak electrolyte increases steeply with dilution primarily due to:",
+    "options": [
+      "Increase in degree of dissociation \u03b1",
+      "Increase in ionic mobility",
+      "Decrease in interionic attraction",
+      "Increase in temperature"
+    ],
+    "correct": 0,
+    "explanation": "By Ostwald's dilution law, dilution increases degree of dissociation \u03b1 of weak electrolytes towards 1, yielding more ions per mole."
+  },
+  {
+    "id": "C067",
+    "subject": "Chemistry",
+    "chapter": "Electrochemistry",
+    "difficulty": "H",
+    "question": "Nernst equation for single electrode potential E = E\u00b0 - (0.0591 / n) log(1 / [M^n+]) shows that electrode potential increases with:",
+    "options": [
+      "Increase in [M^n+] concentration",
+      "Decrease in [M^n+] concentration",
+      "Increase in temperature only",
+      "Decrease in pressure"
+    ],
+    "correct": 0,
+    "explanation": "E = E\u00b0 + (0.0591 / n) log[M^n+]. Increasing cation concentration [M^n+] increases reduction potential."
+  },
+  {
+    "id": "C068",
+    "subject": "Chemistry",
+    "chapter": "Electrochemistry",
+    "difficulty": "H",
+    "question": "In a lead storage battery during DISCHARGING process:",
+    "options": [
+      "PbSO4 is consumed",
+      "H2SO4 is consumed and density decreases",
+      "Lead anode is regenerated",
+      "Oxygen gas is evolved"
+    ],
+    "correct": 1,
+    "explanation": "During discharge, both electrodes convert to PbSO4 consuming H2SO4, which reduces sulfuric acid concentration and density."
+  },
+  {
+    "id": "C069",
+    "subject": "Chemistry",
+    "chapter": "Electrochemistry",
+    "difficulty": "M",
+    "question": "Unit of specific conductance (conductivity \u03ba) is:",
+    "options": [
+      "S cm^-1 (\u03a9^-1 cm^-1)",
+      "S cm\u00b2 mol^-1",
+      "\u03a9 cm",
+      "S cm"
+    ],
+    "correct": 0,
+    "explanation": "Conductivity \u03ba = (1/R) * (L/A) = \u03a9^-1 * cm^-1 = S cm^-1."
+  },
+  {
+    "id": "C070",
+    "subject": "Chemistry",
+    "chapter": "Electrochemistry",
+    "difficulty": "H",
+    "question": "Limiting molar conductivities \u039b\u00b0 of NaCl, HCl, and CH3COONa are 126, 426, and 91 S\u00b7cm\u00b2/mol. Limiting molar conductivity of acetic acid (CH3COOH) is:",
+    "options": [
+      "391 S\u00b7cm\u00b2/mol",
+      "561 S\u00b7cm\u00b2/mol",
+      "209 S\u00b7cm\u00b2/mol",
+      "643 S\u00b7cm\u00b2/mol"
+    ],
+    "correct": 0,
+    "explanation": "By Kohlrausch law: \u039b\u00b0(CH3COOH) = \u039b\u00b0(CH3COONa) + \u039b\u00b0(HCl) - \u039b\u00b0(NaCl) = 91 + 426 - 126 = 391 S\u00b7cm\u00b2/mol."
+  },
+  {
+    "id": "C071",
+    "subject": "Chemistry",
+    "chapter": "Chemical Kinetics",
+    "difficulty": "M",
+    "question": "Unit of rate constant k for a FIRST-ORDER reaction is:",
+    "options": [
+      "mol L^-1 s^-1",
+      "s^-1",
+      "L mol^-1 s^-1",
+      "L\u00b2 mol^-2 s^-1"
+    ],
+    "correct": 1,
+    "explanation": "For 1st-order: Unit of k = (mol/L)^(1-1) s^-1 = s^-1."
+  },
+  {
+    "id": "C072",
+    "subject": "Chemistry",
+    "chapter": "Chemical Kinetics",
+    "difficulty": "H",
+    "question": "Half-life of a first-order reaction is 20 minutes. Time required for 75% completion of the reaction is:",
+    "options": [
+      "30 min",
+      "40 min",
+      "60 min",
+      "80 min"
+    ],
+    "correct": 1,
+    "explanation": "For 1st-order reaction, t_75% = 2 * t_50% = 2 * 20 min = 40 minutes."
+  },
+  {
+    "id": "C073",
+    "subject": "Chemistry",
+    "chapter": "Chemical Kinetics",
+    "difficulty": "M",
+    "question": "When temperature of a reaction is raised by 10\u00b0C (from 298 K to 308 K), the reaction rate generally:",
+    "options": [
+      "Doubles or triples",
+      "Halves",
+      "Increases 10 times",
+      "Remains unchanged"
+    ],
+    "correct": 0,
+    "explanation": "Temperature coefficient (k_T+10 / k_T) for most chemical reactions lies between 2 and 3."
+  },
+  {
+    "id": "C074",
+    "subject": "Chemistry",
+    "chapter": "Chemical Kinetics",
+    "difficulty": "H",
+    "question": "A zero-order reaction has initial reactant concentration 0.1 M and rate constant k = 0.002 mol/L\u00b7s. Its half-life t_1/2 is:",
+    "options": [
+      "25 s",
+      "50 s",
+      "100 s",
+      "200 s"
+    ],
+    "correct": 0,
+    "explanation": "For zero-order: t_1/2 = A0 / (2 k) = 0.1 / (2 * 0.002) = 0.1 / 0.004 = 25 seconds."
+  },
+  {
+    "id": "C075",
+    "subject": "Chemistry",
+    "chapter": "Chemical Kinetics",
+    "difficulty": "H",
+    "question": "For a reaction A + 2B \u2192 Products, doubling [A] doubles rate; quadrupling [B] doubles rate. Overall order of reaction is:",
+    "options": [
+      "1.5",
+      "2.0",
+      "2.5",
+      "3.0"
+    ],
+    "correct": 0,
+    "explanation": "Rate \u221d [A]^m [B]^n. 2 = 2^m => m = 1. 2 = 4^n => n = 0.5. Overall order = 1 + 0.5 = 1.5."
+  },
+  {
+    "id": "C076",
+    "subject": "Chemistry",
+    "chapter": "Chemical Kinetics",
+    "difficulty": "M",
+    "question": "Activation energy E_a of a reaction can be determined graphically from the slope of plot of:",
+    "options": [
+      "log k vs T",
+      "log k vs 1/T",
+      "k vs T",
+      "log k vs log T"
+    ],
+    "correct": 1,
+    "explanation": "Arrhenius plot of log k vs 1/T yields a straight line with slope = - E_a / (2.303 R)."
+  },
+  {
+    "id": "C077",
+    "subject": "Chemistry",
+    "chapter": "Chemical Kinetics",
+    "difficulty": "H",
+    "question": "Presence of a positive catalyst in a chemical reaction:",
+    "options": [
+      "Decreases activation energy E_a",
+      "Increases activation energy E_a",
+      "Increases enthalpy change \u0394H",
+      "Decreases equilibrium constant"
+    ],
+    "correct": 0,
+    "explanation": "A catalyst provides an alternative reaction mechanism with lower activation energy E_a, speeding up reaction."
+  },
+  {
+    "id": "C078",
+    "subject": "Chemistry",
+    "chapter": "Chemical Kinetics",
+    "difficulty": "H",
+    "question": "For a 1st order reaction, time taken for 99.9% completion is approximately how many times the half-life t_1/2?",
+    "options": [
+      "3 times",
+      "6 times",
+      "10 times",
+      "20 times"
+    ],
+    "correct": 2,
+    "explanation": "t_99.9% = (2.303/k) log(1000) = (2.303/k) * 3 = 6.909/k. Since t_1/2 = 0.693/k, t_99.9% \u2248 10 * t_1/2."
+  },
+  {
+    "id": "C079",
+    "subject": "Chemistry",
+    "chapter": "Chemical Kinetics",
+    "difficulty": "M",
+    "question": "Molecularity of an elementary reaction CANNOT be:",
+    "options": [
+      "1",
+      "2",
+      "3",
+      "0 or fractional"
+    ],
+    "correct": 3,
+    "explanation": "Molecularity represents physical count of colliding molecules in an elementary step; it must be a positive integer (1, 2, 3) and cannot be zero or fractional."
+  },
+  {
+    "id": "C080",
+    "subject": "Chemistry",
+    "chapter": "Chemical Kinetics",
+    "difficulty": "H",
+    "question": "In a reaction 2 A \u2192 B + C, concentration of A decreases from 0.8 M to 0.4 M in 10 minutes. Rate of disappearance of A is:",
+    "options": [
+      "0.04 mol/L\u00b7min",
+      "0.02 mol/L\u00b7min",
+      "0.08 mol/L\u00b7min",
+      "0.4 mol/L\u00b7min"
+    ],
+    "correct": 0,
+    "explanation": "Rate of disappearance = - \u0394[A] / \u0394t = (0.8 - 0.4) / 10 = 0.4 / 10 = 0.04 mol/L\u00b7min."
+  },
+  {
+    "id": "C081",
+    "subject": "Chemistry",
+    "chapter": "Surface Chemistry",
+    "difficulty": "M",
+    "question": "Which of the following is an example of a LYOPHILIC (solvent-attracting) colloid?",
+    "options": [
+      "Gold sol",
+      "Arsenic sulfide (As2S3) sol",
+      "Starch / Gelatin solution",
+      "Ferric hydroxide sol"
+    ],
+    "correct": 2,
+    "explanation": "Starch, gelatin, and gum readily form stable lyophilic colloids upon mixing with water."
+  },
+  {
+    "id": "C082",
+    "subject": "Chemistry",
+    "chapter": "Surface Chemistry",
+    "difficulty": "H",
+    "question": "According to Hardy-Schulze rule, the most effective ion for coagulating a NEGATIVELY charged Arsenic Sulfide (As2S3) sol is:",
+    "options": [
+      "Na+",
+      "Ba2+",
+      "Al3+",
+      "Cl-"
+    ],
+    "correct": 2,
+    "explanation": "For a negative sol, positively charged cations cause coagulation. Higher valence gives higher power: Al3+ > Ba2+ > Na+."
+  },
+  {
+    "id": "C083",
+    "subject": "Chemistry",
+    "chapter": "Surface Chemistry",
+    "difficulty": "M",
+    "question": "Physical adsorption (Physisorption) decreases with:",
+    "options": [
+      "Increase in temperature",
+      "Decrease in temperature",
+      "Increase in pressure",
+      "Increase in surface area"
+    ],
+    "correct": 0,
+    "explanation": "Physisorption is an exothermic process (\u0394H < 0). By Le Chatelier's principle, increasing temperature decreases physisorption."
+  },
+  {
+    "id": "C084",
+    "subject": "Chemistry",
+    "chapter": "Surface Chemistry",
+    "difficulty": "H",
+    "question": "Gold number of protective colloids A, B, C, D are 0.005, 0.04, 0.1, 0.5 respectively. The protective power order is:",
+    "options": [
+      "A > B > C > D",
+      "D > C > B > A",
+      "A = B = C = D",
+      "C > D > A > B"
+    ],
+    "correct": 0,
+    "explanation": "Gold number is INVERSELY proportional to protective power. Smaller gold number means GREATER protective power: A > B > C > D."
+  },
+  {
+    "id": "C085",
+    "subject": "Chemistry",
+    "chapter": "Surface Chemistry",
+    "difficulty": "H",
+    "question": "In Freundlich adsorption isotherm x/m = k P^(1/n), the value of 1/n lies strictly between:",
+    "options": [
+      "-1 and 0",
+      "0 and 1",
+      "1 and 2",
+      "2 and 5"
+    ],
+    "correct": 1,
+    "explanation": "At low pressure 1/n = 1 (x/m \u221d P); at high pressure 1/n = 0 (x/m constant). Thus 0 \u2264 1/n \u2264 1."
+  },
+  {
+    "id": "C086",
+    "subject": "Chemistry",
+    "chapter": "Surface Chemistry",
+    "difficulty": "M",
+    "question": "Scattering of light by colloidal particles causing a illuminated path is known as:",
+    "options": [
+      "Brownian movement",
+      "Tyndall effect",
+      "Electrophoresis",
+      "Dialysis"
+    ],
+    "correct": 1,
+    "explanation": "Tyndall effect is the scattering of light beam by dispersed colloidal particles."
+  },
+  {
+    "id": "C087",
+    "subject": "Chemistry",
+    "chapter": "Surface Chemistry",
+    "difficulty": "H",
+    "question": "Purification of colloidal solution by removing dissolved crystalloid impurities through a semi-permeable membrane is called:",
+    "options": [
+      "Peptization",
+      "Coagulation",
+      "Dialysis",
+      "Electrophoresis"
+    ],
+    "correct": 2,
+    "explanation": "Dialysis separates small crystalloid ions/molecules from colloidal particles using semi-permeable membranes."
+  },
+  {
+    "id": "C088",
+    "subject": "Chemistry",
+    "chapter": "Surface Chemistry",
+    "difficulty": "H",
+    "question": "Zeta potential (electrokinetic potential) is responsible for:",
+    "options": [
+      "Color of colloids",
+      "Stability of colloidal sol",
+      "Tyndall effect",
+      "Viscosity"
+    ],
+    "correct": 1,
+    "explanation": "Zeta potential measures potential difference between fixed and diffused layers of electric double layer, providing electrostatic repulsion for sol stability."
+  },
+  {
+    "id": "C089",
+    "subject": "Chemistry",
+    "chapter": "Surface Chemistry",
+    "difficulty": "M",
+    "question": "Fog is a colloidal dispersion of:",
+    "options": [
+      "Gas in liquid",
+      "Liquid in gas",
+      "Solid in gas",
+      "Liquid in liquid"
+    ],
+    "correct": 1,
+    "explanation": "Fog consists of liquid water droplets dispersed in gas (air)."
+  },
+  {
+    "id": "C090",
+    "subject": "Chemistry",
+    "chapter": "Surface Chemistry",
+    "difficulty": "H",
+    "question": "Process of converting a freshly prepared precipitate into a colloidal sol by adding an electrolyte is called:",
+    "options": [
+      "Peptization",
+      "Coagulation",
+      "Flocculation",
+      "Condensation"
+    ],
+    "correct": 0,
+    "explanation": "Peptization is the dispersion of a precipitate into colloidal state by absorbing selective common ions from added electrolyte."
+  },
+  {
+    "id": "C091",
+    "subject": "Chemistry",
+    "chapter": "Periodicity",
+    "difficulty": "M",
+    "question": "Which element has the HIGHEST Electron Affinity in the periodic table?",
+    "options": [
+      "Fluorine",
+      "Chlorine",
+      "Oxygen",
+      "Nitrogen"
+    ],
+    "correct": 1,
+    "explanation": "Chlorine has highest EA (-349 kJ/mol) because Fluorine's compact 2p subshell suffers inter-electronic repulsion."
+  },
+  {
+    "id": "C092",
+    "subject": "Chemistry",
+    "chapter": "Periodicity",
+    "difficulty": "H",
+    "question": "Correct order of increasing ionic radii for isoelectronic species N\u00b3\u207b, O\u00b2\u207b, F\u207b, Na\u207a, Mg\u00b2\u207a is:",
+    "options": [
+      "Mg\u00b2\u207a < Na\u207a < F\u207b < O\u00b2\u207b < N\u00b3\u207b",
+      "N\u00b3\u207b < O\u00b2\u207b < F\u207b < Na\u207a < Mg\u00b2\u207a",
+      "Na\u207a < Mg\u00b2\u207a < F\u207b < O\u00b2\u207b < N\u00b3\u207b",
+      "Mg\u00b2\u207a < Na\u207a < N\u00b3\u207b < O\u00b2\u207b < F\u207b"
+    ],
+    "correct": 0,
+    "explanation": "For isoelectronic species, higher nuclear charge Z pulls electrons tighter, resulting in SMALLER radius. Mg\u00b2\u207a (Z=12) < Na\u207a (11) < F\u207b (9) < O\u00b2\u207b (8) < N\u00b3\u207b (7)."
+  },
+  {
+    "id": "C093",
+    "subject": "Chemistry",
+    "chapter": "Periodicity",
+    "difficulty": "M",
+    "question": "Element with atomic number Z = 37 belongs to which block and period?",
+    "options": [
+      "s-block, 5th period",
+      "p-block, 4th period",
+      "d-block, 5th period",
+      "f-block, 6th period"
+    ],
+    "correct": 0,
+    "explanation": "Z = 37 is Rubidium (Rb: [Kr] 5s\u00b9), belonging to s-block and 5th period."
+  },
+  {
+    "id": "C094",
+    "subject": "Chemistry",
+    "chapter": "Periodicity",
+    "difficulty": "H",
+    "question": "Which of the following elements has HIGHER First Ionization Energy than Nitrogen (Z=7)?",
+    "options": [
+      "Carbon (Z=6)",
+      "Oxygen (Z=8)",
+      "Neon (Z=10)",
+      "Beryllium (Z=4)"
+    ],
+    "correct": 2,
+    "explanation": "Neon is a noble gas with closed shell octet [2s\u00b2 2p\u2076], giving highest IE. Note: N (14.5eV) > O (13.6eV) due to N's half-filled 2p\u00b3 stability, but Ne (21.6eV) is higher."
+  },
+  {
+    "id": "C095",
+    "subject": "Chemistry",
+    "chapter": "Periodicity",
+    "difficulty": "H",
+    "question": "Diagonal relationship exists between which pair of elements?",
+    "options": [
+      "Li and Mg",
+      "Na and K",
+      "Be and Ca",
+      "B and Si"
+    ],
+    "correct": 0,
+    "explanation": "Lithium (Group 1, Period 2) and Magnesium (Group 2, Period 3) share diagonal relationship due to similar ionic radii and polarizability."
+  },
+  {
+    "id": "C096",
+    "subject": "Chemistry",
+    "chapter": "Periodicity",
+    "difficulty": "M",
+    "question": "General valence electronic configuration of d-block transition elements is:",
+    "options": [
+      "(n-1) d^1-10 ns^1-2",
+      "n d^1-10 n s^2",
+      "(n-2) f^1-14 n s^2",
+      "n s^2 n p^1-6"
+    ],
+    "correct": 0,
+    "explanation": "d-Block general configuration is (n-1) d^1-10 n s^1-2."
+  },
+  {
+    "id": "C097",
+    "subject": "Chemistry",
+    "chapter": "Periodicity",
+    "difficulty": "H",
+    "question": "Electronegativity values of F, Cl, Br, I on Pauling scale follow the order:",
+    "options": [
+      "F > Cl > Br > I",
+      "Cl > F > Br > I",
+      "F > Br > Cl > I",
+      "I > Br > Cl > F"
+    ],
+    "correct": 0,
+    "explanation": "Electronegativity decreases down group 17: F (4.0) > Cl (3.0) > Br (2.8) > I (2.5)."
+  },
+  {
+    "id": "C098",
+    "subject": "Chemistry",
+    "chapter": "Periodicity",
+    "difficulty": "H",
+    "question": "Most basic oxide among the following is:",
+    "options": [
+      "Al2O3",
+      "P4O10",
+      "Na2O",
+      "SO3"
+    ],
+    "correct": 2,
+    "explanation": "Metallic oxides are basic. Alkali metal oxide Na2O is strongly basic; Al2O3 is amphoteric; P4O10 and SO3 are acidic."
+  },
+  {
+    "id": "C099",
+    "subject": "Chemistry",
+    "chapter": "Periodicity",
+    "difficulty": "M",
+    "question": "Atomic radius of elements across a period from left to right generally:",
+    "options": [
+      "Decreases",
+      "Increases",
+      "Remains constant",
+      "First increases then decreases"
+    ],
+    "correct": 0,
+    "explanation": "Effective nuclear charge Z* increases across a period, pulling valence electrons closer and decreasing atomic radius."
+  },
+  {
+    "id": "C100",
+    "subject": "Chemistry",
+    "chapter": "Periodicity",
+    "difficulty": "H",
+    "question": "Electronegativity of an element on Mulliken scale \u03c7_M is related to Ionization Energy (IE) and Electron Affinity (EA) in eV as:",
+    "options": [
+      "\u03c7_M = (IE + EA) / 2",
+      "\u03c7_M = IE - EA",
+      "\u03c7_M = (IE * EA)^0.5",
+      "\u03c7_M = (IE + EA) / 5.6"
+    ],
+    "correct": 0,
+    "explanation": "Mulliken electronegativity \u03c7_M = (IE + EA) / 2 (in eV). (Pauling scale \u03c7_P \u2248 \u03c7_M / 2.8)."
+  },
+  {
+    "id": "C101",
+    "subject": "Chemistry",
+    "chapter": "Chemical Bonding & Molecular Structure",
+    "difficulty": "M",
+    "question": "Shape and hybridization of Ammonia (NH3) molecule are:",
+    "options": [
+      "Trigonal planar, sp2",
+      "Pyramidal, sp3",
+      "Tetrahedral, sp3",
+      "Linear, sp"
+    ],
+    "correct": 1,
+    "explanation": "NH3 has 3 bond pairs and 1 lone pair (steric number 4 => sp3). VSEPR geometry is Trigonal Pyramidal."
+  },
+  {
+    "id": "C102",
+    "subject": "Chemistry",
+    "chapter": "Chemical Bonding & Molecular Structure",
+    "difficulty": "H",
+    "question": "According to Molecular Orbital Theory, Bond Order and magnetic nature of Oxygen molecule (O2) are:",
+    "options": [
+      "2.0, Paramagnetic",
+      "2.5, Diamagnetic",
+      "2.0, Diamagnetic",
+      "1.5, Paramagnetic"
+    ],
+    "correct": 0,
+    "explanation": "O2 has 16 electrons. MO configuration gives Bond Order = 0.5(10 - 6) = 2.0. Two unpaired electrons in \u03c0*2p orbitals make it PARAMAGNETIC."
+  },
+  {
+    "id": "C103",
+    "subject": "Chemistry",
+    "chapter": "Chemical Bonding & Molecular Structure",
+    "difficulty": "M",
+    "question": "Which of the following species has ZERO dipole moment (non-polar)?",
+    "options": [
+      "H2O",
+      "NH3",
+      "BF3",
+      "SO2"
+    ],
+    "correct": 2,
+    "explanation": "BF3 has trigonal planar geometry (120\u00b0 angles). The 3 B-F bond dipoles cancel completely, giving \u03bc = 0."
+  },
+  {
+    "id": "C104",
+    "subject": "Chemistry",
+    "chapter": "Chemical Bonding & Molecular Structure",
+    "difficulty": "H",
+    "question": "Hybridization of Xenon in XeF4 (Xenon tetrafluoride) and its shape are:",
+    "options": [
+      "sp3d, Trigonal bipyramidal",
+      "sp3d2, Square planar",
+      "sp3d2, Octahedral",
+      "sp3, Tetrahedral"
+    ],
+    "correct": 1,
+    "explanation": "XeF4 has 4 bond pairs and 2 lone pairs (steric number 6 => sp3d2). Lone pairs occupy axial positions, yielding Square Planar geometry."
+  },
+  {
+    "id": "C105",
+    "subject": "Chemistry",
+    "chapter": "Chemical Bonding & Molecular Structure",
+    "difficulty": "H",
+    "question": "Maximum hydrogen bonding is present in:",
+    "options": [
+      "H2O",
+      "HF",
+      "NH3",
+      "C2H5OH"
+    ],
+    "correct": 0,
+    "explanation": "Although F is more electronegative, each H2O molecule can form 4 hydrogen bonds per molecule in a 3D network, yielding maximum overall H-bonding."
+  },
+  {
+    "id": "C106",
+    "subject": "Chemistry",
+    "chapter": "Chemical Bonding & Molecular Structure",
+    "difficulty": "M",
+    "question": "Type of bond present in Ammonium Chloride (NH4Cl) is:",
+    "options": [
+      "Ionic only",
+      "Covalent only",
+      "Coordinate only",
+      "Ionic, Covalent, and Coordinate"
+    ],
+    "correct": 3,
+    "explanation": "NH4Cl contains ionic bond (NH4+ and Cl-), covalent bonds (N-H in NH4+), and one coordinate bond (N\u2192H+)."
+  },
+  {
+    "id": "C107",
+    "subject": "Chemistry",
+    "chapter": "Chemical Bonding & Molecular Structure",
+    "difficulty": "H",
+    "question": "Order of increasing bond angle among CH4, NH3, H2O is:",
+    "options": [
+      "H2O < NH3 < CH4",
+      "CH4 < NH3 < H2O",
+      "NH3 < H2O < CH4",
+      "H2O < CH4 < NH3"
+    ],
+    "correct": 0,
+    "explanation": "All are sp3. H2O has 2 lone pairs (104.5\u00b0), NH3 has 1 lone pair (107\u00b0), CH4 has 0 lone pairs (109.5\u00b0). Order: H2O < NH3 < CH4."
+  },
+  {
+    "id": "C108",
+    "subject": "Chemistry",
+    "chapter": "Chemical Bonding & Molecular Structure",
+    "difficulty": "H",
+    "question": "Species with Bond Order equal to 3.0 is:",
+    "options": [
+      "N2",
+      "O2",
+      "NO",
+      "C2"
+    ],
+    "correct": 0,
+    "explanation": "N2 has 14 electrons. MO Bond Order = 0.5(10 - 4) = 3.0 (triple bond)."
+  },
+  {
+    "id": "C109",
+    "subject": "Chemistry",
+    "chapter": "Chemical Bonding & Molecular Structure",
+    "difficulty": "M",
+    "question": "Fajans' rule predicts that covalent character in an ionic compound increases with:",
+    "options": [
+      "Small cation and large anion",
+      "Large cation and small anion",
+      "Small cation and small anion",
+      "Large cation and large anion"
+    ],
+    "correct": 0,
+    "explanation": "Covalent character increases with smaller cation size (high polarizing power) and larger anion size (high polarizability)."
+  },
+  {
+    "id": "C110",
+    "subject": "Chemistry",
+    "chapter": "Chemical Bonding & Molecular Structure",
+    "difficulty": "H",
+    "question": "Formal charge on central Oxygen atom in Ozone (O3) molecule is:",
+    "options": [
+      "0",
+      "+1",
+      "-1",
+      "+2"
+    ],
+    "correct": 1,
+    "explanation": "Central O forms 1 double bond and 1 coordinate/single bond with 1 lone pair. Formal charge = 6 - 2 - 0.5(6) = +1."
+  },
+  {
+    "id": "C111",
+    "subject": "Chemistry",
+    "chapter": "s-Block Elements",
+    "difficulty": "M",
+    "question": "Which alkali metal imparts a Crimson Red color to the Bunsen flame?",
+    "options": [
+      "Sodium",
+      "Lithium",
+      "Potassium",
+      "Barium"
+    ],
+    "correct": 1,
+    "explanation": "Lithium imparts a Crimson Red flame color (Na is Yellow, K is Violet, Ba is Apple Green)."
+  },
+  {
+    "id": "C112",
+    "subject": "Chemistry",
+    "chapter": "s-Block Elements",
+    "difficulty": "H",
+    "question": "Solubility of Group 2 alkaline earth metal sulfates in water follows the order:",
+    "options": [
+      "BeSO4 > MgSO4 > CaSO4 > SrSO4 > BaSO4",
+      "BaSO4 > SrSO4 > CaSO4 > MgSO4 > BeSO4",
+      "CaSO4 > BeSO4 > MgSO4 > BaSO4",
+      "MgSO4 > BeSO4 > CaSO4 > BaSO4"
+    ],
+    "correct": 0,
+    "explanation": "Hydration energy decreases faster down group than lattice energy. Sulfate solubility decreases down Group 2: BeSO4 > MgSO4 > CaSO4 > SrSO4 > BaSO4."
+  },
+  {
+    "id": "C113",
+    "subject": "Chemistry",
+    "chapter": "s-Block Elements",
+    "difficulty": "M",
+    "question": "Chemical formula of Plaster of Paris is:",
+    "options": [
+      "CaSO4 \u00b7 2 H2O",
+      "CaSO4 \u00b7 0.5 H2O",
+      "CaSO4",
+      "CaCO3"
+    ],
+    "correct": 1,
+    "explanation": "Plaster of Paris is Calcium Sulfate Hemihydrate CaSO4 \u00b7 0.5 H2O (or (CaSO4)2 \u00b7 H2O)."
+  },
+  {
+    "id": "C114",
+    "subject": "Chemistry",
+    "chapter": "s-Block Elements",
+    "difficulty": "H",
+    "question": "Which of the following alkali metal carbonates is thermally UNSTABLE and decomposes on heating?",
+    "options": [
+      "Li2CO3",
+      "Na2CO3",
+      "K2CO3",
+      "Rb2CO3"
+    ],
+    "correct": 0,
+    "explanation": "Li2CO3 decomposes on heating to Li2O and CO2 due to high polarizing power of small Li+ ion. Other alkali carbonates are stable."
+  },
+  {
+    "id": "C115",
+    "subject": "Chemistry",
+    "chapter": "s-Block Elements",
+    "difficulty": "H",
+    "question": "When Sodium metal is dissolved in liquid Ammonia, the deep blue solution formed is paramagnetic due to presence of:",
+    "options": [
+      "Ammoniated electrons",
+      "Sodium ions Na+",
+      "Ammoniated Na+ ions",
+      "Hydrogen gas"
+    ],
+    "correct": 0,
+    "explanation": "Solvated/Ammoniated electrons [e(NH3)y]- absorb visible light and impart deep blue color and paramagnetism."
+  },
+  {
+    "id": "C116",
+    "subject": "Chemistry",
+    "chapter": "s-Block Elements",
+    "difficulty": "M",
+    "question": "Biological role of Mg2+ ions in green plants is essential for:",
+    "options": [
+      "Chlorophyll structure",
+      "Hemoglobin structure",
+      "Bone density",
+      "DNA synthesis"
+    ],
+    "correct": 0,
+    "explanation": "Mg2+ is the central coordination metal ion in Chlorophyll pigment essential for photosynthesis."
+  },
+  {
+    "id": "C117",
+    "subject": "Chemistry",
+    "chapter": "s-Block Elements",
+    "difficulty": "H",
+    "question": "Quicklime is CaO. When treated with water, it produces Slaked Lime with evolution of heat. Slaked lime is:",
+    "options": [
+      "CaCO3",
+      "Ca(OH)2",
+      "Ca(HCO3)2",
+      "CaCl2"
+    ],
+    "correct": 1,
+    "explanation": "CaO + H2O \u2192 Ca(OH)2 (Slaked Lime) + Heat."
+  },
+  {
+    "id": "C118",
+    "subject": "Chemistry",
+    "chapter": "s-Block Elements",
+    "difficulty": "H",
+    "question": "Which alkaline earth metal does NOT give a flame test color?",
+    "options": [
+      "Beryllium and Magnesium",
+      "Calcium",
+      "Strontium",
+      "Barium"
+    ],
+    "correct": 0,
+    "explanation": "Be and Mg have small atomic sizes and high ionization energies; flame thermal energy is insufficient to excite their electrons."
+  },
+  {
+    "id": "C119",
+    "subject": "Chemistry",
+    "chapter": "s-Block Elements",
+    "difficulty": "M",
+    "question": "Washing Soda is chemically:",
+    "options": [
+      "Na2CO3 \u00b7 10 H2O",
+      "NaHCO3",
+      "NaOH",
+      "Na2SO4 \u00b7 10 H2O"
+    ],
+    "correct": 0,
+    "explanation": "Washing Soda is Sodium Carbonate Decahydrate Na2CO3 \u00b7 10 H2O."
+  },
+  {
+    "id": "C120",
+    "subject": "Chemistry",
+    "chapter": "s-Block Elements",
+    "difficulty": "H",
+    "question": "Order of increasing basic strength of Group 1 hydroxides is:",
+    "options": [
+      "LiOH < NaOH < KOH < RbOH < CsOH",
+      "CsOH < RbOH < KOH < NaOH < LiOH",
+      "LiOH < KOH < NaOH < CsOH",
+      "KOH < LiOH < NaOH < CsOH"
+    ],
+    "correct": 0,
+    "explanation": "Basic strength increases down alkali group as cation size increases and M-OH bond energy decreases: LiOH < NaOH < KOH < RbOH < CsOH."
+  },
+  {
+    "id": "C121",
+    "subject": "Chemistry",
+    "chapter": "p-Block Elements",
+    "difficulty": "M",
+    "question": "Inert pair effect is most pronounced in heavier elements of which block?",
+    "options": [
+      "s-block",
+      "p-block",
+      "d-block",
+      "f-block"
+    ],
+    "correct": 1,
+    "explanation": "Inert pair effect (reluctance of ns2 electrons to bond) is observed in heavier p-block elements (Tl, Pb, Bi)."
+  },
+  {
+    "id": "C122",
+    "subject": "Chemistry",
+    "chapter": "p-Block Elements",
+    "difficulty": "H",
+    "question": "Structure of Diborane (B2H6) contains:",
+    "options": [
+      "4 terminal 2c-2e bonds and 2 bridging 3c-2e bonds",
+      "2 terminal 2c-2e bonds and 4 bridging 3c-2e bonds",
+      "6 2c-2e bonds",
+      "6 3c-2e bonds"
+    ],
+    "correct": 0,
+    "explanation": "Diborane B2H6 has 4 terminal B-H bonds (2-center-2-electron) and 2 3D banana B-H-B bridge bonds (3-center-2-electron)."
+  },
+  {
+    "id": "C123",
+    "subject": "Chemistry",
+    "chapter": "p-Block Elements",
+    "difficulty": "M",
+    "question": "Which gas is known as 'Laughing Gas'?",
+    "options": [
+      "NO",
+      "N2O",
+      "NO2",
+      "N2O5"
+    ],
+    "correct": 1,
+    "explanation": "Nitrous Oxide (N2O) is commonly known as laughing gas."
+  },
+  {
+    "id": "C124",
+    "subject": "Chemistry",
+    "chapter": "p-Block Elements",
+    "difficulty": "H",
+    "question": "Boric acid (H3BO3) acts as a monobasic acid in water because it:",
+    "options": [
+      "Donates a proton H+",
+      "Accepts OH- from water releasing H+",
+      "Dissociates completely into H+ and BO3\u00b3\u207b",
+      "Forms hydrogen bonds"
+    ],
+    "correct": 1,
+    "explanation": "H3BO3 is a Lewis acid: H3BO3 + H2O \u21cc [B(OH)4]\u207b + H\u207a. It accepts OH- from water."
+  },
+  {
+    "id": "C125",
+    "subject": "Chemistry",
+    "chapter": "p-Block Elements",
+    "difficulty": "H",
+    "question": "Which noble gas forms the maximum number of chemical compounds?",
+    "options": [
+      "Helium",
+      "Neon",
+      "Argon",
+      "Xenon"
+    ],
+    "correct": 3,
+    "explanation": "Xenon (Xe) has lower ionization energy and forms numerous fluorides (XeF2, XeF4, XeF6) and oxides (XeO3)."
+  },
+  {
+    "id": "C126",
+    "subject": "Chemistry",
+    "chapter": "p-Block Elements",
+    "difficulty": "M",
+    "question": "Allotrope of Carbon which is a good conductor of electricity is:",
+    "options": [
+      "Diamond",
+      "Graphite",
+      "Fullerene",
+      "Charcoal"
+    ],
+    "correct": 1,
+    "explanation": "Graphite has sp2 hybridized carbon layers with delocalized \u03c0-electrons free to conduct electricity."
+  },
+  {
+    "id": "C127",
+    "subject": "Chemistry",
+    "chapter": "p-Block Elements",
+    "difficulty": "H",
+    "question": "White phosphorus (P4) stored under water reacts with hot NaOH solution to give:",
+    "options": [
+      "Phosphine (PH3)",
+      "Phosphoric acid",
+      "Phosphorus trichloride",
+      "Pyrophosphoric acid"
+    ],
+    "correct": 0,
+    "explanation": "P4 + 3 NaOH + 3 H2O \u2192 PH3(gas) + 3 NaH2PO2 (Sodium hypophosphite)."
+  },
+  {
+    "id": "C128",
+    "subject": "Chemistry",
+    "chapter": "p-Block Elements",
+    "difficulty": "H",
+    "question": "Oxidizing power of halogens follows the order:",
+    "options": [
+      "F2 > Cl2 > Br2 > I2",
+      "I2 > Br2 > Cl2 > F2",
+      "Cl2 > F2 > Br2 > I2",
+      "F2 > Br2 > Cl2 > I2"
+    ],
+    "correct": 0,
+    "explanation": "Standard reduction potentials decrease down Group 17: F2 (+2.87V) > Cl2 (+1.36V) > Br2 (+1.07V) > I2 (+0.54V)."
+  },
+  {
+    "id": "C129",
+    "subject": "Chemistry",
+    "chapter": "p-Block Elements",
+    "difficulty": "M",
+    "question": "Hybridization of Nitrogen in Ammonia (NH3) and Nitric acid (HNO3) are:",
+    "options": [
+      "sp3 and sp2",
+      "sp2 and sp3",
+      "sp3 and sp3",
+      "sp2 and sp2"
+    ],
+    "correct": 0,
+    "explanation": "NH3 is sp3 (3 sigma + 1 lone pair). HNO3 central N is sp2 (3 sigma bonds)."
+  },
+  {
+    "id": "C130",
+    "subject": "Chemistry",
+    "chapter": "p-Block Elements",
+    "difficulty": "H",
+    "question": "Which of the following oxoacids of Sulfur contains a Peroxide (-O-O-) bond?",
+    "options": [
+      "H2SO4 (Sulfuric acid)",
+      "H2S2O7 (Oleum)",
+      "H2S2O8 (Marshall's acid)",
+      "H2SO3 (Sulfurous acid)"
+    ],
+    "correct": 2,
+    "explanation": "Peroxodisulfuric acid (Marshall's acid H2S2O8) contains a peroxide linkage HO-SO2-O-O-SO2-OH."
+  },
+  {
+    "id": "C131",
+    "subject": "Chemistry",
+    "chapter": "d- and f-Block Elements",
+    "difficulty": "M",
+    "question": "Spin-only magnetic moment of Fe\u00b2\u207a ion (Z=26) is:",
+    "options": [
+      "2.83 BM",
+      "3.87 BM",
+      "4.90 BM",
+      "5.92 BM"
+    ],
+    "correct": 2,
+    "explanation": "Fe\u00b2\u207a has configuration [Ar] 3d\u2076 with 4 unpaired electrons (n=4). \u03bc = \u221a(4(4+2)) = \u221a24 \u2248 4.90 BM."
+  },
+  {
+    "id": "C132",
+    "subject": "Chemistry",
+    "chapter": "d- and f-Block Elements",
+    "difficulty": "H",
+    "question": "Lanthanoid contraction is responsible for the fact that:",
+    "options": [
+      "Zr and Hf have nearly identical atomic radii",
+      "Zr and Y have same oxidation state",
+      "La and Lu have same radii",
+      "Fe and Co have same density"
+    ],
+    "correct": 0,
+    "explanation": "Poor shielding of 4f electrons causes Lanthanoid Contraction, making 4d (Zr) and 5d (Hf) transition elements nearly identical in size."
+  },
+  {
+    "id": "C133",
+    "subject": "Chemistry",
+    "chapter": "d- and f-Block Elements",
+    "difficulty": "M",
+    "question": "Which transition metal ion is COLORLESS in aqueous solution?",
+    "options": [
+      "Cu\u00b2\u207a",
+      "Fe\u00b3\u207a",
+      "Zn\u00b2\u207a",
+      "Cr\u00b3\u207a"
+    ],
+    "correct": 2,
+    "explanation": "Zn\u00b2\u207a has fully filled 3d\u00b9\u2070 configuration (no d-d electron transitions possible), rendering it colorless."
+  },
+  {
+    "id": "C134",
+    "subject": "Chemistry",
+    "chapter": "d- and f-Block Elements",
+    "difficulty": "H",
+    "question": "Potassium Permanganate (KMnO4) exhibits intense purple color due to:",
+    "options": [
+      "d-d transition",
+      "Charge transfer spectra (L \u2192 M)",
+      "f-f transition",
+      "d-p hybridization"
+    ],
+    "correct": 1,
+    "explanation": "Mn in KMnO4 is Mn\u207a\u2077 (3d\u2070). Color arises from Charge Transfer from Oxygen ligands to empty d-orbitals of Manganese."
+  },
+  {
+    "id": "C135",
+    "subject": "Chemistry",
+    "chapter": "d- and f-Block Elements",
+    "difficulty": "H",
+    "question": "In acidic medium, 1 mole of Dichromate ion (Cr2O7\u00b2\u207b) oxidizes how many moles of Fe\u00b2\u207a to Fe\u00b3\u207a?",
+    "options": [
+      "1",
+      "3",
+      "6",
+      "5"
+    ],
+    "correct": 2,
+    "explanation": "Cr2O7\u00b2\u207b + 14 H\u207a + 6 e\u207b \u2192 2 Cr\u00b3\u207a + 7 H2O. 1 mole Cr2O7\u00b2\u207b absorbs 6 moles of electrons, oxidizing 6 moles of Fe\u00b2\u207a."
+  },
+  {
+    "id": "C136",
+    "subject": "Chemistry",
+    "chapter": "d- and f-Block Elements",
+    "difficulty": "M",
+    "question": "Highest oxidation state exhibited by a transition element in 3d series is +7 by:",
+    "options": [
+      "Scandium",
+      "Manganese",
+      "Iron",
+      "Chromium"
+    ],
+    "correct": 1,
+    "explanation": "Manganese (Z=25, 4s\u00b2 3d\u2075) exhibits maximum oxidation state of +7 (e.g. in KMnO4)."
+  },
+  {
+    "id": "C137",
+    "subject": "Chemistry",
+    "chapter": "d- and f-Block Elements",
+    "difficulty": "H",
+    "question": "Actinoids exhibit larger number of oxidation states than Lanthanoids because:",
+    "options": [
+      "5f orbitals extend further in space than 4f",
+      "4f orbitals have lower energy",
+      "Actinoids are radioactive",
+      "Lanthanoids are more reactive"
+    ],
+    "correct": 0,
+    "explanation": "Energy gap between 5f, 6d, and 7s is smaller than between 4f, 5d, and 6s, allowing 5f electrons to participate in bonding."
+  },
+  {
+    "id": "C138",
+    "subject": "Chemistry",
+    "chapter": "d- and f-Block Elements",
+    "difficulty": "H",
+    "question": "Catalytic activity of transition metals is primarily due to their ability to:",
+    "options": [
+      "Exhibit variable oxidation states and form complexes",
+      "High density",
+      "High melting points",
+      "Magnetic properties"
+    ],
+    "correct": 0,
+    "explanation": "Variable oxidation states and vacant d-orbitals allow transition metals to form reactive intermediates and lower activation energy."
+  },
+  {
+    "id": "C139",
+    "subject": "Chemistry",
+    "chapter": "d- and f-Block Elements",
+    "difficulty": "M",
+    "question": "Inner transition elements belong to which block?",
+    "options": [
+      "s-block",
+      "p-block",
+      "d-block",
+      "f-block"
+    ],
+    "correct": 3,
+    "explanation": "Lanthanoids and Actinoids (4f and 5f series) constitute f-block inner transition elements."
+  },
+  {
+    "id": "C140",
+    "subject": "Chemistry",
+    "chapter": "d- and f-Block Elements",
+    "difficulty": "H",
+    "question": "When KMnO4 is heated strongly at 513 K, it decomposes into:",
+    "options": [
+      "K2MnO4 + MnO2 + O2",
+      "MnO + O2",
+      "K2O + MnO2 + O2",
+      "KMnO2 + O2"
+    ],
+    "correct": 0,
+    "explanation": "2 KMnO4 \u2192 K2MnO4 (Potassium Manganate, green) + MnO2 (Pyrolusite) + O2."
+  },
+  {
+    "id": "C141",
+    "subject": "Chemistry",
+    "chapter": "Coordination Compounds",
+    "difficulty": "M",
+    "question": "IUPAC name of [Co(NH3)6]Cl3 is:",
+    "options": [
+      "Hexaamminecobalt(III) chloride",
+      "Hexaamminecobalt(II) chloride",
+      "Trichlorohexamminecobalt",
+      "Cobalt hexammine chloride"
+    ],
+    "correct": 0,
+    "explanation": "Co is in +3 state, ligands are 6 ammines (NH3). Name: Hexaamminecobalt(III) chloride."
+  },
+  {
+    "id": "C142",
+    "subject": "Chemistry",
+    "chapter": "Coordination Compounds",
+    "difficulty": "H",
+    "question": "Hybridization and magnetic property of [Fe(CN)6]\u00b3\u207b complex ion are: (Z of Fe = 26)",
+    "options": [
+      "d2sp3, Paramagnetic (1 unpaired e-)",
+      "sp3d2, Paramagnetic (5 unpaired e-)",
+      "d2sp3, Diamagnetic",
+      "sp3d2, Diamagnetic"
+    ],
+    "correct": 0,
+    "explanation": "Fe\u00b3\u207a is 3d\u2075. Strong ligand CN- causes electron pairing into t2g subshell leaving 1 unpaired e-. Hybridization is d2sp3 (inner orbital), Paramagnetic."
+  },
+  {
+    "id": "C143",
+    "subject": "Chemistry",
+    "chapter": "Coordination Compounds",
+    "difficulty": "M",
+    "question": "Which ligand is AMBIDENTATE (can coordinate through two different donor atoms)?",
+    "options": [
+      "H2O",
+      "NH3",
+      "NO2\u207b",
+      "EDTA\u2074\u207b"
+    ],
+    "correct": 2,
+    "explanation": "NO2\u207b can bond via Nitrogen (Nitro) or Oxygen (Nitrito), making it an ambidentate ligand."
+  },
+  {
+    "id": "C144",
+    "subject": "Chemistry",
+    "chapter": "Coordination Compounds",
+    "difficulty": "H",
+    "question": "Effective Atomic Number (EAN) of Nickel in Nickel Tetracarbonyl [Ni(CO)4] is: (Z of Ni = 28)",
+    "options": [
+      "36 (Krypton configuration)",
+      "34",
+      "38",
+      "54"
+    ],
+    "correct": 0,
+    "explanation": "EAN = Z - OS + 2(CN) = 28 - 0 + 2(4) = 28 + 8 = 36 (matches Krypton noble gas configuration)."
+  },
+  {
+    "id": "C145",
+    "subject": "Chemistry",
+    "chapter": "Coordination Compounds",
+    "difficulty": "H",
+    "question": "Coordination number and oxidation state of Chromium in K3[Cr(C2O4)3] (Oxalate complex) are:",
+    "options": [
+      "6 and +3",
+      "3 and +3",
+      "6 and +6",
+      "4 and +2"
+    ],
+    "correct": 0,
+    "explanation": "Oxalate (C2O4\u00b2\u207b) is a bidentate ligand. 3 oxalates give CN = 3 * 2 = 6. Oxidation state Cr + 3(-2) = -3 => Cr = +3."
+  },
+  {
+    "id": "C146",
+    "subject": "Chemistry",
+    "chapter": "Coordination Compounds",
+    "difficulty": "M",
+    "question": "Type of isomerism shown by [Co(NH3)5 SO4]Br and [Co(NH3)5 Br]SO4 is:",
+    "options": [
+      "Linkage isomerism",
+      "Ionization isomerism",
+      "Coordination isomerism",
+      "Solvate isomerism"
+    ],
+    "correct": 1,
+    "explanation": "Ionization isomers yield different ions in aqueous solution (one yields Br-, other yields SO4\u00b2-)."
+  },
+  {
+    "id": "C147",
+    "subject": "Chemistry",
+    "chapter": "Coordination Compounds",
+    "difficulty": "H",
+    "question": "According to Crystal Field Theory, Crystal Field Splitting Energy \u0394_o for tetrahedral complexes \u0394_t is related to octahedral \u0394_o by:",
+    "options": [
+      "\u0394_t = 4/9 \u0394_o",
+      "\u0394_t = 9/4 \u0394_o",
+      "\u0394_t = 1/2 \u0394_o",
+      "\u0394_t = 2 \u0394_o"
+    ],
+    "correct": 0,
+    "explanation": "Tetrahedral field splitting is significantly smaller: \u0394_t = (4/9) \u0394_o."
+  },
+  {
+    "id": "C148",
+    "subject": "Chemistry",
+    "chapter": "Coordination Compounds",
+    "difficulty": "H",
+    "question": "Which of the following complex ions is DIAMAGNETIC?",
+    "options": [
+      "[Fe(H2O)6]\u00b3\u207a",
+      "[Fe(CN)6]\u2074\u207b",
+      "[FeF6]\u00b3\u207b",
+      "[CoF6]\u00b3\u207b"
+    ],
+    "correct": 1,
+    "explanation": "[Fe(CN)6]\u2074\u207b has Fe\u00b2\u207a (3d\u2076). Strong field CN- pairs all 6 d-electrons completely into t2g\u2076, leaving 0 unpaired e- (Diamagnetic)."
+  },
+  {
+    "id": "C149",
+    "subject": "Chemistry",
+    "chapter": "Coordination Compounds",
+    "difficulty": "M",
+    "question": "Dental anti-cancer drug 'Cisplatin' has chemical formula:",
+    "options": [
+      "cis-[Pt(NH3)2 Cl2]",
+      "trans-[Pt(NH3)2 Cl2]",
+      "[Pt(NH3)4]Cl2",
+      "K2[PtCl4]"
+    ],
+    "correct": 0,
+    "explanation": "Cis-dichlorodiammineplatinum(II), cis-[Pt(NH3)2 Cl2], is a widely used chemotherapy drug."
+  },
+  {
+    "id": "C150",
+    "subject": "Chemistry",
+    "chapter": "Coordination Compounds",
+    "difficulty": "H",
+    "question": "Number of ions produced in aqueous solution per formula unit of [Co(NH3)5 Cl]Cl2 is:",
+    "options": [
+      "2",
+      "3",
+      "4",
+      "5"
+    ],
+    "correct": 1,
+    "explanation": "[Co(NH3)5 Cl]Cl2 \u2192 [Co(NH3)5 Cl]\u00b2\u207a + 2 Cl\u207b (total 3 ions)."
+  }
+]

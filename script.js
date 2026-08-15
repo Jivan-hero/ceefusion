@@ -947,29 +947,86 @@ document.addEventListener('DOMContentLoaded', () => {
     const chapter = window.eduPeakData[subjectKey]?.[categoryKey]?.[chapterKey];
     if (!chapter) return '';
 
+    const subColors = {
+      physics: '#06b6d4',
+      chemistry: '#ec4899',
+      biology: '#10b981',
+      mathematics: '#f59e0b'
+    };
+    const color = subColors[subjectKey] || '#874dff';
+
+    const svgDiagram = `
+      <div class="w-full h-36 rounded-2xl bg-white/2 border border-white/5 relative overflow-hidden flex items-center justify-center select-none" aria-hidden="true">
+        <div class="absolute inset-0 bg-gradient-to-br from-indigo-500/5 to-cyan-500/5"></div>
+        <svg class="w-full h-full text-cyan-400/20" viewBox="0 0 100 50">
+          <circle cx="50" cy="25" r="15" fill="none" stroke="currentColor" stroke-width="0.5" stroke-dasharray="2 2" />
+          <path d="M10,25 Q50,5 90,25" fill="none" stroke="currentColor" stroke-width="0.5" />
+          <path d="M10,25 Q50,45 90,25" fill="none" stroke="currentColor" stroke-width="0.5" />
+          <line x1="50" y1="10" x2="50" y2="40" stroke="currentColor" stroke-width="0.5" />
+        </svg>
+        <div class="absolute text-[0.65rem] font-bold tracking-widest text-cyan-400/70 uppercase flex items-center gap-1.5"><i class="fa-solid fa-microscope"></i> Concept Structural Model</div>
+      </div>
+    `;
+
     if (chapter.notes) {
+      const sourcedText = (chapter.notes.sourced && chapter.notes.sourced !== 'generated') 
+        ? chapter.notes.sourced 
+        : `Comprehensive syllabus coverage for CEE/NEET ${subject} (${category}). Focus on core equations, physical definitions, and edge cases.`;
+      
       return `
-        <div class="space-y-4">
-          <h4 class="text-sm font-bold text-white uppercase tracking-wider border-b border-white/5 pb-2 flex items-center gap-2">
-            <span class="w-2 h-2 rounded-full bg-brand-info"></span> 1. Theoretical Foundation
-          </h4>
-          <p class="text-xs md:text-sm text-gray-300 leading-relaxed font-normal">
-            ${chapter.notes.theoretical}
-          </p>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+          <!-- Card 1: Theoretical Foundation -->
+          <div class="glass-card p-5 space-y-3 border-t-2" style="border-top-color: #06b6d4;">
+            <div class="flex items-center justify-between border-b border-white/5 pb-2.5">
+              <h4 class="text-sm font-bold text-white uppercase tracking-wider flex items-center gap-2">
+                <span class="w-2.5 h-2.5 rounded-full bg-cyan-400"></span> 1. Theoretical Foundation
+              </h4>
+              <span class="text-[0.62rem] text-cyan-400 font-mono font-semibold bg-cyan-500/10 px-2 py-0.5 rounded border border-cyan-500/20">THEORY</span>
+            </div>
+            <p class="text-xs md:text-sm text-gray-300 leading-relaxed font-normal">
+              ${chapter.notes.theoretical}
+            </p>
+          </div>
           
-          <h4 class="text-sm font-bold text-white uppercase tracking-wider border-b border-white/5 pb-2 flex items-center gap-2">
-            <span class="w-2 h-2 rounded-full bg-brand-primary"></span> 2. Key Framework & Derivations
-          </h4>
-          <p class="text-xs md:text-sm text-gray-300 leading-relaxed font-normal">
-            ${chapter.notes.framework}
-          </p>
+          <!-- Card 2: Key Framework & Derivations -->
+          <div class="glass-card p-5 space-y-3 border-t-2" style="border-top-color: #874dff;">
+            <div class="flex items-center justify-between border-b border-white/5 pb-2.5">
+              <h4 class="text-sm font-bold text-white uppercase tracking-wider flex items-center gap-2">
+                <span class="w-2.5 h-2.5 rounded-full bg-brand-primary"></span> 2. Key Framework & Derivations
+              </h4>
+              <span class="text-[0.62rem] text-violet-400 font-mono font-semibold bg-violet-500/10 px-2 py-0.5 rounded border border-violet-500/20">FRAMEWORK</span>
+            </div>
+            <p class="text-xs md:text-sm text-gray-300 leading-relaxed font-normal">
+              ${chapter.notes.framework}
+            </p>
+          </div>
           
-          <h4 class="text-sm font-bold text-white uppercase tracking-wider border-b border-white/5 pb-2 flex items-center gap-2">
-            <span class="w-2 h-2 rounded-full bg-brand-warning"></span> 3. MEC Exam Strategy & Common Traps
-          </h4>
-          <p class="text-xs md:text-sm text-gray-300 leading-relaxed font-normal">
-            ${chapter.notes.strategy}
-          </p>
+          <!-- Card 3: MEC Exam Strategy & Common Traps -->
+          <div class="glass-card p-5 space-y-3 border-t-2" style="border-top-color: #f59e0b;">
+            <div class="flex items-center justify-between border-b border-white/5 pb-2.5">
+              <h4 class="text-sm font-bold text-white uppercase tracking-wider flex items-center gap-2">
+                <span class="w-2.5 h-2.5 rounded-full bg-amber-400"></span> 3. MEC Exam Strategy & Traps
+              </h4>
+              <span class="text-[0.62rem] text-amber-400 font-mono font-semibold bg-amber-500/10 px-2 py-0.5 rounded border border-amber-500/20">HIGH-YIELD</span>
+            </div>
+            <p class="text-xs md:text-sm text-gray-300 leading-relaxed font-normal">
+              ${chapter.notes.strategy}
+            </p>
+          </div>
+          
+          <!-- Card 4: High-Yield Reference / Diagram -->
+          <div class="glass-card p-5 space-y-3 border-t-2" style="border-top-color: #10b981;">
+            <div class="flex items-center justify-between border-b border-white/5 pb-2.5">
+              <h4 class="text-sm font-bold text-white uppercase tracking-wider flex items-center gap-2">
+                <span class="w-2.5 h-2.5 rounded-full bg-emerald-400"></span> 4. Textbook Reference & Model
+              </h4>
+              <span class="text-[0.62rem] text-emerald-400 font-mono font-semibold bg-emerald-500/10 px-2 py-0.5 rounded border border-emerald-500/20">CONCEPT MODEL</span>
+            </div>
+            <p class="text-xs md:text-sm text-gray-300 leading-relaxed font-normal mb-2">
+              ${sourcedText}
+            </p>
+            ${svgDiagram}
+          </div>
         </div>
       `;
     }
@@ -982,21 +1039,27 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     return `
-      <div class="space-y-4">
-        <h4 class="text-sm font-bold text-white uppercase tracking-wider border-b border-white/5 pb-2">1. Theoretical Foundation</h4>
-        <p class="text-xs md:text-sm text-gray-300 leading-relaxed">
-          ${name} is a key topic in CEE ${subject} (${category}). Focus on fundamental definitions, microscopic models, and system properties.
-        </p>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+        <div class="glass-card p-5 space-y-3 border-t-2 border-cyan-500">
+          <h4 class="text-sm font-bold text-white uppercase tracking-wider border-b border-white/5 pb-2">1. Theoretical Foundation</h4>
+          <p class="text-xs md:text-sm text-gray-300 leading-relaxed">
+            ${name} is a key topic in CEE ${subject} (${category}). Focus on fundamental definitions, microscopic models, and system properties.
+          </p>
+        </div>
         
-        <h4 class="text-sm font-bold text-white uppercase tracking-wider border-b border-white/5 pb-2">2. Key Framework & Derivations</h4>
-        <p class="text-xs md:text-sm text-gray-300 leading-relaxed">
-          ${formulasExplanation} Maintain SI units, sign conventions, and dimensional consistency across multi-step calculations.
-        </p>
+        <div class="glass-card p-5 space-y-3 border-t-2 border-violet-500">
+          <h4 class="text-sm font-bold text-white uppercase tracking-wider border-b border-white/5 pb-2">2. Key Framework & Derivations</h4>
+          <p class="text-xs md:text-sm text-gray-300 leading-relaxed">
+            ${formulasExplanation} Maintain SI units, sign conventions, and dimensional consistency across multi-step calculations.
+          </p>
+        </div>
         
-        <h4 class="text-sm font-bold text-white uppercase tracking-wider border-b border-white/5 pb-2">3. MEC Exam Strategy & Common Traps</h4>
-        <p class="text-xs md:text-sm text-gray-300 leading-relaxed">
-          Verify unit prefixes (micro/nano) and watch out for CEE -0.25 negative marking on speculative numerical guesses.
-        </p>
+        <div class="glass-card p-5 space-y-3 border-t-2 border-amber-500 md:col-span-2">
+          <h4 class="text-sm font-bold text-white uppercase tracking-wider border-b border-white/5 pb-2">3. MEC Exam Strategy & Common Traps</h4>
+          <p class="text-xs md:text-sm text-gray-300 leading-relaxed">
+            Verify unit prefixes (micro/nano) and watch out for CEE -0.25 negative marking on speculative numerical guesses.
+          </p>
+        </div>
       </div>
     `;
   }
@@ -1021,144 +1084,174 @@ document.addEventListener('DOMContentLoaded', () => {
     };
     const color = subColors[subjectKey] || '#874dff';
     const subName = subjectKey.charAt(0).toUpperCase() + subjectKey.slice(1);
+    const catName = categoryNames[categoryKey] || categoryKey;
     const chapter = window.eduPeakData[subjectKey][categoryKey][chapterKey];
-
-    // Drilldown Header
-    const header = document.createElement('div');
-    header.className = 'glass-card p-6 flex flex-col md:flex-row justify-between items-start md:items-center gap-4';
-    header.style.borderLeft = `4px solid ${color}`;
-    header.innerHTML = `
-      <div class="space-y-1">
-        <span class="badge badge-primary text-[0.62rem]">Active Study Workspace</span>
-        <h2 class="text-xl md:text-2xl font-black text-white font-heading">${chapter.name}</h2>
-        <p class="text-xs text-gray-400">${subName} Curriculum &bull; 3-Panel Integrated Interface</p>
-      </div>
-    `;
-    container.appendChild(header);
-
-    // Three Panel Flex Grid
-    const grid = document.createElement('div');
-    grid.className = 'grid grid-cols-1 lg:grid-cols-3 gap-8 items-start';
-
-    // PANEL 1: Study Notes
-    const panelNotes = document.createElement('div');
-    panelNotes.className = 'glass-card p-5 space-y-5 lg:col-span-1';
-    
-    const svgDiagram = `
-      <div class="w-full h-32 rounded-xl bg-white/2 border border-white/5 relative overflow-hidden flex items-center justify-center select-none" aria-hidden="true">
-        <div class="absolute inset-0 bg-gradient-to-br from-indigo-500/5 to-cyan-500/5"></div>
-        <svg class="w-full h-full text-brand-info/20" viewBox="0 0 100 50">
-          <circle cx="50" cy="25" r="15" fill="none" stroke="currentColor" stroke-width="0.5" stroke-dasharray="2 2" />
-          <path d="M10,25 Q50,5 90,25" fill="none" stroke="currentColor" stroke-width="0.5" />
-          <path d="M10,25 Q50,45 90,25" fill="none" stroke="currentColor" stroke-width="0.5" />
-          <line x1="50" y1="10" x2="50" y2="40" stroke="currentColor" stroke-width="0.5" />
-        </svg>
-        <div class="absolute text-[0.6rem] font-bold tracking-widest text-brand-info/60 uppercase"><i class="fa-solid fa-microscope"></i> Concept Diagram</div>
-      </div>
-    `;
-
-    panelNotes.innerHTML = `
-      <div class="glass-card-header border-b border-white/5 pb-3">
-        <h3 class="text-base font-extrabold text-white flex items-center gap-2"><i class="fa-solid fa-book-open" style="color: ${color};"></i> Concept Notes</h3>
-        <span class="text-[0.65rem] text-gray-500 font-bold">150+ Words</span>
-      </div>
-      
-      <div class="text-xs md:text-sm text-gray-400 leading-relaxed space-y-4 max-h-[400px] overflow-y-auto pr-1">
-        ${generateChapterNotes(subjectKey, categoryKey, chapterKey)}
-      </div>
-      
-      ${svgDiagram}
-      
-      <div class="p-3.5 rounded-xl bg-violet-500/5 border border-violet-500/10 text-[0.7rem] text-violet-400 leading-relaxed font-semibold">
-        <i class="fa-solid fa-triangle-exclamation mr-1 text-brand-primary"></i> <b>Verification:</b> Study notes comprehensively before initiating the negative marking timer quiz!
-      </div>
-    `;
-    grid.appendChild(panelNotes);
-
-    // PANEL 2: Formulas List
-    const panelFormulas = document.createElement('div');
-    panelFormulas.className = 'glass-card p-5 space-y-5 lg:col-span-1';
-
-    let formulasListHTML = "";
-    chapter.formulas.forEach(f => {
-      formulasListHTML += `
-        <div class="flex flex-col gap-1 items-center justify-center p-4 bg-[#111625]/60 rounded-xl border border-white/5 shadow-inner group relative cursor-pointer" title="Double click to copy equation">
-          <span class="text-[0.65rem] font-bold text-gray-500 uppercase tracking-widest flex items-center gap-1"><i class="fa-solid fa-square-root-variable" style="color: ${color};"></i> Equation</span>
-          <span class="text-sm md:text-base font-black font-mono tracking-wide text-center text-white mt-1 select-all">${f}</span>
-        </div>
-      `;
-    });
-
-    panelFormulas.innerHTML = `
-      <div class="glass-card-header border-b border-white/5 pb-3">
-        <h3 class="text-base font-extrabold text-white flex items-center gap-2"><i class="fa-solid fa-calculator" style="color: ${color};"></i> Equations Index</h3>
-        <i class="fa-solid fa-square-root-variable text-gray-600"></i>
-      </div>
-      <p class="text-[0.7rem] text-gray-500 font-semibold leading-tight">Centered algebraic formulas. Double click inside boxes to copy constants.</p>
-      
-      <div class="space-y-4 max-h-[500px] overflow-y-auto pr-1">
-        ${formulasListHTML}
-      </div>
-    `;
-    grid.appendChild(panelFormulas);
-
-    // PANEL 3: Quiz Console Launcher
-    const panelQuizLauncher = document.createElement('div');
-    panelQuizLauncher.className = 'glass-card p-5 space-y-5 lg:col-span-1';
 
     const chId = `${subjectKey}-${categoryKey}-${chapterKey}`;
     const chProgress = appState.progress[chId] || { completed: false, quizScore: null };
     
-    let quizProgressText = "Not attempted yet.";
-    let quizColorClass = "text-gray-500";
+    let quizProgressText = "Not attempted yet";
+    let quizColorClass = "text-gray-400";
     if (chProgress.quizScore !== null) {
-      quizProgressText = `Max score: ${chProgress.quizScore}%`;
+      quizProgressText = `Max Score: ${chProgress.quizScore}%`;
       quizColorClass = chProgress.quizScore >= 60 ? "text-emerald-400 font-bold" : "text-brand-warning font-bold";
     }
 
-    panelQuizLauncher.innerHTML = `
-      <div class="glass-card-header border-b border-white/5 pb-3">
-        <h3 class="text-base font-extrabold text-white flex items-center gap-2"><i class="fa-solid fa-pen-to-square" style="color: ${color};"></i> Revision Quiz</h3>
-        <span class="badge badge-warning text-[0.62rem]">30 Questions</span>
+    // Top-to-bottom layout wrapper
+    const layout = document.createElement('div');
+    layout.className = 'max-w-6xl mx-auto space-y-8 pb-12';
+
+    // --------------------------------------------------------------------------
+    // 1. HERO HEADER SECTION (TOP BANNER & PROMINENT CTA)
+    // --------------------------------------------------------------------------
+    const heroCard = document.createElement('div');
+    heroCard.className = 'glass-card p-6 md:p-8 space-y-6 relative overflow-hidden border-l-4 shadow-2xl';
+    heroCard.style.borderLeftColor = color;
+
+    const isCompleted = chProgress.completed;
+
+    heroCard.innerHTML = `
+      <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 border-b border-white/5 pb-6">
+        <div class="space-y-2">
+          <div class="flex items-center gap-2 flex-wrap">
+            <span class="badge text-[0.68rem] px-2.5 py-0.5 rounded-full font-bold uppercase tracking-wider text-white" style="background-color: ${color}22; border: 1px solid ${color}44; color: ${color};">
+              <i class="fa-solid fa-graduation-cap mr-1"></i> ${subName} &bull; ${catName}
+            </span>
+            <span class="badge badge-info text-[0.65rem] px-2 py-0.5 rounded flex items-center gap-1">
+              <i class="fa-solid fa-book-open-reader"></i> Standard Syllabus
+            </span>
+          </div>
+          <h1 class="text-2xl md:text-4xl font-black text-white font-heading tracking-tight leading-tight">${chapter.name}</h1>
+          <p class="text-xs md:text-sm text-gray-400">Complete theoretical notes, key governing equations, and a 30-question CEE/NEET practice quiz.</p>
+        </div>
+
+        <!-- Mastery Checkbox Toggle -->
+        <button id="btn-toggle-chapter-mastery" class="flex items-center gap-2.5 px-4 py-2.5 rounded-xl border transition-all select-none flex-shrink-0 text-xs font-bold ${
+          isCompleted 
+            ? 'bg-emerald-500/10 border-emerald-500/30 text-emerald-400 hover:bg-emerald-500/20' 
+            : 'bg-white/5 border-white/10 text-gray-400 hover:bg-white/10 hover:text-white'
+        }">
+          <i class="${isCompleted ? 'fa-solid fa-circle-check text-base text-emerald-400' : 'fa-regular fa-circle text-base text-gray-500'}"></i>
+          <span>${isCompleted ? 'Chapter Mastered' : 'Mark as Mastered'}</span>
+        </button>
       </div>
-      
-      <div class="space-y-4 bg-white/2 p-4 rounded-2xl border border-white/5">
-        <div class="flex items-center gap-3">
-          <div class="w-10 h-10 rounded-xl bg-amber-500/10 border border-amber-500/20 flex items-center justify-center text-brand-warning"><i class="fa-solid fa-hourglass-half text-sm"></i></div>
-          <div class="flex flex-col">
-            <span class="text-xs font-bold text-gray-200">100-Minute Limit</span>
-            <span class="text-[0.65rem] text-gray-500">Auto-submits on completion</span>
+
+      <!-- High-Contrast CTA & Quick Stats Bar -->
+      <div class="flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-6 bg-white/[0.02] p-5 rounded-2xl border border-white/5">
+        <div class="flex items-center gap-3 flex-wrap">
+          <div class="flex items-center gap-2 px-3.5 py-2 rounded-xl bg-white/5 border border-white/10 text-xs font-semibold text-gray-200">
+            <i class="fa-solid fa-list-check text-brand-primary text-sm"></i>
+            <span><b>30</b> MCQs</span>
+          </div>
+
+          <div class="flex items-center gap-2 px-3.5 py-2 rounded-xl bg-white/5 border border-white/10 text-xs font-semibold text-gray-200">
+            <i class="fa-solid fa-clock text-amber-400 text-sm"></i>
+            <span><b>100</b> Mins</span>
+          </div>
+
+          <div class="flex items-center gap-2 px-3.5 py-2 rounded-xl bg-white/5 border border-white/10 text-xs font-semibold text-gray-200">
+            <i class="fa-solid fa-shield-halved text-brand-danger text-sm"></i>
+            <span><b>+1.0</b> / <b>-0.25</b> Marking</span>
+          </div>
+
+          <div class="flex items-center gap-2 px-3.5 py-2 rounded-xl bg-white/5 border border-white/10 text-xs font-semibold ${quizColorClass}">
+            <i class="fa-solid fa-trophy text-amber-400 text-sm"></i>
+            <span>${quizProgressText}</span>
           </div>
         </div>
-        
-        <div class="flex items-center gap-3">
-          <div class="w-10 h-10 rounded-xl bg-red-500/10 border border-red-500/20 flex items-center justify-center text-brand-danger"><i class="fa-solid fa-circle-exclamation text-sm"></i></div>
-          <div class="flex flex-col">
-            <span class="text-xs font-bold text-gray-200">Negative Grading</span>
-            <span class="text-[0.65rem] text-gray-500">+1.0 Correct &bull; -0.25 Error</span>
-          </div>
-        </div>
-        
-        <div class="flex items-center gap-3">
-          <div class="w-10 h-10 rounded-xl bg-indigo-500/10 border border-indigo-500/20 flex items-center justify-center text-brand-primary"><i class="fa-solid fa-chart-line text-sm"></i></div>
-          <div class="flex flex-col">
-            <span class="text-xs font-bold text-gray-200">Personal Score Record</span>
-            <span class="text-[0.65rem] ${quizColorClass}">${quizProgressText}</span>
-          </div>
-        </div>
+
+        <!-- Prominent Start Quiz CTA Button -->
+        <button id="btn-start-chapter-quiz-30" class="btn btn-primary px-8 py-4 text-sm md:text-base font-black bg-gradient-to-r from-brand-primary via-indigo-600 to-cyan-500 shadow-[0_4px_24px_rgba(135,77,255,0.4)] hover:shadow-[0_6px_28px_rgba(135,77,255,0.6)] hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-3 text-white rounded-xl flex-shrink-0 cursor-pointer">
+          <i class="fa-solid fa-rocket text-base md:text-lg animate-bounce"></i>
+          <span>Start Revision Quiz</span>
+          <i class="fa-solid fa-arrow-right text-xs"></i>
+        </button>
       </div>
-      
-      <button class="btn btn-primary w-full bg-gradient-to-r from-brand-primary to-indigo-600 shadow-[0_4px_12px_rgba(135,77,255,0.15)] font-bold py-3.5 mt-2" id="btn-start-chapter-quiz-30">
-        <i class="fa-solid fa-rocket mr-1"></i> Start 30-Q Quiz
-      </button>
     `;
-    grid.appendChild(panelQuizLauncher);
+    layout.appendChild(heroCard);
 
-    container.appendChild(grid);
+    // --------------------------------------------------------------------------
+    // 2. CHAPTER COURSE NOTES SECTION (FULL WIDTH)
+    // --------------------------------------------------------------------------
+    const notesSection = document.createElement('div');
+    notesSection.className = 'space-y-4';
+    notesSection.innerHTML = `
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-white/10 pb-3">
+        <h3 class="text-lg md:text-xl font-black text-white font-heading flex items-center gap-2.5">
+          <i class="fa-solid fa-book-open" style="color: ${color};"></i>
+          <span>Chapter Course Notes</span>
+        </h3>
+        <span class="badge text-[0.68rem] px-3 py-1 rounded-full font-bold bg-cyan-500/10 border border-cyan-500/20 text-cyan-400 flex items-center gap-1.5 self-start sm:self-auto">
+          <i class="fa-solid fa-shield-check"></i> Textbook-Sourced Syllabus
+        </span>
+      </div>
+      
+      <div>
+        ${generateChapterNotes(subjectKey, categoryKey, chapterKey)}
+      </div>
+    `;
+    layout.appendChild(notesSection);
 
-    // Bind study room launchers
+    // --------------------------------------------------------------------------
+    // 3. KEY FORMULAS SECTION (FULL WIDTH GRID)
+    // --------------------------------------------------------------------------
+    const formulasSection = document.createElement('div');
+    formulasSection.className = 'space-y-4';
+
+    let formulasGridHTML = "";
+    if (chapter.formulas && chapter.formulas.length > 0) {
+      chapter.formulas.forEach((f, idx) => {
+        formulasGridHTML += `
+          <div class="flex flex-col gap-2 p-4 bg-[#111625]/80 rounded-2xl border border-white/5 shadow-inner group relative cursor-pointer hover:border-brand-primary/40 hover:bg-[#111625] transition-all" title="Double click to copy equation">
+            <div class="flex items-center justify-between">
+              <span class="text-[0.65rem] font-bold text-gray-400 uppercase tracking-widest flex items-center gap-1.5">
+                <i class="fa-solid fa-square-root-variable" style="color: ${color};"></i> Formula #${idx + 1}
+              </span>
+              <span class="text-[0.62rem] text-gray-500 opacity-0 group-hover:opacity-100 transition-opacity flex items-center gap-1">
+                <i class="fa-regular fa-copy"></i> Copy
+              </span>
+            </div>
+            <span class="text-sm md:text-base font-black font-mono tracking-wide text-center text-white my-1 select-all group-hover:text-cyan-300 transition-colors">${f}</span>
+          </div>
+        `;
+      });
+    } else {
+      formulasGridHTML = `<div class="col-span-full p-6 glass-card text-center text-xs text-gray-400">No formula list indexed for this chapter.</div>`;
+    }
+
+    formulasSection.innerHTML = `
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-white/10 pb-3">
+        <h3 class="text-lg md:text-xl font-black text-white font-heading flex items-center gap-2.5">
+          <i class="fa-solid fa-calculator" style="color: ${color};"></i>
+          <span>Key Formulas & Governing Equations</span>
+        </h3>
+        <span class="text-xs text-gray-400 font-medium">Double-click any box to copy equation</span>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        ${formulasGridHTML}
+      </div>
+    `;
+    layout.appendChild(formulasSection);
+
+    container.appendChild(layout);
+
+    // Bind Quiz Start button
     document.getElementById('btn-start-chapter-quiz-30').addEventListener('click', () => {
       launch30QuestionQuiz(subjectKey, categoryKey, chapterKey);
+    });
+
+    // Bind Mastery Toggle button
+    document.getElementById('btn-toggle-chapter-mastery').addEventListener('click', () => {
+      const currentStatus = !!(appState.progress[chId] && appState.progress[chId].completed);
+      const newStatus = !currentStatus;
+      
+      if (!appState.progress[chId]) appState.progress[chId] = {};
+      appState.progress[chId].completed = newStatus;
+      saveAppState();
+
+      // Re-render chapter drilldown to update UI
+      openThreePanelChapter(subjectKey, categoryKey, chapterKey);
     });
   }
 
