@@ -4,6 +4,11 @@
  * 30-Question Chapter Quizzes with negative marking, and category-divided syllabus rendering.
  */
 
+const SUPABASE_URL = 'https://rwfbinwbkdfekmxtcqpn.supabase.co';
+const SUPABASE_ANON_KEY = 'sb_publishable_1nbm8iOVOdxSVrdlqUxoOA_jXdmuOHo';
+const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+console.log('Supabase client initialized:', supabaseClient);
+
 document.addEventListener('DOMContentLoaded', () => {
 
   // ==========================================================================
