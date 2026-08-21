@@ -86,24 +86,26 @@ document.addEventListener('DOMContentLoaded', () => {
   // ==========================================================================
   // SIGN-IN & SESSION SECURITY LOCKS
   // ==========================================================================
-  function checkSession() {
-    const profile = localStorage.getItem('edupeak_user_profile');
+  async function checkSession() {
+    const { data: { session } } = await supabaseClient.auth.getSession();
     const overlay = document.getElementById('sign-in-screen');
-    
-    if (profile) {
-      // Hide sign-in screen immediately
+
+    if (session) {
       overlay.classList.add('hidden');
       overlay.style.opacity = '0';
       overlay.style.pointerEvents = 'none';
-      
-      const parsed = JSON.parse(profile);
-      updateUserProfileUI(parsed);
-      
-      // Load progress state
+
+      const { data: profile } = await supabaseClient
+        .from('profiles')
+        .select('*')
+        .eq('id', session.user.id)
+        .single();
+
+      updateUserProfileUI({ name: profile?.name || 'Student', email: session.user.email, targetExam: profile?.target_exam || 'cee' });
+
       loadState();
       navigateTo('dashboard');
     } else {
-      // Show and lock sign-in screen
       overlay.classList.remove('hidden');
       overlay.style.opacity = '1';
       overlay.style.pointerEvents = 'auto';
@@ -222,7 +224,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // Bind Sign-In / Sign-Up submit validation
   const signinForm = document.getElementById('edupeak-signin-form');
   if (signinForm) {
-    signinForm.addEventListener('submit', (e) => {
+    signinForm.addEventListener('submit', async (e) => {
       e.preventDefault();
       resetFieldErrors();
 
@@ -238,12 +240,6 @@ document.addEventListener('DOMContentLoaded', () => {
       const errPassword = document.getElementById('error-signin-password');
       
       let valid = true;
-      let registeredUsers = [];
-      try {
-        registeredUsers = JSON.parse(localStorage.getItem('registeredUsers')) || [];
-      } catch (err) {
-        registeredUsers = [];
-      }
 
       const emailVal = emailInput.value.trim();
       const passVal = passwordInput.value;
@@ -264,24 +260,16 @@ document.addEventListener('DOMContentLoaded', () => {
           if (valid) emailInput.focus();
           setFieldError(emailInput, errEmail, "Please enter a valid email address.");
           valid = false;
-        } else {
-          // 3. Duplicate email check
-          const exists = registeredUsers.some(u => u.email.toLowerCase() === emailVal.toLowerCase());
-          if (exists) {
-            if (valid) emailInput.focus();
-            setFieldError(emailInput, errEmail, "This email is already registered. Please log in instead.");
-            valid = false;
-          }
         }
 
-        // 4. Target Exam
+        // 3. Target Exam
         if (!examInput.value) {
           if (valid) examInput.focus();
           setFieldError(examInput, errExam, "Please select your target exam.");
           valid = false;
         }
 
-        // 5. Password validation: min 7 chars AND at least one number
+        // 4. Password validation: min 7 chars AND at least one number
         if (!passVal || passVal.length < 7) {
           if (valid) passwordInput.focus();
           setFieldError(passwordInput, errPassword, "Password must be at least 7 characters long.");
@@ -293,17 +281,31 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         if (valid) {
-          const newUser = {
-            name: nameVal,
+          const { data, error } = await supabaseClient.auth.signUp({
             email: emailVal,
-            targetExam: examInput.value,
             password: passVal
-          };
-          registeredUsers.push(newUser);
-          localStorage.setItem('registeredUsers', JSON.stringify(registeredUsers));
+          });
 
-          localStorage.setItem('edupeak_user_profile', JSON.stringify(newUser));
-          updateUserProfileUI(newUser);
+          if (error) {
+            showToast(error.message, "danger");
+            return;
+          }
+
+          // Insert profile row matching the new auth user's ID
+          const { error: profileError } = await supabaseClient
+            .from('profiles')
+            .insert({
+              id: data.user.id,
+              name: nameVal,
+              email: emailVal,
+              target_exam: examInput.value
+            });
+
+          if (profileError) {
+            showToast("Account created but profile setup failed: " + profileError.message, "warning");
+          }
+
+          updateUserProfileUI({ name: nameVal, email: emailVal, targetExam: examInput.value });
 
           const overlay = document.getElementById('sign-in-screen');
           overlay.style.opacity = '0';
@@ -312,7 +314,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
           loadState();
           navigateTo('dashboard');
-          showToast("Account registered! Welcome, " + newUser.name, "success");
+          showToast("Account registered! Welcome, " + nameVal, "success");
           signinForm.reset();
         } else {
           showToast("Please check validation requirements.", "warning");
@@ -324,35 +326,44 @@ document.addEventListener('DOMContentLoaded', () => {
           if (valid) emailInput.focus();
           setFieldError(emailInput, errEmail, "Please enter a valid email address.");
           valid = false;
-        } else {
-          const userMatch = registeredUsers.find(u => u.email.toLowerCase() === emailVal.toLowerCase());
-          if (!userMatch) {
-            if (valid) emailInput.focus();
-            setFieldError(emailInput, errEmail, "No account found with this email.");
-            valid = false;
-          } else if (userMatch.password !== passVal) {
-            if (valid) passwordInput.focus();
-            setFieldError(passwordInput, errPassword, "Incorrect password.");
-            valid = false;
-          } else {
-            // Success Login
-            localStorage.setItem('edupeak_user_profile', JSON.stringify(userMatch));
-            updateUserProfileUI(userMatch);
-
-            const overlay = document.getElementById('sign-in-screen');
-            overlay.style.opacity = '0';
-            overlay.style.pointerEvents = 'none';
-            setTimeout(() => overlay.classList.add('hidden'), 500);
-
-            loadState();
-            navigateTo('dashboard');
-            showToast("Welcome back, " + userMatch.name, "success");
-            signinForm.reset();
-            return;
-          }
+        }
+        if (!passVal) {
+          if (valid) passwordInput.focus();
+          setFieldError(passwordInput, errPassword, "Please enter your password.");
+          valid = false;
         }
 
-        if (!valid) {
+        if (valid) {
+          const { data, error } = await supabaseClient.auth.signInWithPassword({
+            email: emailVal,
+            password: passVal
+          });
+
+          if (error) {
+            setFieldError(emailInput, errEmail, "Incorrect email or password.");
+            showToast("Login failed. Please check field errors.", "warning");
+            return;
+          }
+
+          // Fetch profile data to display name/exam badge
+          const { data: profile } = await supabaseClient
+            .from('profiles')
+            .select('*')
+            .eq('id', data.user.id)
+            .single();
+
+          updateUserProfileUI({ name: profile?.name || 'Student', email: data.user.email, targetExam: profile?.target_exam || 'cee' });
+
+          const overlay = document.getElementById('sign-in-screen');
+          overlay.style.opacity = '0';
+          overlay.style.pointerEvents = 'none';
+          setTimeout(() => overlay.classList.add('hidden'), 500);
+
+          loadState();
+          navigateTo('dashboard');
+          showToast("Welcome back, " + (profile?.name || 'Student'), "success");
+          signinForm.reset();
+        } else {
           showToast("Login failed. Please check field errors.", "warning");
         }
       }
@@ -363,9 +374,9 @@ document.addEventListener('DOMContentLoaded', () => {
   const signOutBtn = document.getElementById('btn-sign-out');
   const mobileSignOutBtn = document.getElementById('mobile-btn-sign-out');
   
-  function handleSignOut() {
+  async function handleSignOut() {
     if (confirm("Are you sure you want to sign out? This locks the workspace.")) {
-      localStorage.removeItem('edupeak_user_profile');
+      await supabaseClient.auth.signOut();
       localStorage.removeItem('edupeak_fs_state');
       initializeDefaultState();
       
