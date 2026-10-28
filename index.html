@@ -39,12 +39,12 @@
           },
           colors: {
             brand: {
-              primary: '#60a5fa',
+              primary: '#5ee0b5',
               success: '#10b981',
               danger: '#ef4444',
               warning: '#f59e0b',
               info: '#06b6d4',
-              darkBg: '#172b40',
+              darkBg: '#122f2c',
               cardBg: 'rgba(17, 24, 39, 0.45)',
             }
           }
@@ -57,15 +57,15 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   
   <!-- Custom Core Glassmorphic Stylesheet -->
-  <link rel="stylesheet" href="style.css?v=20261028-slate">
+  <link rel="stylesheet" href="style.css?v=20261028-forest">
 </head>
-<body class="bg-[#172b40] text-gray-100 font-sans min-h-screen overflow-hidden relative">
+<body class="bg-[#122f2c] text-gray-100 font-sans min-h-screen overflow-hidden relative">
 
   <!-- Core App Layout -->
   <div class="flex w-screen h-screen overflow-hidden relative">
     
     <!-- 1. LEFT SIDEBAR (Desktop Persistent Navigation) -->
-    <aside class="w-[280px] h-full bg-[#112337] border-r border-white/5 flex flex-col flex-shrink-0 z-10 transition-all duration-300 md:flex hidden" aria-label="Main Navigation">
+    <aside class="w-[280px] h-full bg-[#102724] border-r border-white/5 flex flex-col flex-shrink-0 z-10 transition-all duration-300 md:flex hidden" aria-label="Main Navigation">
       <div class="p-6 flex items-center gap-3 border-b border-white/5">
         <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-brand-primary to-brand-info flex items-center justify-center text-lg text-white shadow-[0_0_15px_rgba(135,77,255,0.25)]">
           <i class="fa-solid fa-graduation-cap"></i>
@@ -106,7 +106,7 @@
         </button>
       </nav>
       
-      <div class="p-5 border-t border-white/5 flex items-center justify-between bg-[#112337]/50">
+      <div class="p-5 border-t border-white/5 flex items-center justify-between bg-[#102724]/50">
         <div class="flex items-center gap-3">
           <div class="w-11 h-11 rounded-full bg-gradient-to-br from-indigo-900 to-slate-800 border border-white/10 flex items-center justify-center font-bold text-white font-heading" id="user-avatar-initials" aria-hidden="true">
             JD
@@ -271,6 +271,10 @@
             <h2 id="benefits-heading">Build understanding.<br>Practise with purpose.</h2>
             <p>CeeFusion brings your study material, practice and progress together, so you can turn a large syllabus into a clear daily routine.</p>
           </div>
+          <div class="benefits-photo-grid" aria-label="Study inspiration">
+            <figure><img src="https://images.pexels.com/photos/6344238/pexels-photo-6344238.jpeg?auto=compress&amp;cs=tinysrgb&amp;w=720" width="720" height="480" alt="Students reading and working together at a library table" loading="lazy" decoding="async" referrerpolicy="no-referrer"><figcaption>Learn together · <a href="https://www.pexels.com/photo/people-studying-inside-a-library-6344238/" target="_blank" rel="noopener noreferrer">cottonbro studio / Pexels</a></figcaption></figure>
+            <figure><img src="https://images.pexels.com/photos/6958537/pexels-photo-6958537.jpeg?auto=compress&amp;cs=tinysrgb&amp;w=720" width="720" height="480" alt="A student studying with textbooks and notes at a desk" loading="lazy" decoding="async" referrerpolicy="no-referrer"><figcaption>Focus on your next step · <a href="https://www.pexels.com/photo/young-man-reading-a-book-and-studying-6958537/" target="_blank" rel="noopener noreferrer">Kaboompics / Pexels</a></figcaption></figure>
+          </div>
           <div class="benefits-grid">
             <article><span class="benefit-icon" aria-hidden="true"><i class="fa-solid fa-book-open"></i></span><h3>Understand the concepts</h3><p>Explore 85 chapters with concept notes, formulas and worked examples across Physics, Chemistry, Biology and Mathematics.</p></article>
             <article><span class="benefit-icon" aria-hidden="true"><i class="fa-solid fa-pen-to-square"></i></span><h3>Strengthen problem-solving</h3><p>Apply what you learn in chapter quizzes and intermediate-to-advanced challenges. Review solutions to understand each answer.</p></article>
@@ -305,7 +309,7 @@
             <div class="planner-widget-content space-y-4">
               <div class="scheduler-config bg-white/2 p-4 rounded-xl space-y-3">
                 <div class="flex gap-2">
-                  <select class="select-control w-full bg-[#243c54] text-sm py-2" id="sched-select-focus" aria-label="Scheduler Focus">
+                  <select class="select-control w-full bg-[#294c44] text-sm py-2" id="sched-select-focus" aria-label="Scheduler Focus">
                     <option value="all">Balanced Review</option>
                     <option value="physics">Physics Focus</option>
                     <option value="chemistry">Chemistry Focus</option>
@@ -390,28 +394,28 @@
                 <div class="space-y-3">
                   <span class="text-sm font-bold text-gray-300">1. Exam Blueprint Subject Ratio:</span>
                   <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <div class="sub-chip-selector select-none border border-white/5 bg-[#20364d]/60 p-4 rounded-xl flex items-center gap-3">
+                    <div class="sub-chip-selector select-none border border-white/5 bg-[#21433b]/60 p-4 rounded-xl flex items-center gap-3">
                       <div class="w-8 h-8 rounded-lg bg-cyan-500/10 flex items-center justify-center text-cyan-400 font-bold text-xs">Phy</div>
                       <div class="flex flex-col">
                         <span class="text-sm font-bold">Physics</span>
                         <span class="text-[0.7rem] text-gray-500">50 CEE Questions</span>
                       </div>
                     </div>
-                    <div class="sub-chip-selector select-none border border-white/5 bg-[#20364d]/60 p-4 rounded-xl flex items-center gap-3">
+                    <div class="sub-chip-selector select-none border border-white/5 bg-[#21433b]/60 p-4 rounded-xl flex items-center gap-3">
                       <div class="w-8 h-8 rounded-lg bg-pink-500/10 flex items-center justify-center text-pink-400 font-bold text-xs">Che</div>
                       <div class="flex flex-col">
                         <span class="text-sm font-bold">Chemistry</span>
                         <span class="text-[0.7rem] text-gray-500">50 CEE Questions</span>
                       </div>
                     </div>
-                    <div class="sub-chip-selector select-none border border-white/5 bg-[#20364d]/60 p-4 rounded-xl flex items-center gap-3">
+                    <div class="sub-chip-selector select-none border border-white/5 bg-[#21433b]/60 p-4 rounded-xl flex items-center gap-3">
                       <div class="w-8 h-8 rounded-lg bg-emerald-500/10 flex items-center justify-center text-emerald-400 font-bold text-xs">Bio</div>
                       <div class="flex flex-col">
                         <span class="text-sm font-bold">Biology (Botany + Zoology)</span>
                         <span class="text-[0.7rem] text-gray-500">80 CEE Questions</span>
                       </div>
                     </div>
-                    <div class="sub-chip-selector select-none border border-white/5 bg-[#20364d]/60 p-4 rounded-xl flex items-center gap-3">
+                    <div class="sub-chip-selector select-none border border-white/5 bg-[#21433b]/60 p-4 rounded-xl flex items-center gap-3">
                       <div class="w-8 h-8 rounded-lg bg-amber-500/10 flex items-center justify-center text-amber-400 font-bold text-xs">MAT</div>
                       <div class="flex flex-col">
                         <span class="text-sm font-bold">Mental Agility</span>
@@ -424,14 +428,14 @@
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div class="flex flex-col gap-2">
                     <label class="text-sm font-bold text-gray-300" for="mock-q-count">Total MCQs:</label>
-                    <select class="select-control w-full bg-[#243c54]" id="mock-q-count" disabled>
+                    <select class="select-control w-full bg-[#294c44]" id="mock-q-count" disabled>
                       <option value="200" selected>200 Questions (CEE Nepal Exam)</option>
                     </select>
                   </div>
                   
                   <div class="flex flex-col gap-2">
                     <label class="text-sm font-bold text-gray-300" for="mock-duration">Time Limit:</label>
-                    <select class="select-control w-full bg-[#243c54]" id="mock-duration" disabled>
+                    <select class="select-control w-full bg-[#294c44]" id="mock-duration" disabled>
                       <option value="180" selected>3 Hours (180 Minutes)</option>
                     </select>
                   </div>
@@ -523,19 +527,19 @@
             <form class="contact-form space-y-4" id="edupeak-contact-form" novalidate>
               <div class="form-field-wrapper space-y-1">
                 <label class="text-xs font-bold text-gray-300" for="contact-name">Full Name</label>
-                <input class="input-control w-full bg-[#20364d]/60 py-3 text-sm" type="text" id="contact-name" placeholder="E.g. Your Name" required minlength="3">
+                <input class="input-control w-full bg-[#21433b]/60 py-3 text-sm" type="text" id="contact-name" placeholder="E.g. Your Name" required minlength="3">
                 <span class="field-error-text text-[0.7rem]" id="error-contact-name">Please provide a valid name (min 3 characters).</span>
               </div>
               
               <div class="form-field-wrapper space-y-1">
                 <label class="text-xs font-bold text-gray-300" for="contact-email">Email Address</label>
-                <input class="input-control w-full bg-[#20364d]/60 py-3 text-sm" type="email" id="contact-email" placeholder="E.g. yourname@mail.com" required>
+                <input class="input-control w-full bg-[#21433b]/60 py-3 text-sm" type="email" id="contact-email" placeholder="E.g. yourname@mail.com" required>
                 <span class="field-error-text text-[0.7rem]" id="error-contact-email">Please enter a valid email address.</span>
               </div>
               
               <div class="form-field-wrapper space-y-1">
                 <label class="text-xs font-bold text-gray-300" for="contact-message">Detail Query</label>
-                <textarea class="input-control w-full bg-[#20364d]/60 py-3 text-sm" id="contact-message" placeholder="Describe the issue or feedback..." rows="5" required minlength="10"></textarea>
+                <textarea class="input-control w-full bg-[#21433b]/60 py-3 text-sm" id="contact-message" placeholder="Describe the issue or feedback..." rows="5" required minlength="10"></textarea>
                 <span class="field-error-text text-[0.7rem]" id="error-contact-message">Message must be at least 10 characters long.</span>
               </div>
               
@@ -608,7 +612,7 @@
   
   <!-- 1. CEE 200 MCQ ASSESSMENT WORKSPACE -->
   <div class="mock-exam-workspace select-none" id="mock-exam-simulation-workspace" role="dialog" aria-modal="true">
-    <div class="mock-exam-navbar flex items-center justify-between px-3 sm:px-6 bg-[#112337] border-b border-white/5">
+    <div class="mock-exam-navbar flex items-center justify-between px-3 sm:px-6 bg-[#102724] border-b border-white/5">
       <div class="flex items-center gap-2 sm:gap-3 overflow-hidden">
         <i class="fa-solid fa-graduation-cap text-brand-info text-lg sm:text-xl flex-shrink-0"></i>
         <span class="text-xs sm:text-base font-extrabold tracking-tight font-heading text-transparent bg-clip-text bg-gradient-to-r from-white to-gray-400 truncate">CEE Assessment Console</span>
@@ -663,7 +667,7 @@
       </main>
       
       <!-- Right side grid indexes palette -->
-      <aside class="mock-palette-sidebar w-[340px] h-full bg-[#112337] border-l border-white/5 flex flex-col flex-shrink-0" id="mock-palette-sidebar" aria-label="Question Selection Grid">
+      <aside class="mock-palette-sidebar w-[340px] h-full bg-[#102724] border-l border-white/5 flex flex-col flex-shrink-0" id="mock-palette-sidebar" aria-label="Question Selection Grid">
         <div class="p-4 sm:p-6 border-b border-white/5 flex justify-between items-center">
           <div>
             <h4 class="text-sm font-bold text-gray-200 font-heading">Question Selection Grid</h4>
@@ -679,7 +683,7 @@
         </div>
         
         <!-- Legend -->
-        <div class="palette-legend p-4 sm:p-5 bg-[#172b40] border-t border-white/5 grid grid-cols-2 gap-3.5">
+        <div class="palette-legend p-4 sm:p-5 bg-[#122f2c] border-t border-white/5 grid grid-cols-2 gap-3.5">
           <div class="flex items-center gap-2 text-[0.7rem] font-bold text-gray-400">
             <div class="w-3.5 h-3.5 rounded bg-slate-800 border border-white/5"></div>
             <span>Unvisited</span>
@@ -709,7 +713,7 @@
 
   <!-- 2. PRE-SUBMISSION CONFIRMATION CONSOLE -->
   <div class="exam-submit-modal" id="mock-submission-confirm-overlay" role="dialog" aria-modal="true" aria-labelledby="confirm-heading">
-    <div class="glass-card max-w-lg w-[90%] text-center p-8 flex flex-col gap-5 border border-white/10 rounded-3xl bg-[#1b3047]">
+    <div class="glass-card max-w-lg w-[90%] text-center p-8 flex flex-col gap-5 border border-white/10 rounded-3xl bg-[#1b3d37]">
       <i class="fa-solid fa-circle-exclamation text-4xl text-brand-warning mx-auto animate-pulse"></i>
       <h3 id="confirm-heading" class="text-xl font-bold font-heading text-gray-200">Confirm Exam Submission</h3>
       <p class="text-sm text-gray-400">Are you sure you want to end and grade your CEE Assessment? Verify your attempt summary:</p>
@@ -746,7 +750,7 @@
   </button>
 
   <div class="scratchpad-panel utility-panel-expanded" id="scratchpad-utility-panel" aria-label="Study tools panel" role="complementary">
-    <div class="scratchpad-header px-4 py-3 bg-[#1a3047] border-b border-white/5 flex justify-between items-center flex-shrink-0">
+    <div class="scratchpad-header px-4 py-3 bg-[#193a34] border-b border-white/5 flex justify-between items-center flex-shrink-0">
       <div class="utility-tabs flex items-center gap-1" role="tablist" aria-label="Study tools">
         <button class="utility-tab active" id="utility-tab-assistant" role="tab" aria-selected="true" aria-controls="utility-pane-assistant">
           <i class="fa-solid fa-wand-magic-sparkles"></i> Assistant
@@ -773,7 +777,7 @@
         <button type="button" data-tutor-prompt="Explain this topic step by step with a worked example.">Explain step by step</button>
         <button type="button" data-tutor-prompt="Help me plan a focused 30-minute revision session.">Plan my revision</button>
       </div>
-      <form class="assistant-input-row flex items-center gap-2 px-3 py-3 border-t border-white/5 bg-[#112337] flex-shrink-0" id="assistant-input-form">
+      <form class="assistant-input-row flex items-center gap-2 px-3 py-3 border-t border-white/5 bg-[#102724] flex-shrink-0" id="assistant-input-form">
         <input
           type="text"
           class="input-control assistant-input flex-grow text-xs py-2.5"
@@ -788,7 +792,7 @@
     </div>
 
     <!-- Notes Pane -->
-    <div class="utility-pane scratchpad-body flex-grow relative bg-[#14283c] hidden" id="utility-pane-notes" role="tabpanel" aria-labelledby="utility-tab-notes">
+    <div class="utility-pane scratchpad-body flex-grow relative bg-[#14312c] hidden" id="utility-pane-notes" role="tabpanel" aria-labelledby="utility-tab-notes">
       <textarea class="scratchpad-textarea" id="scratchpad-writing-area" placeholder="Jot down notes, mathematical equations or formulas during timed mock quizzes..."></textarea>
     </div>
   </div>
@@ -797,13 +801,13 @@
   <div class="toast-overlay" id="global-toast-portal" aria-live="polite"></div>
 
   <!-- DYNAMIC SESSION LOCK / SIGN-IN OVERLAY -->
-  <div id="sign-in-screen" class="fixed inset-0 z-[1100] flex items-center justify-center bg-[#172b40]/95 backdrop-blur-md transition-all duration-500">
+  <div id="sign-in-screen" class="fixed inset-0 z-[1100] flex items-center justify-center bg-[#122f2c]/95 backdrop-blur-md transition-all duration-500">
     <div class="absolute inset-0 overflow-hidden pointer-events-none" aria-hidden="true">
       <div class="absolute top-[20%] left-[20%] w-[300px] h-[300px] rounded-full bg-brand-primary/10 blur-[120px] animate-pulse"></div>
       <div class="absolute bottom-[20%] right-[20%] w-[300px] h-[300px] rounded-full bg-brand-info/10 blur-[120px] animate-pulse"></div>
     </div>
     
-    <div class="glass-card max-w-md w-[90%] p-8 relative flex flex-col gap-5 border border-white/10 rounded-3xl bg-[#112337]/80 shadow-[0_20px_50px_rgba(0,0,0,0.5)]">
+    <div class="glass-card max-w-md w-[90%] p-8 relative flex flex-col gap-5 border border-white/10 rounded-3xl bg-[#102724]/80 shadow-[0_20px_50px_rgba(0,0,0,0.5)]">
       <div class="text-center space-y-2">
         <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-brand-primary to-brand-info flex items-center justify-center text-2xl text-white mx-auto shadow-[0_0_20px_rgba(135,77,255,0.3)] mb-3">
           <i class="fa-solid fa-graduation-cap"></i>
@@ -825,19 +829,19 @@
 
         <div class="form-field-wrapper space-y-1" id="wrapper-signin-name">
           <label class="text-[0.7rem] font-bold uppercase tracking-wider text-gray-400" for="signin-name">Full Name</label>
-          <input class="input-control w-full bg-[#20364d]/60 py-3 text-sm border-white/5 focus:border-brand-primary" type="text" id="signin-name" placeholder="E.g. FULL  NAME" required minlength="3">
+          <input class="input-control w-full bg-[#21433b]/60 py-3 text-sm border-white/5 focus:border-brand-primary" type="text" id="signin-name" placeholder="E.g. FULL  NAME" required minlength="3">
           <span class="field-error-text text-[0.68rem] text-red-500 hidden block mt-1 font-semibold" id="error-signin-name">Full name must contain at least two words (min 2 letters each).</span>
         </div>
         
         <div class="form-field-wrapper space-y-1" id="wrapper-signin-email">
           <label class="text-[0.7rem] font-bold uppercase tracking-wider text-gray-400" for="signin-email">Email Address</label>
-          <input class="input-control w-full bg-[#20364d]/60 py-3 text-sm border-white/5 focus:border-brand-primary" type="email" id="signin-email" placeholder="yourname@mail.com" required>
+          <input class="input-control w-full bg-[#21433b]/60 py-3 text-sm border-white/5 focus:border-brand-primary" type="email" id="signin-email" placeholder="yourname@mail.com" required>
           <span class="field-error-text text-[0.68rem] text-red-500 hidden block mt-1 font-semibold" id="error-signin-email">Please enter a valid email address.</span>
         </div>
 
         <div class="form-field-wrapper space-y-1" id="wrapper-signin-exam">
           <label class="text-[0.7rem] font-bold uppercase tracking-wider text-gray-400" for="signin-exam">Target Exam</label>
-          <select class="select-control w-full bg-[#20364d]/60 text-gray-300 py-3 px-4 text-sm border border-white/5 rounded-xl outline-none focus:border-brand-primary" id="signin-exam" required>
+          <select class="select-control w-full bg-[#21433b]/60 text-gray-300 py-3 px-4 text-sm border border-white/5 rounded-xl outline-none focus:border-brand-primary" id="signin-exam" required>
             <option value="" disabled selected>Select target exam...</option>
             <option value="cee">CEE Nepal (Common Entrance Exam)</option>
             <option value="neet">NEET (National Eligibility cum Entrance Test)</option>
@@ -848,25 +852,25 @@
 
         <div class="form-field-wrapper space-y-1" id="wrapper-signin-password">
           <label class="text-[0.7rem] font-bold uppercase tracking-wider text-gray-400" for="signin-password">Credentials Password</label>
-          <input class="input-control w-full bg-[#20364d]/60 py-3 text-sm border-white/5 focus:border-brand-primary" type="password" id="signin-password" placeholder="••••••••" required minlength="7">
+          <input class="input-control w-full bg-[#21433b]/60 py-3 text-sm border-white/5 focus:border-brand-primary" type="password" id="signin-password" placeholder="••••••••" required minlength="7">
           <span class="field-error-text text-[0.68rem] text-red-500 hidden block mt-1 font-semibold" id="error-signin-password">Password must be at least 7 characters and contain a number.</span>
         </div>
 
         <div class="form-field-wrapper space-y-1 hidden" id="wrapper-verification-code">
           <label class="text-[0.7rem] font-bold uppercase tracking-wider text-gray-400" for="verification-code">Email Verification Code</label>
-          <input class="input-control w-full bg-[#20364d]/60 py-3 text-center text-lg tracking-[0.35em] font-bold border-white/5 focus:border-brand-primary" type="text" id="verification-code" placeholder="000000" inputmode="numeric" autocomplete="one-time-code" maxlength="8">
+          <input class="input-control w-full bg-[#21433b]/60 py-3 text-center text-lg tracking-[0.35em] font-bold border-white/5 focus:border-brand-primary" type="text" id="verification-code" placeholder="000000" inputmode="numeric" autocomplete="one-time-code" maxlength="8">
           <span class="field-error-text text-[0.68rem] text-red-500 hidden block mt-1 font-semibold" id="error-verification-code">Enter the verification code from your email.</span>
         </div>
 
         <div class="form-field-wrapper space-y-1 hidden" id="wrapper-new-password">
           <label class="text-[0.7rem] font-bold uppercase tracking-wider text-gray-400" for="new-password">New Password</label>
-          <input class="input-control w-full bg-[#20364d]/60 py-3 text-sm border-white/5 focus:border-brand-primary" type="password" id="new-password" placeholder="At least 8 characters" autocomplete="new-password" minlength="8">
+          <input class="input-control w-full bg-[#21433b]/60 py-3 text-sm border-white/5 focus:border-brand-primary" type="password" id="new-password" placeholder="At least 8 characters" autocomplete="new-password" minlength="8">
           <span class="field-error-text text-[0.68rem] text-red-500 hidden block mt-1 font-semibold" id="error-new-password">Use at least 8 characters with a number.</span>
         </div>
 
         <div class="form-field-wrapper space-y-1 hidden" id="wrapper-confirm-password">
           <label class="text-[0.7rem] font-bold uppercase tracking-wider text-gray-400" for="confirm-password">Confirm New Password</label>
-          <input class="input-control w-full bg-[#20364d]/60 py-3 text-sm border-white/5 focus:border-brand-primary" type="password" id="confirm-password" placeholder="Repeat your new password" autocomplete="new-password" minlength="8">
+          <input class="input-control w-full bg-[#21433b]/60 py-3 text-sm border-white/5 focus:border-brand-primary" type="password" id="confirm-password" placeholder="Repeat your new password" autocomplete="new-password" minlength="8">
           <span class="field-error-text text-[0.68rem] text-red-500 hidden block mt-1 font-semibold" id="error-confirm-password">Passwords do not match.</span>
         </div>
         

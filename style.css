@@ -649,7 +649,7 @@
   left: 0;
   width: 100vw;
   height: 100vh;
-  background: #172b40;
+  background: #122f2c;
   z-index: 1050;
   display: none;
   flex-direction: column;
@@ -826,7 +826,7 @@
   right: 24px;
   width: 320px;
   height: 400px;
-  background: #112337;
+  background: #102724;
   border: 1px solid var(--glass-border-hover);
   border-radius: 1.5rem;
   box-shadow: 0 10px 40px rgba(0, 0, 0, 0.65);
@@ -843,7 +843,7 @@
 }
  
 .scratchpad-body {
-  background: #14283c;
+  background: #14312c;
 }
  
 .scratchpad-textarea {
@@ -1010,7 +1010,7 @@
 .toast {
   padding: 0.9rem 1.25rem;
   border-radius: 0.75rem;
-  background: #112337;
+  background: #102724;
   border: 1px solid var(--glass-border-hover);
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
   color: #f3f4f6;
@@ -1125,7 +1125,7 @@
     left: 0;
     width: 290px;
     height: 100%;
-    background: #112337;
+    background: #102724;
     border-right: 1px solid var(--glass-border-hover);
     box-shadow: 10px 0 40px rgba(0, 0, 0, 0.85);
     z-index: 1000;
@@ -1256,8 +1256,8 @@
 .assistant-input:disabled { opacity: .65; }
 
 /* Professional slate-and-blue workspace */
-body { background: #172b40; color: #edf4fc; }
-.main-wrapper { background: linear-gradient(160deg, #1e3851 0%, #172b40 60%); }
+body { background: #122f2c; color: #edf4fc; }
+.main-wrapper { background: linear-gradient(160deg, #1e3851 0%, #122f2c 60%); }
 .chapter-card { background: linear-gradient(145deg, #243e57, #1c3249); }
 .chapter-card:hover, .chapter-card:active { background: #29465f; box-shadow: 0 12px 28px rgba(5,18,31,.22); }
 .glass-card:hover, .glass-card:active { box-shadow: 0 12px 28px rgba(5,18,31,.22); }
@@ -1274,3 +1274,30 @@ body { background: #172b40; color: #edf4fc; }
 .benefits-footnote { grid-column: 1 / -1; border-top: 1px solid #c9d8e5; padding-top: 16px; font-size: 11px; line-height: 1.7; color: #486176; }
 @media(max-width: 900px) { .student-benefits { grid-template-columns: 1fr; } .benefits-intro > p:last-child { max-width: none; } }
 @media(max-width: 480px) { .benefits-grid { grid-template-columns: 1fr; gap: 20px; } }
+
+/* Forest, warm cream and study photography */
+:root { --glass-bg: rgba(30,65,56,.95); --glass-border: rgba(189,220,203,.14); }
+body { background: #122f2c; }
+.main-wrapper { background: linear-gradient(150deg,#1a4038,#102c29 75%); }
+.chapter-card { background: linear-gradient(145deg,#24483e,#193a33); }
+.chapter-card:hover, .chapter-card:active { background: #2b5145; }
+.main-wrapper .text-gray-400 { color: #bdd1c8; }
+.main-wrapper .text-gray-500 { color: #afc7bb; }
+.student-benefits { background: #fcf3e4; color: #213f33; border-color: #e6d8bd; grid-template-columns: minmax(0,.85fr) minmax(0,1.15fr); gap: 30px; }
+.benefits-eyebrow { color: #286b51; }
+.benefits-intro { align-self: center; }
+.benefits-intro > p:last-child { color: #5f6658; }
+.benefits-grid { grid-column: 1 / -1; grid-template-columns: repeat(4,minmax(0,1fr)); gap: 20px; }
+.benefits-grid article { padding: 18px; background: #fffaf1; border: 1px solid #e7ddcb; border-radius: 16px; }
+.benefits-grid article p { color: #5f6658; }
+.benefit-icon { background: #deebdc; color: #2e6b50; }
+.benefits-footnote { border-color: #dfd1b8; color: #5f6658; }
+.benefits-photo-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; align-items: start; min-width: 0; }
+.benefits-photo-grid figure { margin: 0; min-width: 0; }
+.benefits-photo-grid figure:nth-child(2) { margin-top: 24px; }
+.benefits-photo-grid img { width: 100%; height: clamp(180px,19vw,265px); object-fit: cover; border-radius: 18px; background: #dbe5d6; border: 1px solid #d8d7bf; }
+.benefits-photo-grid figcaption { padding: 9px 2px; font-size: 9px; line-height: 1.6; color: #616b59; }
+.benefits-photo-grid a { text-decoration: underline; text-underline-offset: 2px; }
+@media(max-width:1100px) { .benefits-grid { grid-template-columns: repeat(2,minmax(0,1fr)); } }
+@media(max-width:760px) { .student-benefits { grid-template-columns: 1fr; } .benefits-photo-grid img { height: 210px; } }
+@media(max-width:480px) { .benefits-grid { grid-template-columns: 1fr; } .benefits-photo-grid img { height: 175px; } }
