@@ -811,6 +811,12 @@ document.addEventListener('DOMContentLoaded', () => {
   drawerOverlay.addEventListener('click', (e) => {
     if (e.target === drawerOverlay) closeMobileDrawer();
   });
+  drawerOverlay.querySelectorAll('.nav-item').forEach(btn => {
+    btn.addEventListener('click', closeMobileDrawer);
+  });
+  window.addEventListener('resize', () => {
+    if (window.innerWidth >= 768) closeMobileDrawer();
+  });
 
   // ==========================================================================
   // HOME / DASHBOARD SCREEN BUILDER

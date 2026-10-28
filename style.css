@@ -1065,6 +1065,10 @@ Style · CSS
 }
  
 /* 13. Responsive Sidebar/Header Display toggles */
+.drawer-container {
+  display: none;
+}
+
 .mobile-header {
   position: absolute;
   top: 0;
@@ -1082,7 +1086,11 @@ Style · CSS
   z-index: 9;
 }
  
-@media (max-width: 768px) {
+@media (max-width: 767px) {
+  .drawer-container {
+    display: block;
+  }
+
   .mobile-header {
     display: flex;
   }
