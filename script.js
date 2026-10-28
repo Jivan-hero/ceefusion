@@ -86,6 +86,8 @@ document.addEventListener('DOMContentLoaded', () => {
   // SIGN-IN & SESSION SECURITY LOCKS
   // ==========================================================================
   const authStatus = document.getElementById('auth-status');
+  const isRecoveryRedirect = new URLSearchParams(window.location.search).get('recovery') === '1'
+    || window.location.hash.includes('type=recovery');
 
   function setAuthStatus(message = '', type = 'info') {
     if (!authStatus) return;
@@ -138,6 +140,14 @@ document.addEventListener('DOMContentLoaded', () => {
       overlay.style.opacity = '1';
       overlay.style.pointerEvents = 'auto';
       setAuthStatus(friendlyAuthError(error), 'danger');
+      return;
+    }
+
+    if (session && isRecoveryRedirect) {
+      overlay.classList.remove('hidden');
+      overlay.style.opacity = '1';
+      overlay.style.pointerEvents = 'auto';
+      switchAuthMode('reset-update');
       return;
     }
 
@@ -226,11 +236,11 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function resetFieldErrors() {
-    ['signin-name', 'signin-email', 'signin-exam', 'signin-password'].forEach(id => {
+    ['signin-name', 'signin-email', 'signin-exam', 'signin-password', 'verification-code', 'new-password', 'confirm-password'].forEach(id => {
       const el = document.getElementById(id);
       if (el) el.style.borderColor = '';
     });
-    ['error-signin-name', 'error-signin-email', 'error-signin-exam', 'error-signin-password'].forEach(id => {
+    ['error-signin-name', 'error-signin-email', 'error-signin-exam', 'error-signin-password', 'error-verification-code', 'error-new-password', 'error-confirm-password'].forEach(id => {
       const el = document.getElementById(id);
       if (el) el.classList.add('hidden');
     });
@@ -239,12 +249,20 @@ document.addEventListener('DOMContentLoaded', () => {
   // Auth Tab Switching Logic
   const tabSignup = document.getElementById('auth-tab-signup');
   const tabLogin = document.getElementById('auth-tab-login');
+  const tabsContainer = document.getElementById('auth-tabs-container');
   const modeInput = document.getElementById('auth-mode-input');
   const modalTitle = document.getElementById('auth-modal-title');
   const modalSub = document.getElementById('auth-modal-subtitle');
   const wrapperName = document.getElementById('wrapper-signin-name');
+  const wrapperEmail = document.getElementById('wrapper-signin-email');
   const wrapperExam = document.getElementById('wrapper-signin-exam');
+  const wrapperPassword = document.getElementById('wrapper-signin-password');
+  const wrapperVerification = document.getElementById('wrapper-verification-code');
+  const wrapperNewPassword = document.getElementById('wrapper-new-password');
+  const wrapperConfirmPassword = document.getElementById('wrapper-confirm-password');
   const btnAuthSubmit = document.getElementById('btn-auth-submit');
+  const btnForgotPassword = document.getElementById('btn-forgot-password');
+  const btnBackToLogin = document.getElementById('btn-back-to-login');
 
   function setAuthBusy(isBusy, label = 'Please wait...') {
     if (!btnAuthSubmit) return;
@@ -253,40 +271,81 @@ document.addEventListener('DOMContentLoaded', () => {
     btnAuthSubmit.classList.toggle('cursor-not-allowed', isBusy);
     if (isBusy) {
       btnAuthSubmit.dataset.previousHtml = btnAuthSubmit.innerHTML;
+      btnAuthSubmit.dataset.previousMode = modeInput?.value || '';
       btnAuthSubmit.innerHTML = `<i class="fa-solid fa-circle-notch fa-spin mr-1"></i> ${label}`;
     } else if (btnAuthSubmit.dataset.previousHtml) {
-      btnAuthSubmit.innerHTML = btnAuthSubmit.dataset.previousHtml;
+      if (btnAuthSubmit.dataset.previousMode === (modeInput?.value || '')) {
+        btnAuthSubmit.innerHTML = btnAuthSubmit.dataset.previousHtml;
+      }
       delete btnAuthSubmit.dataset.previousHtml;
+      delete btnAuthSubmit.dataset.previousMode;
+    }
+  }
+
+  function setAuthFieldVisibility(element, visible) {
+    if (!element) return;
+    element.classList.toggle('hidden', !visible);
+    element.style.display = visible ? (element === tabsContainer ? 'flex' : 'block') : 'none';
+  }
+
+  function switchAuthMode(mode, options = {}) {
+    resetFieldErrors();
+    setAuthStatus(options.preserveStatus ? authStatus?.textContent || '' : '', options.statusType || 'info');
+    if (modeInput) modeInput.value = mode;
+
+    const isSignup = mode === 'signup';
+    const isLogin = mode === 'login';
+    const isVerify = mode === 'verify';
+    const isResetRequest = mode === 'reset-request';
+    const isResetUpdate = mode === 'reset-update';
+
+    setAuthFieldVisibility(tabsContainer, isSignup || isLogin);
+    setAuthFieldVisibility(wrapperName, isSignup);
+    setAuthFieldVisibility(wrapperEmail, !isResetUpdate);
+    setAuthFieldVisibility(wrapperExam, isSignup);
+    setAuthFieldVisibility(wrapperPassword, isSignup || isLogin);
+    setAuthFieldVisibility(wrapperVerification, isVerify);
+    setAuthFieldVisibility(wrapperNewPassword, isResetUpdate);
+    setAuthFieldVisibility(wrapperConfirmPassword, isResetUpdate);
+    setAuthFieldVisibility(btnForgotPassword, isLogin);
+    setAuthFieldVisibility(btnBackToLogin, isVerify || isResetRequest || isResetUpdate);
+
+    if (tabSignup && tabLogin) {
+      tabSignup.className = `flex-1 py-2 text-sm font-bold text-center border-b-2 transition-all ${isSignup ? 'text-brand-primary border-brand-primary' : 'text-gray-400 border-transparent hover:text-gray-200'}`;
+      tabLogin.className = `flex-1 py-2 text-sm font-bold text-center border-b-2 transition-all ${isLogin ? 'text-brand-primary border-brand-primary' : 'text-gray-400 border-transparent hover:text-gray-200'}`;
+    }
+
+    const modeContent = {
+      signup: ['Create CeeFusion Account', 'Initialize your student profile and unlock exam revisions.', '<i class="fa-solid fa-user-plus mr-1"></i> Create Account'],
+      login: ['Log In to CeeFusion', 'Enter your credentials to access your saved progress.', '<i class="fa-solid fa-lock-open mr-1"></i> Log In'],
+      verify: ['Verify Your Email', 'Use the confirmation link in your email, or enter its verification code below.', '<i class="fa-solid fa-shield-check mr-1"></i> Verify Email'],
+      'reset-request': ['Reset Your Password', 'Enter your email and we will send you a secure reset link.', '<i class="fa-solid fa-envelope mr-1"></i> Email Reset Link'],
+      'reset-update': ['Choose a New Password', 'Create a strong password for your CeeFusion account.', '<i class="fa-solid fa-key mr-1"></i> Update Password']
+    }[mode];
+
+    if (modeContent) {
+      if (modalTitle) modalTitle.textContent = modeContent[0];
+      if (modalSub) modalSub.textContent = modeContent[1];
+      if (btnAuthSubmit) btnAuthSubmit.innerHTML = modeContent[2];
+    }
+
+    const emailInput = document.getElementById('signin-email');
+    if (emailInput) {
+      emailInput.readOnly = isVerify;
+      if (isVerify && options.email) emailInput.value = options.email;
     }
   }
 
   if (tabSignup && tabLogin) {
-    tabSignup.addEventListener('click', () => {
-      resetFieldErrors();
-      if (modeInput) modeInput.value = 'signup';
-      tabSignup.className = "flex-1 py-2 text-sm font-bold text-center text-brand-primary border-b-2 border-brand-primary transition-all";
-      tabLogin.className = "flex-1 py-2 text-sm font-bold text-center text-gray-400 border-b-2 border-transparent hover:text-gray-200 transition-all";
-      if (modalTitle) modalTitle.textContent = "Create CeeFusion Account";
-      if (modalSub) modalSub.textContent = "Initialize your student profile and unlock exam revisions.";
-      if (wrapperName) wrapperName.style.display = 'block';
-      if (wrapperExam) wrapperExam.style.display = 'block';
-      if (btnAuthSubmit) btnAuthSubmit.innerHTML = `<i class="fa-solid fa-user-plus mr-1"></i> Create Account`;
-      setAuthStatus();
-    });
-
-    tabLogin.addEventListener('click', () => {
-      resetFieldErrors();
-      if (modeInput) modeInput.value = 'login';
-      tabLogin.className = "flex-1 py-2 text-sm font-bold text-center text-brand-primary border-b-2 border-brand-primary transition-all";
-      tabSignup.className = "flex-1 py-2 text-sm font-bold text-center text-gray-400 border-b-2 border-transparent hover:text-gray-200 transition-all";
-      if (modalTitle) modalTitle.textContent = "Log In to CeeFusion";
-      if (modalSub) modalSub.textContent = "Enter your credentials to access your saved progress.";
-      if (wrapperName) wrapperName.style.display = 'none';
-      if (wrapperExam) wrapperExam.style.display = 'none';
-      if (btnAuthSubmit) btnAuthSubmit.innerHTML = `<i class="fa-solid fa-lock-open mr-1"></i> Log In`;
-      setAuthStatus();
-    });
+    tabSignup.addEventListener('click', () => switchAuthMode('signup'));
+    tabLogin.addEventListener('click', () => switchAuthMode('login'));
   }
+  if (btnForgotPassword) btnForgotPassword.addEventListener('click', () => switchAuthMode('reset-request'));
+  if (btnBackToLogin) btnBackToLogin.addEventListener('click', async () => {
+    if (modeInput?.value === 'reset-update' && supabaseClient) await supabaseClient.auth.signOut({ scope: 'local' });
+    window.history.replaceState({}, document.title, window.location.pathname);
+    switchAuthMode('login');
+  });
 
   // Bind Sign-In / Sign-Up submit validation
   const signinForm = document.getElementById('edupeak-signin-form');
@@ -300,17 +359,28 @@ document.addEventListener('DOMContentLoaded', () => {
       const emailInput = document.getElementById('signin-email');
       const examInput = document.getElementById('signin-exam');
       const passwordInput = document.getElementById('signin-password');
+      const verificationInput = document.getElementById('verification-code');
+      const newPasswordInput = document.getElementById('new-password');
+      const confirmPasswordInput = document.getElementById('confirm-password');
       
       const errName = document.getElementById('error-signin-name');
       const errEmail = document.getElementById('error-signin-email');
       const errExam = document.getElementById('error-signin-exam');
       const errPassword = document.getElementById('error-signin-password');
+      const errVerification = document.getElementById('error-verification-code');
+      const errNewPassword = document.getElementById('error-new-password');
+      const errConfirmPassword = document.getElementById('error-confirm-password');
       
       let valid = true;
 
       const emailVal = emailInput.value.trim();
       const passVal = passwordInput.value;
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+
+      if (!supabaseClient) {
+        setAuthStatus('The account service is unavailable. Refresh the page and try again.', 'danger');
+        return;
+      }
 
       if (mode === 'signup') {
         // 1. Full name validation: at least two words, each at least 2 chars
@@ -360,6 +430,7 @@ document.addEventListener('DOMContentLoaded', () => {
               email: emailVal,
               password: passVal,
               options: {
+                emailRedirectTo: `${window.location.origin}${window.location.pathname}`,
                 data: {
                   name: nameVal,
                   target_exam: examInput.value
@@ -369,9 +440,11 @@ document.addEventListener('DOMContentLoaded', () => {
             if (error) throw error;
 
             if (!data.session) {
+              sessionStorage.setItem('pendingVerificationEmail', emailVal);
               signinForm.reset();
-              setAuthStatus('Account created. Check your email and confirm your address, then log in.', 'success');
-              showToast('Check your email to finish creating your account.', 'success');
+              switchAuthMode('verify', { email: emailVal });
+              setAuthStatus('Account created. Open the verification email and follow its instructions.', 'success');
+              showToast('A verification email was sent to you.', 'success');
               return;
             }
 
@@ -389,6 +462,104 @@ document.addEventListener('DOMContentLoaded', () => {
           }
         } else {
           showToast("Please check validation requirements.", "warning");
+        }
+
+      } else if (mode === 'verify') {
+        const verificationCode = verificationInput.value.trim().replace(/\s+/g, '');
+        const verificationEmail = emailVal || sessionStorage.getItem('pendingVerificationEmail') || '';
+
+        if (!emailRegex.test(verificationEmail)) {
+          setFieldError(emailInput, errEmail, 'Enter the email address used to create the account.');
+          valid = false;
+        }
+        if (!/^\d{6,8}$/.test(verificationCode)) {
+          setFieldError(verificationInput, errVerification, 'Enter the 6–8 digit code from your email.');
+          valid = false;
+        }
+
+        if (valid) {
+          setAuthBusy(true, 'Verifying...');
+          setAuthStatus();
+          try {
+            const { data, error } = await supabaseClient.auth.verifyOtp({
+              email: verificationEmail,
+              token: verificationCode,
+              type: 'email'
+            });
+            if (error) throw error;
+
+            sessionStorage.removeItem('pendingVerificationEmail');
+            const { data: profile } = await supabaseClient
+              .from('profiles')
+              .select('*')
+              .eq('id', data.user.id)
+              .maybeSingle();
+            updateUserProfileUI({ name: profile?.name || 'Student', email: data.user.email, targetExam: profile?.target_exam || 'cee' });
+            showToast('Email verified. Welcome to CeeFusion!', 'success');
+            unlockWorkspace();
+            signinForm.reset();
+          } catch (error) {
+            const message = friendlyAuthError(error, 'That verification code is invalid or expired.');
+            setFieldError(verificationInput, errVerification, message);
+            setAuthStatus(message, 'danger');
+          } finally {
+            setAuthBusy(false);
+          }
+        }
+
+      } else if (mode === 'reset-request') {
+        if (!emailRegex.test(emailVal)) {
+          setFieldError(emailInput, errEmail, 'Please enter a valid email address.');
+          valid = false;
+        }
+
+        if (valid) {
+          setAuthBusy(true, 'Sending reset link...');
+          setAuthStatus();
+          try {
+            const redirectTo = `${window.location.origin}${window.location.pathname}?recovery=1`;
+            const { error } = await supabaseClient.auth.resetPasswordForEmail(emailVal, { redirectTo });
+            if (error) throw error;
+            setAuthStatus('If an account exists for that email, a secure password-reset link has been sent.', 'success');
+            showToast('Check your email for the password-reset link.', 'success');
+          } catch (error) {
+            const message = friendlyAuthError(error, 'Could not send the reset email.');
+            setAuthStatus(message, 'danger');
+          } finally {
+            setAuthBusy(false);
+          }
+        }
+
+      } else if (mode === 'reset-update') {
+        const newPassword = newPasswordInput.value;
+        const confirmPassword = confirmPasswordInput.value;
+        if (newPassword.length < 8 || !/\d/.test(newPassword)) {
+          setFieldError(newPasswordInput, errNewPassword, 'Use at least 8 characters and include a number.');
+          valid = false;
+        }
+        if (confirmPassword !== newPassword) {
+          setFieldError(confirmPasswordInput, errConfirmPassword, 'Passwords do not match.');
+          valid = false;
+        }
+
+        if (valid) {
+          setAuthBusy(true, 'Updating password...');
+          setAuthStatus();
+          try {
+            const { error } = await supabaseClient.auth.updateUser({ password: newPassword });
+            if (error) throw error;
+            await supabaseClient.auth.signOut({ scope: 'local' });
+            window.history.replaceState({}, document.title, window.location.pathname);
+            signinForm.reset();
+            switchAuthMode('login');
+            setAuthStatus('Password updated successfully. You can now log in.', 'success');
+            showToast('Your password has been updated.', 'success');
+          } catch (error) {
+            const message = friendlyAuthError(error, 'Could not update your password. Request a new reset link.');
+            setAuthStatus(message, 'danger');
+          } finally {
+            setAuthBusy(false);
+          }
         }
 
       } else {
@@ -2943,6 +3114,20 @@ CeeFusion is a CEE Nepal / NEET entrance exam preparation platform. Key facts to
       closeMobileDrawer();
     }
   });
+
+  // Restore an unfinished email-verification screen after a refresh.
+  const pendingVerificationEmail = sessionStorage.getItem('pendingVerificationEmail');
+  if (pendingVerificationEmail && !isRecoveryRedirect) {
+    switchAuthMode('verify', { email: pendingVerificationEmail });
+  } else if (!isRecoveryRedirect) {
+    switchAuthMode('signup');
+  }
+
+  if (supabaseClient) {
+    supabaseClient.auth.onAuthStateChange((event) => {
+      if (event === 'PASSWORD_RECOVERY') switchAuthMode('reset-update');
+    });
+  }
 
   // Run security lock check
   checkSession();

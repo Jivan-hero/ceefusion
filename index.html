@@ -792,7 +792,7 @@
       </div>
       
       <!-- Mode Selector Tabs -->
-      <div class="flex border-b border-white/10">
+      <div class="flex border-b border-white/10" id="auth-tabs-container">
         <button type="button" id="auth-tab-signup" class="flex-1 py-2 text-sm font-bold text-center text-brand-primary border-b-2 border-brand-primary transition-all">Sign Up</button>
         <button type="button" id="auth-tab-login" class="flex-1 py-2 text-sm font-bold text-center text-gray-400 border-b-2 border-transparent hover:text-gray-200 transition-all">Log In</button>
       </div>
@@ -830,9 +830,34 @@
           <input class="input-control w-full bg-[#111625]/60 py-3 text-sm border-white/5 focus:border-brand-primary" type="password" id="signin-password" placeholder="••••••••" required minlength="7">
           <span class="field-error-text text-[0.68rem] text-red-500 hidden block mt-1 font-semibold" id="error-signin-password">Password must be at least 7 characters and contain a number.</span>
         </div>
+
+        <div class="form-field-wrapper space-y-1 hidden" id="wrapper-verification-code">
+          <label class="text-[0.7rem] font-bold uppercase tracking-wider text-gray-400" for="verification-code">Email Verification Code</label>
+          <input class="input-control w-full bg-[#111625]/60 py-3 text-center text-lg tracking-[0.35em] font-bold border-white/5 focus:border-brand-primary" type="text" id="verification-code" placeholder="000000" inputmode="numeric" autocomplete="one-time-code" maxlength="8">
+          <span class="field-error-text text-[0.68rem] text-red-500 hidden block mt-1 font-semibold" id="error-verification-code">Enter the verification code from your email.</span>
+        </div>
+
+        <div class="form-field-wrapper space-y-1 hidden" id="wrapper-new-password">
+          <label class="text-[0.7rem] font-bold uppercase tracking-wider text-gray-400" for="new-password">New Password</label>
+          <input class="input-control w-full bg-[#111625]/60 py-3 text-sm border-white/5 focus:border-brand-primary" type="password" id="new-password" placeholder="At least 8 characters" autocomplete="new-password" minlength="8">
+          <span class="field-error-text text-[0.68rem] text-red-500 hidden block mt-1 font-semibold" id="error-new-password">Use at least 8 characters with a number.</span>
+        </div>
+
+        <div class="form-field-wrapper space-y-1 hidden" id="wrapper-confirm-password">
+          <label class="text-[0.7rem] font-bold uppercase tracking-wider text-gray-400" for="confirm-password">Confirm New Password</label>
+          <input class="input-control w-full bg-[#111625]/60 py-3 text-sm border-white/5 focus:border-brand-primary" type="password" id="confirm-password" placeholder="Repeat your new password" autocomplete="new-password" minlength="8">
+          <span class="field-error-text text-[0.68rem] text-red-500 hidden block mt-1 font-semibold" id="error-confirm-password">Passwords do not match.</span>
+        </div>
         
         <button class="btn btn-primary w-full bg-gradient-to-r from-brand-primary to-indigo-600 shadow-[0_4px_15px_rgba(135,77,255,0.25)] font-bold py-3.5 text-sm mt-4" type="submit" id="btn-auth-submit">
           <i class="fa-solid fa-user-plus mr-1"></i> Create Account
+        </button>
+
+        <button type="button" id="btn-forgot-password" class="hidden w-full text-xs font-bold text-brand-info hover:text-white transition-colors py-1">
+          Forgot your password?
+        </button>
+        <button type="button" id="btn-back-to-login" class="hidden w-full text-xs font-bold text-gray-400 hover:text-white transition-colors py-1">
+          <i class="fa-solid fa-arrow-left mr-1"></i> Back to Log In
         </button>
       </form>
     </div>
