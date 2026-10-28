@@ -749,14 +749,19 @@
       <div class="assistant-context-chip badge badge-info text-[0.62rem] mx-4 mt-3 hidden" id="assistant-context-chip">
         <i class="fa-solid fa-circle-question"></i> <span id="assistant-context-chip-label">Viewing current question</span>
       </div>
-      <div class="assistant-messages flex-grow overflow-y-auto px-4 py-3 space-y-3" id="assistant-messages">
+      <div class="assistant-messages flex-grow overflow-y-auto px-4 py-3 space-y-3" id="assistant-messages" role="log" aria-live="polite" aria-relevant="additions text">
         <!-- Messages rendered dynamically by script.js -->
+      </div>
+      <div class="assistant-suggestions" aria-label="Study prompts">
+        <button type="button" data-tutor-prompt="Give me a hint for the current question without revealing the answer.">Give me a hint</button>
+        <button type="button" data-tutor-prompt="Explain this topic step by step with a worked example.">Explain step by step</button>
+        <button type="button" data-tutor-prompt="Help me plan a focused 30-minute revision session.">Plan my revision</button>
       </div>
       <form class="assistant-input-row flex items-center gap-2 px-3 py-3 border-t border-white/5 bg-[#0c1220] flex-shrink-0" id="assistant-input-form">
         <input
           type="text"
           class="input-control assistant-input flex-grow text-xs py-2.5"
-          id="assistant-input"
+          id="assistant-input" maxlength="1500" aria-label="Message your study tutor"
           placeholder="Ask about this question or the site..."
           autocomplete="off"
         />

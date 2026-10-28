@@ -2864,19 +2864,8 @@ document.addEventListener('DOMContentLoaded', () => {
   // --------------------------------------------------------------------
   // AI ASSISTANT MODULE
   //
-  // Backend: Anthropic API (Claude). This is a static front-end site, so
-  // the API key must NEVER live in this client-side file — anything here
-  // is publicly visible in page source. Instead this calls a small
-  // backend/serverless proxy endpoint (ASSISTANT_API_ENDPOINT below) that
-  // you control, which holds the real Anthropic API key server-side and
-  // forwards the request to https://api.anthropic.com/v1/messages.
-  //
-  // TODO(you): stand up a proxy endpoint (e.g. a Cloudflare Worker /
-  // Vercel function / small Node server) matching the request/response
-  // contract documented above sendAssistantMessage() below, then set
-  // ASSISTANT_API_ENDPOINT to its URL.
-  // --------------------------------------------------------------------
-  const ASSISTANT_API_ENDPOINT = '/api/assistant'; // TODO: point this at your backend proxy
+  // Gemini is called only through the authenticated Supabase Edge Function.
+  const ASSISTANT_API_ENDPOINT = SUPABASE_URL + '/functions/v1/course-chat';
 
   let assistantMessages = []; // { role: 'user' | 'assistant' | 'system', content: string }
   let assistantIsLoading = false;
@@ -2951,7 +2940,7 @@ CeeFusion is a CEE Nepal / NEET entrance exam preparation platform. Key facts to
   }
 
   function renderAssistantWelcomeMessage() {
-    appendAssistantMessage('system', "Hi! I'm your CeeFusion study assistant. Open me while viewing a quiz question and I'll automatically know what you're looking at — just ask me to explain it. I can also answer questions about how the site works.");
+    appendAssistantMessage('system', "Hi! I’m your CeeFusion study tutor. Ask for a clear explanation, a worked example, or a revision plan. Open a chapter or quiz and I’ll use its study material to help.");
   }
 
   function appendAssistantMessage(role, text) {
@@ -2977,67 +2966,91 @@ CeeFusion is a CEE Nepal / NEET entrance exam preparation platform. Key facts to
     return bubble;
   }
 
-  /**
-   * Sends the conversation + auto-injected question/site context to the
-   * backend proxy, which should call Anthropic's /v1/messages endpoint
-   * server-side and return { reply: string }.
-   *
-   * Expected POST body sent to ASSISTANT_API_ENDPOINT:
-   * {
-   *   messages: [{ role: 'user' | 'assistant', content: string }, ...],
-   *   context: {
-   *     site: string,              // SITE_HELP_CONTEXT
-   *     currentQuestion: {         // null if not viewing a question
-   *       source, question, options, correctAnswer, explanation
-   *     } | null
-   *   }
-   * }
-   *
-   * Expected response JSON: { reply: string }
-   */
-  async function sendAssistantMessage(userText) {
-    const questionCtx = getCurrentQuestionContext();
+  // Select a small set of relevant chapters, keeping requests bounded.
+  function getAssistantCourseContext(text) {
+    const terms = text.toLowerCase().match(/[a-z]{3,}/g) || [];
+    const chapters = [];
+    for (const [subject, categories] of Object.entries(window.eduPeakData || {})) {
+      for (const [category, entries] of Object.entries(categories)) {
+        for (const [key, chapter] of Object.entries(entries)) {
+          const searchable = JSON.stringify([chapter.name, chapter.notes, chapter.formulas]).toLowerCase();
+          let score = terms.reduce((sum, term) => sum + (searchable.includes(term) ? 1 : 0), 0);
+          if (activeDrilldown.subjectKey === subject && activeDrilldown.categoryKey === category && activeDrilldown.chapterKey === key) score += 100;
+          if (score) chapters.push({ score, subject, name: chapter.name, notes: chapter.notes, formulas: chapter.formulas });
+        }
+      }
+    }
+    return { chapters: chapters.sort((a, b) => b.score - a.score).slice(0, 4).map(({score, ...chapter}) => chapter), practiceQuestions: [] };
+  }
 
-    appendAssistantMessage('user', userText);
+  async function sendAssistantMessage(userText, retry = false) {
+    if (assistantIsLoading) return;
+    assistantMessagesEl.querySelectorAll('.assistant-retry').forEach(button => button.remove());
+    if (!retry) appendAssistantMessage('user', userText);
     assistantInput.value = '';
     assistantIsLoading = true;
     assistantSendBtn.disabled = true;
+    assistantInput.disabled = true;
+    assistantMessagesEl.setAttribute('aria-busy', 'true');
     const typingBubble = appendAssistantTypingIndicator();
-
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 60000);
     try {
+      if (!supabaseClient) throw new Error('The tutor is unavailable. Please refresh the page and try again.');
+      const { data: sessionData, error: sessionError } = await supabaseClient.auth.getSession();
+      if (sessionError || !sessionData.session) throw new Error('Please log in to use your study tutor.');
       const response = await fetch(ASSISTANT_API_ENDPOINT, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        signal: controller.signal,
+        headers: {
+          'Content-Type': 'application/json',
+          'apikey': SUPABASE_ANON_KEY,
+          'Authorization': 'Bearer ' + sessionData.session.access_token
+        },
         body: JSON.stringify({
-          messages: assistantMessages
-            .filter(m => m.role === 'user' || m.role === 'assistant')
-            .map(m => ({ role: m.role, content: m.content })),
-          context: {
-            site: SITE_HELP_CONTEXT,
-            currentQuestion: questionCtx
-          }
+          messages: assistantMessages.filter(m => m.role === 'user' || m.role === 'assistant').slice(-10),
+          context: { site: SITE_HELP_CONTEXT, currentQuestion: getCurrentQuestionContext(), course: getAssistantCourseContext(userText) }
         })
       });
-
-      typingBubble.remove();
-
+      const data = await response.json().catch(() => ({}));
       if (!response.ok) {
-        throw new Error(`Assistant backend responded with status ${response.status}`);
+        const messages = {
+          401: 'Your session has expired. Please log in again.',
+          429: 'The tutor is busy or its usage limit has been reached. Please try again shortly.',
+          503: 'The tutor is temporarily unavailable. Please try again shortly.',
+          502: 'The AI service could not answer right now. Please try again shortly.'
+        };
+        throw new Error(messages[response.status] || 'Your question could not be sent. Please try again.');
       }
-
-      const data = await response.json();
-      const replyText = (data && data.reply) ? data.reply : "Sorry, I didn't get a usable response. Please try again.";
-      appendAssistantMessage('assistant', replyText);
-
-    } catch (err) {
-      typingBubble.remove();
-      console.error('Assistant request failed:', err);
-      appendAssistantMessage('error', "I couldn't reach the assistant backend. This feature needs a server-side proxy configured with an Anthropic API key (see ASSISTANT_API_ENDPOINT in script.js) — it isn't wired up yet.");
+      if (typeof data.reply !== 'string' || !data.reply.trim()) throw new Error('The tutor returned an empty answer. Please try again.');
+      appendAssistantMessage('assistant', data.reply);
+    } catch (error) {
+      const message = error.name === 'AbortError' ? 'The tutor took too long to respond. Please try again.'
+        : error instanceof TypeError ? 'Connection lost. Check your internet connection and try again.' : error.message;
+      const bubble = appendAssistantMessage('error', message);
+      const retryButton = document.createElement('button');
+      retryButton.type = 'button';
+      retryButton.className = 'assistant-retry';
+      retryButton.textContent = 'Try again';
+      retryButton.addEventListener('click', () => { if (!assistantIsLoading) { bubble.remove(); sendAssistantMessage(userText, true); } });
+      bubble.appendChild(retryButton);
     } finally {
+      clearTimeout(timeout);
+      typingBubble.remove();
       assistantIsLoading = false;
       assistantSendBtn.disabled = false;
+      assistantInput.disabled = false;
+      assistantMessagesEl.setAttribute('aria-busy', 'false');
+      assistantMessagesEl.scrollTop = assistantMessagesEl.scrollHeight;
+      if (panel.style.display === 'flex') assistantInput.focus();
     }
   }
+
+  document.querySelectorAll('[data-tutor-prompt]').forEach(button => {
+    button.addEventListener('click', () => {
+      if (!assistantIsLoading) sendAssistantMessage(button.dataset.tutorPrompt);
+    });
+  });
 
   assistantForm.addEventListener('submit', (e) => {
     e.preventDefault();
