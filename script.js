@@ -1461,6 +1461,59 @@ document.addEventListener('DOMContentLoaded', () => {
     `;
     layout.appendChild(notesSection);
 
+    const supplement = window.CEE_ADVANCED_CONTENT?.[subjectKey + '/' + categoryKey + '/' + chapterKey];
+    if (supplement) {
+      const extra = document.createElement('section');
+      extra.className = 'glass-card p-5 space-y-4 advanced-practice';
+      const title = document.createElement('h3');
+      title.className = 'text-lg font-bold text-white';
+      title.textContent = 'Extended notes & worked CEE-style practice';
+      extra.appendChild(title);
+      const note = document.createElement('p');
+      note.className = 'text-sm text-gray-300 leading-relaxed';
+      note.textContent = supplement.note;
+      extra.appendChild(note);
+      const label = document.createElement('p');
+      label.className = 'text-xs text-cyan-300';
+      label.textContent = 'Original practice: intermediate and advanced. These additions are not verified past-paper questions.';
+      extra.appendChild(label);
+      supplement.questions.forEach((q, i) => {
+        const problem = document.createElement('article');
+        problem.className = 'border border-white/10 rounded-xl p-4 space-y-3';
+        const prompt = document.createElement('p');
+        prompt.className = 'text-sm font-semibold text-white';
+        prompt.textContent = (i + 1) + '. ' + (q.difficulty === 'M' ? '[Intermediate] ' : '[Advanced] ') + q.question;
+        problem.appendChild(prompt);
+        q.options.forEach((option, index) => {
+          const line = document.createElement('p');
+          line.className = 'text-sm text-gray-300';
+          line.textContent = String.fromCharCode(65 + index) + '. ' + option;
+          problem.appendChild(line);
+        });
+        const solution = document.createElement('details');
+        const reveal = document.createElement('summary');
+        reveal.className = 'text-sm text-cyan-300 cursor-pointer py-2';
+        reveal.textContent = 'Reveal answer & worked solution';
+        const answer = document.createElement('p');
+        answer.className = 'text-sm text-emerald-200 leading-relaxed';
+        answer.textContent = 'Answer: ' + String.fromCharCode(65 + q.correct) + '. ' + q.options[q.correct] + '. ' + q.explanation;
+        solution.append(reveal, answer); problem.appendChild(solution); extra.appendChild(problem);
+      });
+      const reference = document.createElement('a');
+      reference.href = supplement.reference[1]; reference.target = '_blank'; reference.rel = 'noopener noreferrer';
+      reference.className = 'text-xs text-cyan-300 underline block';
+      reference.textContent = supplement.reference[0]; extra.appendChild(reference);
+      const challenge = document.createElement('button');
+      challenge.className = 'btn btn-primary py-3 px-5';
+      challenge.textContent = 'Start chapter challenge practice';
+      challenge.addEventListener('click', () => launch30QuestionQuiz(subjectKey, categoryKey, chapterKey, true));
+      extra.appendChild(challenge);
+      const help = document.createElement('p'); help.className = 'text-xs text-gray-400';
+      help.textContent = 'Timed chapter practice with worked answers. Challenge attempts do not change chapter-mastery scores.';
+      extra.appendChild(help); layout.appendChild(extra);
+    }
+
+
     // --------------------------------------------------------------------------
     // 3. KEY FORMULAS SECTION (FULL WIDTH GRID)
     // --------------------------------------------------------------------------
@@ -1589,7 +1642,9 @@ document.addEventListener('DOMContentLoaded', () => {
       return chapter.quiz;
     }
     
-    const compiled = [...chapter.quiz];
+    const bankQuestions = (window.EDUPEAK_QUESTION_BANK?.[subjectKey] || []).filter(q => q.chapter === chapter.name);
+    const seenQuestions = new Set(chapter.quiz.map(q => q.question));
+    const compiled = [...chapter.quiz, ...bankQuestions.filter(q => !seenQuestions.has(q.question)).map(q => ({ ...q, options: [...q.options] }))].slice(0, 30);
     const name = chapter.name;
     const formulas = chapter.formulas || ["Basic relation"];
     const f0 = formulas[0] || "Basic relation";
@@ -1742,7 +1797,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // ==========================================================================
   // TIMED QUIZ CONTROLLER (30 QUESTIONS, 100 MINUTES, NEGATIVE PENALTY)
   // ==========================================================================
-  function launch30QuestionQuiz(subjectKey, categoryKey, chapterKey) {
+  function launch30QuestionQuiz(subjectKey, categoryKey, chapterKey, challengeMode = false) {
     const chapter = window.eduPeakData[subjectKey][categoryKey][chapterKey];
     if (!chapter) return;
 
@@ -1753,14 +1808,17 @@ document.addEventListener('DOMContentLoaded', () => {
     // Clone the compiled pool (it may be a cached array shared across attempts)
     // and shuffle each question's option order fresh for this attempt/retake,
     // so the correct answer's A/B/C/D position isn't fixed by the source data.
-    activeQuiz.questions = compile30Questions(subjectKey, categoryKey, chapterKey)
+    activeQuiz.challengeMode = challengeMode;
+    const challengePool = (window.EDUPEAK_QUESTION_BANK?.[subjectKey] || []).filter(q => q.chapter === chapter.name).map(q => formatRealQ(q, subjectKey));
+    const quizPool = challengeMode ? shuffleArray(challengePool) : compile30Questions(subjectKey, categoryKey, chapterKey);
+    activeQuiz.questions = quizPool
       .map(q => shuffleQuestionOptions({ ...q, options: [...q.options] }));
     activeQuiz.currentIndex = 0;
     activeQuiz.answers = {};
     activeQuiz.score = 0;
     activeQuiz.correctCount = 0;
     activeQuiz.incorrectCount = 0;
-    activeQuiz.timeRemaining = 100 * 60; // 100 minutes
+    activeQuiz.timeRemaining = challengeMode ? activeQuiz.questions.length * 90 : 100 * 60; // 100 minutes
     activeQuiz.submitted = false;
 
     navigateTo('quiz-simulator');
@@ -1884,7 +1942,7 @@ document.addEventListener('DOMContentLoaded', () => {
       <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
         <div class="lg:col-span-2 space-y-6">
           <div class="space-y-1">
-            <span class="text-xs font-bold text-brand-primary uppercase tracking-wider">${currentQ.type} Question ${activeQuiz.currentIndex + 1} of 30</span>
+            <span class="text-xs font-bold text-brand-primary uppercase tracking-wider">${currentQ.type} Question ${activeQuiz.currentIndex + 1} of ${activeQuiz.questions.length}</span>
             <h3 class="text-lg md:text-xl font-extrabold text-gray-200 leading-snug">${currentQ.question}</h3>
           </div>
           <div class="quiz-options-list flex flex-col gap-3">
@@ -1976,6 +2034,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const finalDisplayScore = Math.max(0, activeQuiz.score);
     const scorePercentage = Math.round((finalDisplayScore / activeQuiz.questions.length) * 100);
 
+    if (!activeQuiz.challengeMode) {
     if (!appState.progress[activeQuiz.chapterId]) {
       appState.progress[activeQuiz.chapterId] = { completed: false, quizScore: null };
     }
@@ -1989,6 +2048,7 @@ document.addEventListener('DOMContentLoaded', () => {
       appState.progress[activeQuiz.chapterId].completed = true;
     }
 
+    }
     saveState();
     updateDashboardStats();
 
@@ -2011,7 +2071,7 @@ document.addEventListener('DOMContentLoaded', () => {
       </div>
 
       <div class="text-4xl md:text-5xl font-black font-heading tracking-tight" style="color: ${passed ? '#10b981' : '#f59e0b'};">
-        ${activeQuiz.score.toFixed(2)} <span class="text-xs text-gray-500 font-normal">/ 30.0</span>
+        ${activeQuiz.score.toFixed(2)} <span class="text-xs text-gray-500 font-normal">/ ${activeQuiz.questions.length}.0</span>
       </div>
       <span class="badge ${passed ? 'badge-success' : 'badge-warning'} text-[0.62rem]">${passed ? 'PASSED' : 'RETRY'}</span>
       
@@ -2043,7 +2103,7 @@ document.addEventListener('DOMContentLoaded', () => {
     consoleBox.appendChild(results);
 
     document.getElementById('btn-quiz-retry-grade').addEventListener('click', () => {
-      launch30QuestionQuiz(activeQuiz.subjectKey, activeQuiz.categoryKey, activeQuiz.chapterKey);
+      launch30QuestionQuiz(activeQuiz.subjectKey, activeQuiz.categoryKey, activeQuiz.chapterKey, activeQuiz.challengeMode);
     });
 
     document.getElementById('btn-quiz-exit-grade').addEventListener('click', () => {
