@@ -1,5 +1,3 @@
-
-Style · CSS
 /* ==========================================================================
    EduPeak CEE/NEET Platform - Custom Visual Enhancement Styles
    Complements TailwindCSS with advanced transitions, scroll snaps, & 3D flips
@@ -7,10 +5,10 @@ Style · CSS
  
 /* 1. Global Custom Theme Settings */
 :root {
-  --glass-bg: rgba(17, 24, 39, 0.45);
-  --glass-border: rgba(255, 255, 255, 0.05);
+  --glass-bg: rgba(33, 55, 78, 0.92);
+  --glass-border: rgba(193, 216, 239, 0.12);
   --glass-border-hover: rgba(255, 255, 255, 0.12);
-  --glass-shadow: rgba(0, 0, 0, 0.45);
+  --glass-shadow: rgba(5, 18, 31, 0.18);
  
   --color-physics: #06b6d4;      /* Tailwind Cyan-500 */
   --color-chemistry: #ec4899;    /* Tailwind Pink-500 */
@@ -651,7 +649,7 @@ Style · CSS
   left: 0;
   width: 100vw;
   height: 100vh;
-  background: #090d16;
+  background: #172b40;
   z-index: 1050;
   display: none;
   flex-direction: column;
@@ -828,7 +826,7 @@ Style · CSS
   right: 24px;
   width: 320px;
   height: 400px;
-  background: #0c1220;
+  background: #112337;
   border: 1px solid var(--glass-border-hover);
   border-radius: 1.5rem;
   box-shadow: 0 10px 40px rgba(0, 0, 0, 0.65);
@@ -845,7 +843,7 @@ Style · CSS
 }
  
 .scratchpad-body {
-  background: #060a12;
+  background: #14283c;
 }
  
 .scratchpad-textarea {
@@ -1012,7 +1010,7 @@ Style · CSS
 .toast {
   padding: 0.9rem 1.25rem;
   border-radius: 0.75rem;
-  background: #0c1220;
+  background: #112337;
   border: 1px solid var(--glass-border-hover);
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
   color: #f3f4f6;
@@ -1127,7 +1125,7 @@ Style · CSS
     left: 0;
     width: 290px;
     height: 100%;
-    background: #0c1220;
+    background: #112337;
     border-right: 1px solid var(--glass-border-hover);
     box-shadow: 10px 0 40px rgba(0, 0, 0, 0.85);
     z-index: 1000;
@@ -1256,3 +1254,23 @@ Style · CSS
 .assistant-suggestions button:hover, .assistant-retry:hover { background: rgba(124,58,237,.25); }
 .assistant-retry { display: block; margin-top: .65rem; }
 .assistant-input:disabled { opacity: .65; }
+
+/* Professional slate-and-blue workspace */
+body { background: #172b40; color: #edf4fc; }
+.main-wrapper { background: linear-gradient(160deg, #1e3851 0%, #172b40 60%); }
+.chapter-card { background: linear-gradient(145deg, #243e57, #1c3249); }
+.chapter-card:hover, .chapter-card:active { background: #29465f; box-shadow: 0 12px 28px rgba(5,18,31,.22); }
+.glass-card:hover, .glass-card:active { box-shadow: 0 12px 28px rgba(5,18,31,.22); }
+.main-wrapper .text-gray-400 { color: #b7c9db; }
+.main-wrapper .text-gray-500 { color: #a5bbd0; }
+.student-benefits { background: #eaf1f7; color: #19344c; border: 1px solid #c9d8e5; border-radius: 24px; padding: clamp(22px,3vw,36px); display: grid; grid-template-columns: minmax(220px,.85fr) minmax(0,1.5fr); gap: 28px; }
+.benefits-eyebrow { color: #275f89; font-size: 10px; font-weight: 800; letter-spacing: .14em; margin-bottom: 12px; }
+.benefits-intro h2 { font-size: clamp(24px,2.2vw,32px); line-height: 1.2; font-weight: 800; letter-spacing: -.03em; margin-bottom: 14px; }
+.benefits-intro > p:last-child { font-size: 14px; line-height: 1.75; color: #486176; max-width: 38ch; }
+.benefits-grid { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 24px; }
+.benefit-icon { display: inline-flex; width: 34px; height: 34px; align-items: center; justify-content: center; background: #d8e7f3; color: #265f88; border-radius: 10px; margin-bottom: 9px; }
+.benefits-grid h3 { font-size: 14px; font-weight: 800; margin-bottom: 7px; }
+.benefits-grid article p { color: #486176; font-size: 12px; line-height: 1.75; }
+.benefits-footnote { grid-column: 1 / -1; border-top: 1px solid #c9d8e5; padding-top: 16px; font-size: 11px; line-height: 1.7; color: #486176; }
+@media(max-width: 900px) { .student-benefits { grid-template-columns: 1fr; } .benefits-intro > p:last-child { max-width: none; } }
+@media(max-width: 480px) { .benefits-grid { grid-template-columns: 1fr; gap: 20px; } }
