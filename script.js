@@ -6,8 +6,7 @@
 
 const SUPABASE_URL = 'https://rwfbinwbkdfekmxtcqpn.supabase.co';
 const SUPABASE_ANON_KEY = 'sb_publishable_1nbm8iOVOdxSVrdlqUxoOA_jXdmuOHo';
-const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-console.log('Supabase client initialized:', supabaseClient);
+const supabaseClient = window.supabase?.createClient(SUPABASE_URL, SUPABASE_ANON_KEY) || null;
 
 document.addEventListener('DOMContentLoaded', () => {
 
@@ -86,9 +85,61 @@ document.addEventListener('DOMContentLoaded', () => {
   // ==========================================================================
   // SIGN-IN & SESSION SECURITY LOCKS
   // ==========================================================================
-  async function checkSession() {
-    const { data: { session } } = await supabaseClient.auth.getSession();
+  const authStatus = document.getElementById('auth-status');
+
+  function setAuthStatus(message = '', type = 'info') {
+    if (!authStatus) return;
+    const styles = {
+      info: 'border-blue-500/30 bg-blue-500/10 text-blue-200',
+      success: 'border-emerald-500/30 bg-emerald-500/10 text-emerald-200',
+      warning: 'border-amber-500/30 bg-amber-500/10 text-amber-200',
+      danger: 'border-red-500/30 bg-red-500/10 text-red-200'
+    };
+    authStatus.className = message
+      ? `rounded-xl border px-3 py-2 text-xs font-semibold ${styles[type] || styles.info}`
+      : 'hidden rounded-xl border px-3 py-2 text-xs font-semibold';
+    authStatus.textContent = message;
+  }
+
+  function friendlyAuthError(error, fallback = 'Authentication failed. Please try again.') {
+    if (!error) return fallback;
+    if (error.name === 'AuthRetryableFetchError' || /failed to fetch/i.test(error.message || '')) {
+      return 'The account service is temporarily unavailable. Please wait a minute and try again.';
+    }
+    return error.message || fallback;
+  }
+
+  function unlockWorkspace() {
     const overlay = document.getElementById('sign-in-screen');
+    overlay.style.opacity = '0';
+    overlay.style.pointerEvents = 'none';
+    setTimeout(() => overlay.classList.add('hidden'), 500);
+    loadState();
+    navigateTo('dashboard');
+  }
+
+  async function checkSession() {
+    const overlay = document.getElementById('sign-in-screen');
+
+    if (!supabaseClient) {
+      setAuthStatus('The account service failed to load. Refresh the page or try again shortly.', 'danger');
+      return;
+    }
+
+    let session;
+    try {
+      const result = await supabaseClient.auth.getSession();
+      if (result.error) throw result.error;
+      session = result.data.session;
+      setAuthStatus();
+    } catch (error) {
+      console.error('Supabase session check failed:', error);
+      overlay.classList.remove('hidden');
+      overlay.style.opacity = '1';
+      overlay.style.pointerEvents = 'auto';
+      setAuthStatus(friendlyAuthError(error), 'danger');
+      return;
+    }
 
     if (session) {
       overlay.classList.add('hidden');
@@ -99,7 +150,7 @@ document.addEventListener('DOMContentLoaded', () => {
         .from('profiles')
         .select('*')
         .eq('id', session.user.id)
-        .single();
+        .maybeSingle();
 
       updateUserProfileUI({ name: profile?.name || 'Student', email: session.user.email, targetExam: profile?.target_exam || 'cee' });
 
@@ -195,6 +246,20 @@ document.addEventListener('DOMContentLoaded', () => {
   const wrapperExam = document.getElementById('wrapper-signin-exam');
   const btnAuthSubmit = document.getElementById('btn-auth-submit');
 
+  function setAuthBusy(isBusy, label = 'Please wait...') {
+    if (!btnAuthSubmit) return;
+    btnAuthSubmit.disabled = isBusy;
+    btnAuthSubmit.classList.toggle('opacity-60', isBusy);
+    btnAuthSubmit.classList.toggle('cursor-not-allowed', isBusy);
+    if (isBusy) {
+      btnAuthSubmit.dataset.previousHtml = btnAuthSubmit.innerHTML;
+      btnAuthSubmit.innerHTML = `<i class="fa-solid fa-circle-notch fa-spin mr-1"></i> ${label}`;
+    } else if (btnAuthSubmit.dataset.previousHtml) {
+      btnAuthSubmit.innerHTML = btnAuthSubmit.dataset.previousHtml;
+      delete btnAuthSubmit.dataset.previousHtml;
+    }
+  }
+
   if (tabSignup && tabLogin) {
     tabSignup.addEventListener('click', () => {
       resetFieldErrors();
@@ -206,6 +271,7 @@ document.addEventListener('DOMContentLoaded', () => {
       if (wrapperName) wrapperName.style.display = 'block';
       if (wrapperExam) wrapperExam.style.display = 'block';
       if (btnAuthSubmit) btnAuthSubmit.innerHTML = `<i class="fa-solid fa-user-plus mr-1"></i> Create Account`;
+      setAuthStatus();
     });
 
     tabLogin.addEventListener('click', () => {
@@ -218,6 +284,7 @@ document.addEventListener('DOMContentLoaded', () => {
       if (wrapperName) wrapperName.style.display = 'none';
       if (wrapperExam) wrapperExam.style.display = 'none';
       if (btnAuthSubmit) btnAuthSubmit.innerHTML = `<i class="fa-solid fa-lock-open mr-1"></i> Log In`;
+      setAuthStatus();
     });
   }
 
@@ -281,41 +348,45 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         if (valid) {
-          const { data, error } = await supabaseClient.auth.signUp({
-            email: emailVal,
-            password: passVal
-          });
-
-          if (error) {
-            showToast(error.message, "danger");
+          if (!supabaseClient) {
+            setAuthStatus('The account service is unavailable. Refresh the page and try again.', 'danger');
             return;
           }
 
-          // Insert profile row matching the new auth user's ID
-          const { error: profileError } = await supabaseClient
-            .from('profiles')
-            .insert({
-              id: data.user.id,
-              name: nameVal,
+          setAuthBusy(true, 'Creating account...');
+          setAuthStatus();
+          try {
+            const { data, error } = await supabaseClient.auth.signUp({
               email: emailVal,
-              target_exam: examInput.value
+              password: passVal,
+              options: {
+                data: {
+                  name: nameVal,
+                  target_exam: examInput.value
+                }
+              }
             });
+            if (error) throw error;
 
-          if (profileError) {
-            showToast("Account created but profile setup failed: " + profileError.message, "warning");
+            if (!data.session) {
+              signinForm.reset();
+              setAuthStatus('Account created. Check your email and confirm your address, then log in.', 'success');
+              showToast('Check your email to finish creating your account.', 'success');
+              return;
+            }
+
+            updateUserProfileUI({ name: nameVal, email: emailVal, targetExam: examInput.value });
+            unlockWorkspace();
+            showToast("Account registered! Welcome, " + nameVal, "success");
+            signinForm.reset();
+          } catch (error) {
+            console.error('Supabase sign-up failed:', error);
+            const message = friendlyAuthError(error, 'Could not create your account.');
+            setAuthStatus(message, 'danger');
+            showToast(message, 'danger');
+          } finally {
+            setAuthBusy(false);
           }
-
-          updateUserProfileUI({ name: nameVal, email: emailVal, targetExam: examInput.value });
-
-          const overlay = document.getElementById('sign-in-screen');
-          overlay.style.opacity = '0';
-          overlay.style.pointerEvents = 'none';
-          setTimeout(() => overlay.classList.add('hidden'), 500);
-
-          loadState();
-          navigateTo('dashboard');
-          showToast("Account registered! Welcome, " + nameVal, "success");
-          signinForm.reset();
         } else {
           showToast("Please check validation requirements.", "warning");
         }
@@ -334,35 +405,40 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         if (valid) {
-          const { data, error } = await supabaseClient.auth.signInWithPassword({
-            email: emailVal,
-            password: passVal
-          });
-
-          if (error) {
-            setFieldError(emailInput, errEmail, "Incorrect email or password.");
-            showToast("Login failed. Please check field errors.", "warning");
+          if (!supabaseClient) {
+            setAuthStatus('The account service is unavailable. Refresh the page and try again.', 'danger');
             return;
           }
 
-          // Fetch profile data to display name/exam badge
-          const { data: profile } = await supabaseClient
-            .from('profiles')
-            .select('*')
-            .eq('id', data.user.id)
-            .single();
+          setAuthBusy(true, 'Logging in...');
+          setAuthStatus();
+          try {
+            const { data, error } = await supabaseClient.auth.signInWithPassword({
+              email: emailVal,
+              password: passVal
+            });
+            if (error) throw error;
 
-          updateUserProfileUI({ name: profile?.name || 'Student', email: data.user.email, targetExam: profile?.target_exam || 'cee' });
+            const { data: profile, error: profileError } = await supabaseClient
+              .from('profiles')
+              .select('*')
+              .eq('id', data.user.id)
+              .maybeSingle();
 
-          const overlay = document.getElementById('sign-in-screen');
-          overlay.style.opacity = '0';
-          overlay.style.pointerEvents = 'none';
-          setTimeout(() => overlay.classList.add('hidden'), 500);
-
-          loadState();
-          navigateTo('dashboard');
-          showToast("Welcome back, " + (profile?.name || 'Student'), "success");
-          signinForm.reset();
+            if (profileError) console.warn('Profile could not be loaded:', profileError);
+            updateUserProfileUI({ name: profile?.name || 'Student', email: data.user.email, targetExam: profile?.target_exam || 'cee' });
+            unlockWorkspace();
+            showToast("Welcome back, " + (profile?.name || 'Student'), "success");
+            signinForm.reset();
+          } catch (error) {
+            console.error('Supabase login failed:', error);
+            const message = friendlyAuthError(error, 'Incorrect email or password.');
+            setFieldError(emailInput, errEmail, message);
+            setAuthStatus(message, 'danger');
+            showToast(message, 'warning');
+          } finally {
+            setAuthBusy(false);
+          }
         } else {
           showToast("Login failed. Please check field errors.", "warning");
         }

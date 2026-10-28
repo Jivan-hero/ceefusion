@@ -800,6 +800,8 @@
       <form class="space-y-4" id="edupeak-signin-form" novalidate>
         <input type="hidden" id="auth-mode-input" value="signup">
 
+        <div id="auth-status" class="hidden rounded-xl border px-3 py-2 text-xs font-semibold" role="status" aria-live="polite"></div>
+
         <div class="form-field-wrapper space-y-1" id="wrapper-signin-name">
           <label class="text-[0.7rem] font-bold uppercase tracking-wider text-gray-400" for="signin-name">Full Name</label>
           <input class="input-control w-full bg-[#111625]/60 py-3 text-sm border-white/5 focus:border-brand-primary" type="text" id="signin-name" placeholder="E.g. FULL  NAME" required minlength="3">
