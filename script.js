@@ -792,6 +792,12 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
+  document.querySelectorAll('.footer-nav-link[data-route]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      navigateTo(btn.getAttribute('data-route'));
+    });
+  });
+
   // Mobile navigation drawer
   const hamburgerBtn = document.getElementById('hamburger-menu-btn');
   const drawerCloseBtn = document.getElementById('drawer-close-btn');
@@ -2911,6 +2917,14 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     }
   });
+
+  const footerTutorBtn = document.getElementById('footer-open-tutor');
+  if (footerTutorBtn) {
+    footerTutorBtn.addEventListener('click', () => {
+      if (panel.style.display !== 'flex') fab.click();
+      switchUtilityTab('assistant');
+    });
+  }
 
   panelClose.addEventListener('click', () => {
     panel.style.display = 'none';
