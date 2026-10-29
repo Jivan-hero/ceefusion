@@ -2925,6 +2925,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // AI ASSISTANT MODULE
   //
   // Gemini is called only through the authenticated Supabase Edge Function.
+  // The GEMINI_API_KEY remains encrypted in Supabase and is never exposed here.
   const ASSISTANT_API_ENDPOINT = SUPABASE_URL + '/functions/v1/course-chat';
 
   let assistantMessages = []; // { role: 'user' | 'assistant' | 'system', content: string }
@@ -2948,6 +2949,108 @@ CeeFusion is a CEE Nepal / NEET entrance exam preparation platform. Key facts to
 - Progress (chapters mastered, quiz scores, mock exam history) is tracked on the Dashboard.
 - The Scratchpad (Notes tab in this same panel) is for jotting formulas/notes during timed sessions.
 `.trim();
+
+  const ASSISTANT_STOP_WORDS = new Set([
+    'a', 'an', 'and', 'are', 'as', 'at', 'be', 'by', 'can', 'do', 'does', 'explain',
+    'for', 'from', 'how', 'i', 'in', 'is', 'it', 'me', 'of', 'on', 'or', 'please',
+    'the', 'this', 'to', 'what', 'when', 'where', 'which', 'why', 'with', 'you'
+  ]);
+
+  function getAssistantSearchTerms(text) {
+    return [...new Set(String(text || '')
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, ' ')
+      .split(/\s+/)
+      .filter(term => term.length > 1 && !ASSISTANT_STOP_WORDS.has(term)))]
+      .slice(0, 24);
+  }
+
+  function scoreAssistantText(text, terms) {
+    const haystack = String(text || '').toLowerCase();
+    return terms.reduce((score, term) => {
+      const occurrences = haystack.split(term).length - 1;
+      return score + Math.min(occurrences, 4);
+    }, 0);
+  }
+
+  /**
+   * Selects the most relevant CeeFusion notes and authored practice questions.
+   * This keeps Gemini grounded without sending the entire 85-chapter course on
+   * every request.
+   */
+  function buildCourseAssistantContext(userText, questionCtx) {
+    const queryText = [
+      userText,
+      questionCtx?.question,
+      questionCtx?.options?.join(' '),
+      activeDrilldown?.subjectKey,
+      activeDrilldown?.categoryKey,
+      activeDrilldown?.chapterKey
+    ].filter(Boolean).join(' ');
+    const terms = getAssistantSearchTerms(queryText);
+    const chapterMatches = [];
+
+    Object.entries(window.eduPeakData || {}).forEach(([subjectKey, categories]) => {
+      Object.entries(categories || {}).forEach(([categoryKey, chapters]) => {
+        Object.entries(chapters || {}).forEach(([chapterKey, chapter]) => {
+          const notes = chapter.notes || {};
+          const searchable = [
+            subjectKey, categoryKey, chapterKey, chapter.name,
+            notes.theoretical, notes.framework, notes.strategy,
+            ...(chapter.formulas || [])
+          ].filter(Boolean).join(' ');
+          let score = scoreAssistantText(searchable, terms);
+          if (activeDrilldown?.subjectKey === subjectKey
+              && activeDrilldown?.categoryKey === categoryKey
+              && activeDrilldown?.chapterKey === chapterKey) score += 20;
+          if (score > 0) {
+            chapterMatches.push({
+              score,
+              subject: subjectKey,
+              category: categoryKey,
+              chapter: chapter.name || chapterKey,
+              notes: {
+                theoretical: notes.theoretical || '',
+                framework: notes.framework || '',
+                strategy: notes.strategy || ''
+              },
+              formulas: (chapter.formulas || []).slice(0, 10)
+            });
+          }
+        });
+      });
+    });
+
+    const questionMatches = [];
+    Object.entries(window.EDUPEAK_QUESTION_BANK || {}).forEach(([subjectKey, questions]) => {
+      (questions || []).forEach(question => {
+        const searchable = [
+          subjectKey, question.chapter, question.question,
+          ...(question.options || []), question.explanation
+        ].filter(Boolean).join(' ');
+        const score = scoreAssistantText(searchable, terms);
+        if (score > 1) {
+          questionMatches.push({
+            score,
+            id: question.id,
+            subject: question.subject || subjectKey,
+            chapter: question.chapter,
+            question: question.question,
+            options: question.options,
+            correct: Number.isInteger(question.correct) ? question.options?.[question.correct] : null,
+            explanation: question.explanation || ''
+          });
+        }
+      });
+    });
+
+    return {
+      chapters: chapterMatches.sort((a, b) => b.score - a.score).slice(0, 4)
+        .map(({ score, ...chapter }) => chapter),
+      practiceQuestions: questionMatches.sort((a, b) => b.score - a.score).slice(0, 4)
+        .map(({ score, ...question }) => question)
+    };
+  }
 
   /**
    * Builds the current-question context (if the user is viewing a quiz/
@@ -3026,23 +3129,11 @@ CeeFusion is a CEE Nepal / NEET entrance exam preparation platform. Key facts to
     return bubble;
   }
 
-  // Select a small set of relevant chapters, keeping requests bounded.
-  function getAssistantCourseContext(text) {
-    const terms = text.toLowerCase().match(/[a-z]{3,}/g) || [];
-    const chapters = [];
-    for (const [subject, categories] of Object.entries(window.eduPeakData || {})) {
-      for (const [category, entries] of Object.entries(categories)) {
-        for (const [key, chapter] of Object.entries(entries)) {
-          const searchable = JSON.stringify([chapter.name, chapter.notes, chapter.formulas]).toLowerCase();
-          let score = terms.reduce((sum, term) => sum + (searchable.includes(term) ? 1 : 0), 0);
-          if (activeDrilldown.subjectKey === subject && activeDrilldown.categoryKey === category && activeDrilldown.chapterKey === key) score += 100;
-          if (score) chapters.push({ score, subject, name: chapter.name, notes: chapter.notes, formulas: chapter.formulas });
-        }
-      }
-    }
-    return { chapters: chapters.sort((a, b) => b.score - a.score).slice(0, 4).map(({score, ...chapter}) => chapter), practiceQuestions: [] };
-  }
-
+  /**
+   * Sends the conversation and the most relevant course material to the
+   * authenticated Supabase Edge Function. The function calls Gemini and
+   * returns { reply: string }.
+   */
   async function sendAssistantMessage(userText, retry = false) {
     if (assistantIsLoading) return;
     assistantMessagesEl.querySelectorAll('.assistant-retry').forEach(button => button.remove());
@@ -3059,6 +3150,7 @@ CeeFusion is a CEE Nepal / NEET entrance exam preparation platform. Key facts to
       if (!supabaseClient) throw new Error('The tutor is unavailable. Please refresh the page and try again.');
       const { data: sessionData, error: sessionError } = await supabaseClient.auth.getSession();
       if (sessionError || !sessionData.session) throw new Error('Please log in to use your study tutor.');
+      const questionContext = getCurrentQuestionContext();
       const response = await fetch(ASSISTANT_API_ENDPOINT, {
         method: 'POST',
         signal: controller.signal,
@@ -3069,7 +3161,11 @@ CeeFusion is a CEE Nepal / NEET entrance exam preparation platform. Key facts to
         },
         body: JSON.stringify({
           messages: assistantMessages.filter(m => m.role === 'user' || m.role === 'assistant').slice(-10),
-          context: { site: SITE_HELP_CONTEXT, currentQuestion: getCurrentQuestionContext(), course: getAssistantCourseContext(userText) }
+          context: {
+            site: SITE_HELP_CONTEXT,
+            currentQuestion: questionContext,
+            course: buildCourseAssistantContext(userText, questionContext)
+          }
         })
       });
       const data = await response.json().catch(() => ({}));
