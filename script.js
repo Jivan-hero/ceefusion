@@ -2908,8 +2908,12 @@ document.addEventListener('DOMContentLoaded', () => {
     const isShowing = panel.style.display === 'flex';
     if (isShowing) {
       panel.style.display = 'none';
+      fab.classList.remove('is-open');
+      fab.setAttribute('aria-expanded', 'false');
     } else {
       panel.style.display = 'flex';
+      fab.classList.add('is-open');
+      fab.setAttribute('aria-expanded', 'true');
       textarea.value = appState.scratchpad;
       switchUtilityTab('assistant');
       if (assistantMessages.length === 0) {
@@ -2928,6 +2932,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
   panelClose.addEventListener('click', () => {
     panel.style.display = 'none';
+    fab.classList.remove('is-open');
+    fab.setAttribute('aria-expanded', 'false');
   });
 
   textarea.addEventListener('input', (e) => {

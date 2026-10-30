@@ -57,7 +57,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   
   <!-- Custom Core Glassmorphic Stylesheet -->
-  <link rel="stylesheet" href="style.css?v=20261029-midnight">
+  <link rel="stylesheet" href="style.css?v=20261030-ai-tutor">
 </head>
 <body class="bg-[#122f2c] text-gray-100 font-sans min-h-screen overflow-hidden relative">
 
@@ -789,8 +789,16 @@
   </div>
 
   <!-- 3. REVISION SCRATCHPAD + AI ASSISTANT OVERLAY -->
-  <button class="scratchpad-launcher shadow-[0_4px_20px_rgba(135,77,255,0.3)] hover:shadow-brand-primary/50 text-white font-semibold" id="scratchpad-trigger-fab" aria-label="Open study tools" aria-haspopup="true">
-    <i class="fa-solid fa-plus"></i>
+  <button class="scratchpad-launcher ai-tutor-launcher text-white font-semibold" id="scratchpad-trigger-fab" aria-label="Open CeeFusion AI Tutor" aria-haspopup="true" aria-expanded="false">
+    <span class="ai-launcher-orbit" aria-hidden="true"></span>
+    <span class="ai-launcher-core" aria-hidden="true">
+      <i class="fa-solid fa-wand-magic-sparkles"></i>
+    </span>
+    <span class="ai-launcher-badge" aria-hidden="true">AI</span>
+    <span class="ai-launcher-label" aria-hidden="true">
+      <strong>Ask AI Tutor</strong>
+      <small>Course help, instantly</small>
+    </span>
   </button>
 
   <div class="scratchpad-panel utility-panel-expanded" id="scratchpad-utility-panel" aria-label="Study tools panel" role="complementary">
