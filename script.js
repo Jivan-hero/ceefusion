@@ -3178,7 +3178,11 @@ CeeFusion is a CEE Nepal / NEET entrance exam preparation platform. Key facts to
           context: {
             site: SITE_HELP_CONTEXT,
             currentQuestion: questionContext,
-            course: buildCourseAssistantContext(userText, questionContext)
+            course: buildCourseAssistantContext(
+              assistantMessages.filter(message => message.role === 'user').slice(-4)
+                .map(message => message.content).join(' '),
+              questionContext
+            )
           }
         })
       });
@@ -3188,7 +3192,8 @@ CeeFusion is a CEE Nepal / NEET entrance exam preparation platform. Key facts to
           401: 'Your session has expired. Please log in again.',
           429: 'The tutor is busy or its usage limit has been reached. Please try again shortly.',
           503: 'The tutor is temporarily unavailable. Please try again shortly.',
-          502: 'The AI service could not answer right now. Please try again shortly.'
+          502: 'The AI service could not answer right now. Please try again shortly.',
+          504: 'The tutor took too long to respond. Please try again.'
         };
         throw new Error(messages[response.status] || 'Your question could not be sent. Please try again.');
       }
