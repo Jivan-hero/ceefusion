@@ -843,7 +843,7 @@
 .ai-launcher-label small { color: #8edfc3; font-size: .59rem; line-height: 1.2; font-weight: 650; }
 .ai-tutor-launcher.is-open .ai-launcher-label { opacity: 0; transform: translateX(8px); pointer-events: none; }
 .ai-tutor-launcher.is-open .ai-launcher-core { transform: rotate(0); }
-.ai-tutor-launcher.is-open .ai-launcher-core i::before { content: '\\f00d'; }
+.ai-tutor-launcher.is-open .ai-launcher-core i::before { content: '\f00d'; }
 
 @keyframes aiTutorPulse {
   0% { opacity: .8; transform: scale(.92); }
