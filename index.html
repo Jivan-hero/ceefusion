@@ -1,15 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" class="dark">
 <head>
-  <!-- Google tag (gtag.js) -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-3SL9D0CBLV"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-
-    gtag('config', 'G-3SL9D0CBLV');
-  </script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, minimum-scale=1.0">
   <title>CeeFusion – CEE & NEET Full-Stack Preparation Platform</title>
@@ -28,30 +19,7 @@
   
   <!-- TailwindCSS via CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
-  <script>
-    tailwind.config = {
-      darkMode: 'class',
-      theme: {
-        extend: {
-          fontFamily: {
-            sans: ['Inter', 'sans-serif'],
-            heading: ['DM Sans', 'sans-serif'],
-          },
-          colors: {
-            brand: {
-              primary: '#5ee0b5',
-              success: '#10b981',
-              danger: '#ef4444',
-              warning: '#f59e0b',
-              info: '#06b6d4',
-              darkBg: '#122f2c',
-              cardBg: 'rgba(17, 24, 39, 0.45)',
-            }
-          }
-        }
-      }
-    }
-  </script>
+  <script src="tailwind-config.js"></script>
   
   <!-- FontAwesome Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -370,7 +338,7 @@
 
           <div class="site-footer-bottom">
             <p>&copy; 2026 CeeFusion. Built for CEE Nepal and NEET aspirants.</p>
-            <p>Independent preparation platform · Not affiliated with MEC or NTA.</p>
+            <p>Independent preparation platform · Not affiliated with MEC or NTA. · <a href="/privacy.html">Privacy</a></p>
           </div>
         </footer>
       </section>
@@ -904,8 +872,8 @@
 
         <div class="form-field-wrapper space-y-1" id="wrapper-signin-password">
           <label class="text-[0.7rem] font-bold uppercase tracking-wider text-gray-400" for="signin-password">Credentials Password</label>
-          <input class="input-control w-full bg-[#21433b]/60 py-3 text-sm border-white/5 focus:border-brand-primary" type="password" id="signin-password" placeholder="••••••••" required minlength="7">
-          <span class="field-error-text text-[0.68rem] text-red-500 hidden block mt-1 font-semibold" id="error-signin-password">Password must be at least 7 characters and contain a number.</span>
+          <input class="input-control w-full bg-[#21433b]/60 py-3 text-sm border-white/5 focus:border-brand-primary" type="password" id="signin-password" placeholder="12+ characters" required minlength="12" autocomplete="current-password">
+          <span class="field-error-text text-[0.68rem] text-red-500 hidden block mt-1 font-semibold" id="error-signin-password">Use at least 12 characters with a letter and a number.</span>
         </div>
 
         <div class="form-field-wrapper space-y-1 hidden" id="wrapper-verification-code">
@@ -916,13 +884,13 @@
 
         <div class="form-field-wrapper space-y-1 hidden" id="wrapper-new-password">
           <label class="text-[0.7rem] font-bold uppercase tracking-wider text-gray-400" for="new-password">New Password</label>
-          <input class="input-control w-full bg-[#21433b]/60 py-3 text-sm border-white/5 focus:border-brand-primary" type="password" id="new-password" placeholder="At least 8 characters" autocomplete="new-password" minlength="8">
-          <span class="field-error-text text-[0.68rem] text-red-500 hidden block mt-1 font-semibold" id="error-new-password">Use at least 8 characters with a number.</span>
+          <input class="input-control w-full bg-[#21433b]/60 py-3 text-sm border-white/5 focus:border-brand-primary" type="password" id="new-password" placeholder="At least 12 characters" autocomplete="new-password" minlength="12">
+          <span class="field-error-text text-[0.68rem] text-red-500 hidden block mt-1 font-semibold" id="error-new-password">Use at least 12 characters with a letter and a number.</span>
         </div>
 
         <div class="form-field-wrapper space-y-1 hidden" id="wrapper-confirm-password">
           <label class="text-[0.7rem] font-bold uppercase tracking-wider text-gray-400" for="confirm-password">Confirm New Password</label>
-          <input class="input-control w-full bg-[#21433b]/60 py-3 text-sm border-white/5 focus:border-brand-primary" type="password" id="confirm-password" placeholder="Repeat your new password" autocomplete="new-password" minlength="8">
+          <input class="input-control w-full bg-[#21433b]/60 py-3 text-sm border-white/5 focus:border-brand-primary" type="password" id="confirm-password" placeholder="Repeat your new password" autocomplete="new-password" minlength="12">
           <span class="field-error-text text-[0.68rem] text-red-500 hidden block mt-1 font-semibold" id="error-confirm-password">Passwords do not match.</span>
         </div>
         

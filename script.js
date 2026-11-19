@@ -19,6 +19,8 @@ document.addEventListener('DOMContentLoaded', () => {
     studySchedule: [],   // [ { id, task, time, subject, done: false } ]
     scratchpad: "",      // Saved scratchpad text
   };
+  let currentUserId = null;
+  const USER_STATE_KEY_PREFIX = 'ceefusion_state_v2_';
 
   // Live timed CEE Mock Exam active variables
   let activeExam = {
@@ -111,7 +113,8 @@ document.addEventListener('DOMContentLoaded', () => {
     return error.message || fallback;
   }
 
-  function unlockWorkspace() {
+  function unlockWorkspace(userId) {
+    currentUserId = userId || currentUserId;
     const overlay = document.getElementById('sign-in-screen');
     overlay.style.opacity = '0';
     overlay.style.pointerEvents = 'none';
@@ -144,6 +147,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     if (session && isRecoveryRedirect) {
+      currentUserId = session.user.id;
       overlay.classList.remove('hidden');
       overlay.style.opacity = '1';
       overlay.style.pointerEvents = 'auto';
@@ -152,6 +156,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     if (session) {
+      currentUserId = session.user.id;
       overlay.classList.add('hidden');
       overlay.style.opacity = '0';
       overlay.style.pointerEvents = 'none';
@@ -330,10 +335,12 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     const emailInput = document.getElementById('signin-email');
+    const passwordInput = document.getElementById('signin-password');
     if (emailInput) {
       emailInput.readOnly = isVerify;
       if (isVerify && options.email) emailInput.value = options.email;
     }
+    if (passwordInput) passwordInput.autocomplete = isSignup ? 'new-password' : 'current-password';
   }
 
   if (tabSignup && tabLogin) {
@@ -342,7 +349,10 @@ document.addEventListener('DOMContentLoaded', () => {
   }
   if (btnForgotPassword) btnForgotPassword.addEventListener('click', () => switchAuthMode('reset-request'));
   if (btnBackToLogin) btnBackToLogin.addEventListener('click', async () => {
-    if (modeInput?.value === 'reset-update' && supabaseClient) await supabaseClient.auth.signOut({ scope: 'local' });
+    if (modeInput?.value === 'reset-update' && supabaseClient) {
+      await supabaseClient.auth.signOut({ scope: 'local' });
+      currentUserId = null;
+    }
     window.history.replaceState({}, document.title, window.location.pathname);
     switchAuthMode('login');
   });
@@ -406,14 +416,14 @@ document.addEventListener('DOMContentLoaded', () => {
           valid = false;
         }
 
-        // 4. Password validation: min 7 chars AND at least one number
-        if (!passVal || passVal.length < 7) {
+        // 4. Require a strong password before sending it to Supabase.
+        if (!passVal || passVal.length < 12) {
           if (valid) passwordInput.focus();
-          setFieldError(passwordInput, errPassword, "Password must be at least 7 characters long.");
+          setFieldError(passwordInput, errPassword, "Password must be at least 12 characters long.");
           valid = false;
-        } else if (!/\d/.test(passVal)) {
+        } else if (!/[A-Za-z]/.test(passVal) || !/\d/.test(passVal)) {
           if (valid) passwordInput.focus();
-          setFieldError(passwordInput, errPassword, "Password must contain at least one number.");
+          setFieldError(passwordInput, errPassword, "Password must contain at least one letter and one number.");
           valid = false;
         }
 
@@ -449,7 +459,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             updateUserProfileUI({ name: nameVal, email: emailVal, targetExam: examInput.value });
-            unlockWorkspace();
+            unlockWorkspace(data.user.id);
             showToast("Account registered! Welcome, " + nameVal, "success");
             signinForm.reset();
           } catch (error) {
@@ -496,7 +506,7 @@ document.addEventListener('DOMContentLoaded', () => {
               .maybeSingle();
             updateUserProfileUI({ name: profile?.name || 'Student', email: data.user.email, targetExam: profile?.target_exam || 'cee' });
             showToast('Email verified. Welcome to CeeFusion!', 'success');
-            unlockWorkspace();
+            unlockWorkspace(data.user.id);
             signinForm.reset();
           } catch (error) {
             const message = friendlyAuthError(error, 'That verification code is invalid or expired.');
@@ -533,8 +543,8 @@ document.addEventListener('DOMContentLoaded', () => {
       } else if (mode === 'reset-update') {
         const newPassword = newPasswordInput.value;
         const confirmPassword = confirmPasswordInput.value;
-        if (newPassword.length < 8 || !/\d/.test(newPassword)) {
-          setFieldError(newPasswordInput, errNewPassword, 'Use at least 8 characters and include a number.');
+        if (newPassword.length < 12 || !/[A-Za-z]/.test(newPassword) || !/\d/.test(newPassword)) {
+          setFieldError(newPasswordInput, errNewPassword, 'Use at least 12 characters with a letter and a number.');
           valid = false;
         }
         if (confirmPassword !== newPassword) {
@@ -549,6 +559,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const { error } = await supabaseClient.auth.updateUser({ password: newPassword });
             if (error) throw error;
             await supabaseClient.auth.signOut({ scope: 'local' });
+            currentUserId = null;
             window.history.replaceState({}, document.title, window.location.pathname);
             signinForm.reset();
             switchAuthMode('login');
@@ -598,7 +609,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             if (profileError) console.warn('Profile could not be loaded:', profileError);
             updateUserProfileUI({ name: profile?.name || 'Student', email: data.user.email, targetExam: profile?.target_exam || 'cee' });
-            unlockWorkspace();
+            unlockWorkspace(data.user.id);
             showToast("Welcome back, " + (profile?.name || 'Student'), "success");
             signinForm.reset();
           } catch (error) {
@@ -623,8 +634,10 @@ document.addEventListener('DOMContentLoaded', () => {
   
   async function handleSignOut() {
     if (confirm("Are you sure you want to sign out? This locks the workspace.")) {
+      const stateKey = getUserStateKey();
       await supabaseClient.auth.signOut();
-      localStorage.removeItem('edupeak_fs_state');
+      if (stateKey) localStorage.removeItem(stateKey);
+      currentUserId = null;
       initializeDefaultState();
       
       const overlay = document.getElementById('sign-in-screen');
@@ -643,9 +656,14 @@ document.addEventListener('DOMContentLoaded', () => {
   // ==========================================================================
   // STATE PERSISTENCE & LOCALSTORAGE SYNC
   // ==========================================================================
+  function getUserStateKey() {
+    return currentUserId ? `${USER_STATE_KEY_PREFIX}${currentUserId}` : null;
+  }
+
   function loadState() {
     try {
-      const saved = localStorage.getItem('edupeak_fs_state');
+      const stateKey = getUserStateKey();
+      const saved = stateKey ? localStorage.getItem(stateKey) : null;
       if (saved) {
         appState = JSON.parse(saved);
         if (!appState.progress) appState.progress = {};
@@ -663,7 +681,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function saveState() {
     try {
-      localStorage.setItem('edupeak_fs_state', JSON.stringify(appState));
+      const stateKey = getUserStateKey();
+      if (stateKey) localStorage.setItem(stateKey, JSON.stringify(appState));
     } catch (e) {
       console.error("LocalStorage save error:", e);
     }
@@ -720,10 +739,12 @@ document.addEventListener('DOMContentLoaded', () => {
     if (type === 'warning') iconClass = 'fa-circle-exclamation';
     if (type === 'danger') iconClass = 'fa-triangle-exclamation';
 
-    toast.innerHTML = `
-      <i class="fa-solid ${iconClass}"></i>
-      <span>${message}</span>
-    `;
+    const icon = document.createElement('i');
+    icon.className = `fa-solid ${iconClass}`;
+    icon.setAttribute('aria-hidden', 'true');
+    const messageEl = document.createElement('span');
+    messageEl.textContent = String(message || '');
+    toast.append(icon, messageEl);
     portal.appendChild(toast);
 
     setTimeout(() => {

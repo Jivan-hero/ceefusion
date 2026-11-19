@@ -24,7 +24,12 @@ function corsHeaders(origin: string | null) {
 function jsonResponse(body: unknown, status: number, origin: string | null) {
   return new Response(JSON.stringify(body), {
     status,
-    headers: { ...corsHeaders(origin), 'Content-Type': 'application/json' },
+    headers: {
+      ...corsHeaders(origin),
+      'Content-Type': 'application/json',
+      'Cache-Control': 'no-store',
+      'X-Content-Type-Options': 'nosniff',
+    },
   });
 }
 
@@ -58,6 +63,34 @@ Deno.serve(async (req) => {
   });
   if (!userResponse.ok) {
     return jsonResponse({ error: 'Sign in to use the CeeFusion tutor' }, 401, origin);
+  }
+
+  const authenticatedUser = await userResponse.json().catch(() => null);
+  const userId = typeof authenticatedUser?.id === 'string' ? authenticatedUser.id : '';
+  if (!userId) return jsonResponse({ error: 'Sign in to use the CeeFusion tutor' }, 401, origin);
+
+  const serviceRoleKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY');
+  if (!serviceRoleKey) {
+    console.error('Course tutor rate limiter is not configured');
+    return jsonResponse({ error: 'Tutor service is not configured' }, 503, origin);
+  }
+
+  const quotaResponse = await fetch(`${supabaseUrl}/rest/v1/rpc/consume_course_chat_quota`, {
+    method: 'POST',
+    headers: {
+      Authorization: `Bearer ${serviceRoleKey}`,
+      apikey: serviceRoleKey,
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ p_user_id: userId, p_limit: 12 }),
+  });
+  if (!quotaResponse.ok) {
+    console.error('Course tutor rate limiter failed', quotaResponse.status);
+    return jsonResponse({ error: 'Tutor service is temporarily unavailable' }, 503, origin);
+  }
+  const quotaAllowed = await quotaResponse.json().catch(() => false);
+  if (quotaAllowed !== true) {
+    return jsonResponse({ error: 'Too many tutor requests. Please wait a minute and try again.' }, 429, origin);
   }
 
   try {

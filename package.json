@@ -1,0 +1,10 @@
+{
+  "name": "ceefusion",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "build": "node build-static.mjs",
+    "check": "node --check script.js && node --check tailwind-config.js && node --check build-static.mjs"
+  }
+}
