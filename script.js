@@ -2969,7 +2969,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // The GEMINI_API_KEY remains encrypted in Supabase and is never exposed here.
   const ASSISTANT_API_ENDPOINT = SUPABASE_URL + '/functions/v1/course-chat';
 
-  let assistantMessages = []; // { role: 'user' | 'assistant' | 'system', content: string }
+  const assistantHistory = []; // Completed question/answer pairs only.
   let assistantIsLoading = false;
 
   const assistantMessagesEl = document.getElementById('assistant-messages');
@@ -3139,7 +3139,7 @@ CeeFusion is a CEE Nepal / NEET entrance exam preparation platform. Key facts to
       assistantInput.placeholder = 'Ask about this question...';
     } else {
       assistantContextChip.classList.add('hidden');
-      assistantInput.placeholder = 'Ask about this question or the site...';
+      assistantInput.placeholder = 'Ask about a CEE or NEET topic…';
     }
   }
 
@@ -3148,7 +3148,6 @@ CeeFusion is a CEE Nepal / NEET entrance exam preparation platform. Key facts to
   }
 
   function appendAssistantMessage(role, text) {
-    assistantMessages.push({ role, content: text });
     const bubble = document.createElement('div');
     const roleClass = role === 'user' ? 'assistant-msg-user'
       : role === 'system' ? 'assistant-msg-system'
@@ -3175,10 +3174,21 @@ CeeFusion is a CEE Nepal / NEET entrance exam preparation platform. Key facts to
    * authenticated Supabase Edge Function. The function calls Gemini and
    * returns { reply: string }.
    */
-  async function sendAssistantMessage(userText, retry = false) {
+  async function sendAssistantMessage(userText, request = null) {
     if (assistantIsLoading) return;
-    assistantMessagesEl.querySelectorAll('.assistant-retry').forEach(button => button.remove());
-    if (!retry) appendAssistantMessage('user', userText);
+    assistantMessagesEl.querySelectorAll('.assistant-msg-error').forEach(bubble => bubble.remove());
+    if (!request) {
+      appendAssistantMessage('user', userText);
+      const questionContext = getCurrentQuestionContext();
+      request = {
+        messages: [...assistantHistory.slice(-8), { role: 'user', content: userText }],
+        context: {
+          site: SITE_HELP_CONTEXT,
+          currentQuestion: questionContext,
+          course: buildCourseAssistantContext(userText, questionContext)
+        }
+      };
+    }
     assistantInput.value = '';
     assistantIsLoading = true;
     assistantSendBtn.disabled = true;
@@ -3191,7 +3201,6 @@ CeeFusion is a CEE Nepal / NEET entrance exam preparation platform. Key facts to
       if (!supabaseClient) throw new Error('The tutor is unavailable. Please refresh the page and try again.');
       const { data: sessionData, error: sessionError } = await supabaseClient.auth.getSession();
       if (sessionError || !sessionData.session) throw new Error('Please log in to use your study tutor.');
-      const questionContext = getCurrentQuestionContext();
       const response = await fetch(ASSISTANT_API_ENDPOINT, {
         method: 'POST',
         signal: controller.signal,
@@ -3200,18 +3209,7 @@ CeeFusion is a CEE Nepal / NEET entrance exam preparation platform. Key facts to
           'apikey': SUPABASE_ANON_KEY,
           'Authorization': 'Bearer ' + sessionData.session.access_token
         },
-        body: JSON.stringify({
-          messages: assistantMessages.filter(m => m.role === 'user' || m.role === 'assistant').slice(-10),
-          context: {
-            site: SITE_HELP_CONTEXT,
-            currentQuestion: questionContext,
-            course: buildCourseAssistantContext(
-              assistantMessages.filter(message => message.role === 'user').slice(-4)
-                .map(message => message.content).join(' '),
-              questionContext
-            )
-          }
-        })
+        body: JSON.stringify(request)
       });
       const data = await response.json().catch(() => ({}));
       if (!response.ok) {
@@ -3225,16 +3223,20 @@ CeeFusion is a CEE Nepal / NEET entrance exam preparation platform. Key facts to
         throw new Error(messages[response.status] || 'Your question could not be sent. Please try again.');
       }
       if (typeof data.reply !== 'string' || !data.reply.trim()) throw new Error('The tutor returned an empty answer. Please try again.');
+      assistantHistory.push({ role: 'user', content: userText }, { role: 'assistant', content: data.reply });
+      if (assistantHistory.length > 8) assistantHistory.splice(0, 2);
       appendAssistantMessage('assistant', data.reply);
     } catch (error) {
       const message = error.name === 'AbortError' ? 'The tutor took too long to respond. Please try again.'
-        : error instanceof TypeError ? 'Connection lost. Check your internet connection and try again.' : error.message;
+        : error instanceof TypeError
+          ? (navigator.onLine ? 'The tutor could not be reached. Please try again shortly.' : 'You appear to be offline. Reconnect and try again.')
+          : error.message;
       const bubble = appendAssistantMessage('error', message);
       const retryButton = document.createElement('button');
       retryButton.type = 'button';
       retryButton.className = 'assistant-retry';
       retryButton.textContent = 'Try again';
-      retryButton.addEventListener('click', () => { if (!assistantIsLoading) { bubble.remove(); sendAssistantMessage(userText, true); } });
+      retryButton.addEventListener('click', () => sendAssistantMessage(userText, request));
       bubble.appendChild(retryButton);
     } finally {
       clearTimeout(timeout);
@@ -3250,7 +3252,13 @@ CeeFusion is a CEE Nepal / NEET entrance exam preparation platform. Key facts to
 
   document.querySelectorAll('[data-tutor-prompt]').forEach(button => {
     button.addEventListener('click', () => {
-      if (!assistantIsLoading) sendAssistantMessage(button.dataset.tutorPrompt);
+      if (assistantIsLoading) return;
+      if (button.dataset.tutorPrompt.startsWith('Give me a hint') && !getCurrentQuestionContext()) {
+        appendAssistantMessage('system', 'Open a quiz question to get a hint without revealing the answer. You can also type a CEE or NEET practice question here.');
+        assistantInput.focus();
+        return;
+      }
+      sendAssistantMessage(button.dataset.tutorPrompt);
     });
   });
 
